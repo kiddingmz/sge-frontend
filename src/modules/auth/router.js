@@ -4,10 +4,10 @@ const Login = () => import("./views/Login.vue");
 export default router => {
   router.addRoute({
     name: 'login',
-    path: '/login',
+    path: '/auth',
     component: Module,
     children: [
-      { path: '', component: Login },
+      { name: 'notAuth', path: 'login', component: Login },
     ],
   })
 };

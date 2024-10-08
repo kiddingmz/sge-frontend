@@ -5,5 +5,8 @@
 </template>
 
 <script>
-export default {};
+/* eslint-disable */
+export default {
+  name: 'Module',
+};
 </script>
