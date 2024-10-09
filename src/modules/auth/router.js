@@ -6,8 +6,9 @@ export default router => {
     name: 'login',
     path: '/auth',
     component: Module,
+    meta: { requiresVisitor: true },
     children: [
-      { name: 'notAuth', path: 'login', component: Login },
+      { name: 'notAuth', path: 'login', component: Login, meta: { requiresVisitor: true }},
     ],
   })
 };
