@@ -1,13 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import {authorities} from "@/global";
 
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    component: () => import('@/components/layout/Layout.vue'),
+    children: [
+      {
+        path: 'dashboard',
+        name: 'dashboard',
+        component: () => import('@/views/DashboardView.vue')
+      },
+    ]
   },
   {
     path: '/about',
