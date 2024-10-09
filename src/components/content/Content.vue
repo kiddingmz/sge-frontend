@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <slot></slot>
+<!--    <slot></slot>-->
   </div>
 </template>
 
@@ -12,7 +12,9 @@ export default {
 
 <style scoped>
 .content {
-  padding: 2rem;
+  padding: 5rem;
   flex: 1;
+
+  background-color: red;
 }
 </style>

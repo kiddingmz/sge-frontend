@@ -1,10 +1,8 @@
 <template>
-  <div class="layout">
-    <div class="main">
-      <Navigation />
-      <Content>
-        <router-view />
-      </Content>
+  <div class="d-flex full-content">
+    <Navigation />
+    <div class="content">
+      <Content />
     </div>
   </div>
 </template>
@@ -23,14 +21,18 @@ export default {
 </script>
 
 <style scoped>
-.layout {
+.full-content {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  width: 100%;
   height: 100vh;
 }
 
-.main {
-  display: flex;
+.content {
   flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100vh;
+  width: 100%;
 }
 </style>

@@ -1,7 +1,5 @@
-// const Module = () => import("./Module.vue");
-const Login = () => import("./views/Login.vue");
-
 const Layout = () => import('@/components/layout/Layout.vue');
+const ListStudents = () => import('./views/ListStudents.vue');
 
 export default router => {
   router.addRoute({
@@ -9,7 +7,7 @@ export default router => {
     path: '/student',
     component: Layout,
     children: [
-      { name: '', path: '', component: Login},
+      { name: '', path: '', component: ListStudents},
     ],
   })
 };

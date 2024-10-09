@@ -100,7 +100,7 @@ export default {
 }
 
 aside {
-  position: fixed;
+  position: relative;
   top: 0;
   bottom: 100vh;
   display: flex;
@@ -109,7 +109,7 @@ aside {
   color: var(--light);
   width: calc(2rem + 32px);
   overflow: hidden;
-  min-height: 100vh;
+  height: 100vh;
   transition: 0.2s ease-in-out;
   padding: 1.5rem 1rem 1rem;
 }
