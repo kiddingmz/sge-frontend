@@ -1,7 +1,7 @@
 <template>
   <aside :class="`${is_expanded ? 'is-expanded' : ''}`">
     <div class="logo">
-<!--      <img :src="logoURL" alt="" />-->
+      <img :src="require('@/assets/logo.png')" alt="" />
     </div>
 
     <div class="menu-toggle-wrap">
@@ -10,8 +10,10 @@
       </button>
     </div>
 
+    <hr>
+
     <h3>Menu</h3>
-    <div class="menu">
+    <div class="menu scroll">
       <router-link to="/student" class="button">
         <i class="fa fa-users" aria-hidden="true"></i>
         <span class="text">Estudantes</span>
@@ -57,6 +59,7 @@
     <div class="flex"></div>
 
     <div class="menu">
+      <hr>
       <router-link to="/settings" class="button">
         <i class="fa fa-sign-out" aria-hidden="true"></i>
         <span class="text">Logout</span>
@@ -91,7 +94,15 @@ export default {
 </script>
 
 <style scoped>
+.scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 aside {
+  position: fixed;
+  top: 0;
+  bottom: 100vh;
   display: flex;
   flex-direction: column;
   background-color: var(--dark);
@@ -100,7 +111,7 @@ aside {
   overflow: hidden;
   min-height: 100vh;
   transition: 0.2s ease-in-out;
-  padding: 50px 1rem 1rem;
+  padding: 1.5rem 1rem 1rem;
 }
 aside .flex {
   flex: 1 1 0%;
