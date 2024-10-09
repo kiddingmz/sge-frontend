@@ -12,42 +12,42 @@
 
     <h3>Menu</h3>
     <div class="menu">
-      <router-link to="/" class="button">
+      <router-link to="/student" class="button">
         <i class="fa fa-users" aria-hidden="true"></i>
         <span class="text">Estudantes</span>
       </router-link>
 
-      <router-link to="/" class="button">
+      <router-link to="/teacher" class="button">
         <i class="fa fa-user" aria-hidden="true"></i>
         <span class="text">Docentes</span>
       </router-link>
 
-      <router-link to="/" class="button">
+      <router-link to="/course" class="button">
         <i class="fa fa-book" aria-hidden="true"></i>
         <span class="text">Cursos</span>
       </router-link>
 
-      <router-link to="/" class="button">
+      <router-link to="/department" class="button">
         <i class="fa fa-building" aria-hidden="true"></i>
         <span class="text">Departamentos</span>
       </router-link>
 
-      <router-link to="/" class="button">
+      <router-link to="/class" class="button">
         <i class="fa fa-newspaper-o" aria-hidden="true"></i>
         <span class="text">Cadeiras</span>
       </router-link>
 
-      <router-link to="/" class="button">
+      <router-link to="/assistant" class="button">
         <i class="fa fa-user-plus" aria-hidden="true"></i>
         <span class="text">Assistentes</span>
       </router-link>
 
-      <router-link to="/" class="button">
+      <router-link to="/evaluation" class="button">
         <i class="fa fa-pencil" aria-hidden="true"></i>
         <span class="text">Avaliações</span>
       </router-link>
 
-      <router-link to="/" class="button">
+      <router-link to="/grade" class="button">
         <i class="fa fa-graduation-cap" aria-hidden="true"></i>
         <span class="text">Notas</span>
       </router-link>

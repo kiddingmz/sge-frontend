@@ -3,12 +3,12 @@ const Login = () => import("./views/Login.vue");
 
 export default router => {
   router.addRoute({
-    name: 'login',
-    path: '/auth',
+    name: 'teacher',
+    path: '/teacher',
     component: Module,
     meta: { requiresVisitor: true },
     children: [
-      { name: 'notAuth', path: 'login', component: Login, meta: { requiresVisitor: true }},
+      { name: '', path: '', component: Login, meta: { requiresVisitor: true }},
     ],
   })
 };
