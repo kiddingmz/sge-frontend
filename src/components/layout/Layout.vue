@@ -2,7 +2,9 @@
   <div class="d-flex full-content">
     <Navigation />
     <div class="content">
-      <Content />
+      <Content>
+        <router-view />
+      </Content>
     </div>
   </div>
 </template>

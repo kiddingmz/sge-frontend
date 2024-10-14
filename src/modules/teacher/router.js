@@ -1,3 +1,5 @@
+import {authorities} from "@/global";
+
 const Module = () => import("./Module.vue");
 const Login = () => import("./views/Login.vue");
 
@@ -6,9 +8,11 @@ export default router => {
     name: 'teacher',
     path: '/teacher',
     component: Module,
-    meta: { requiresVisitor: true },
+    meta: {
+      requiresAuth: true,
+    },
     children: [
-      { name: '', path: '', component: Login, meta: { requiresVisitor: true }},
+      { path: '', component: Login, meta: { authority: authorities.TEACHER_VIEW } },
     ],
   })
 };

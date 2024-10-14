@@ -8,7 +8,7 @@ export default router => {
     component: Module,
     meta: { requiresVisitor: true },
     children: [
-      { name: '', path: '', component: Login, meta: { requiresVisitor: true }},
+      { path: '', component: Login, meta: { requiresVisitor: true }},
     ],
   })
 };

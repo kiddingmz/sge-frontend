@@ -1,8 +1,4 @@
-export const baseApiUrl = process.env.NODE_ENV === 'development' ? `127.0.0.1:8000/api` : `127.0.0.1:8000/api`
-
-export const roles = {
-    ADMIN: 'SA',
-}
+export const baseApiUrl = process.env.NODE_ENV === 'development' ? `http://127.0.0.1:8000/api` : `http://127.0.0.1:8000/api`;
 
 export const authorities = {
     STUDENT_VIEW: "ver_estudante",

@@ -60,7 +60,7 @@
 
     <div class="menu">
       <hr>
-      <router-link to="/settings" class="button">
+      <router-link to="/logout" class="button">
         <i class="fa fa-sign-out" aria-hidden="true"></i>
         <span class="text">Logout</span>
       </router-link>

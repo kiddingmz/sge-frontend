@@ -1,13 +1,21 @@
+/* eslint-disable */
 import { createApp } from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
 
+import AuthStore from '@/modules/auth/store';
+
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import 'font-awesome/css/font-awesome.min.css';
+import Vue3Datatable from '@bhplugin/vue3-datatable'
+import '@bhplugin/vue3-datatable/dist/style.css'
 
 import authModule from '@/modules/auth';
 import studentModule from '@/modules/student';
@@ -35,27 +43,34 @@ registerModules({
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (!store.getters['auth/isAuthenticated']) {
-            next({ name: 'notAuth' });
+        if (!store.getters.loggedIn) {
+            next({
+                name: 'notAuth',
+            })
         } else {
-            if (!store.state.authorities.includes(to.meta.authority)) {
-                next({ name: '403' });
+            if (!AuthStore.state.authorities.includes(to.meta.authority)) {
+                // next({ name: '403' })
+                next({ name: 'notAuth' })
             } else {
-                next();
+                next()
             }
         }
     } else if (to.matched.some(record => record.meta.requiresVisitor)) {
-        if (store.getters['auth/isAuthenticated']) {
-            next({ name: 'dashboard' });
+        if (store.getters.loggedIn) {
+            next({
+                name: 'student',
+            })
         } else {
-            next();
+            next()
         }
     } else {
-        next();
+        next()
     }
-});
+})
 
 createApp(App)
     .use(store)
     .use(router)
+    .use(Vue3Datatable)
+    .use(VueSweetalert2)
     .mount('#app')
