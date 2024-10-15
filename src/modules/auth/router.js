@@ -12,14 +12,15 @@ export default router => {
       { name: 'notAuth', path: 'login', component: Login, meta: { requiresVisitor: true }},
     ],
   },
-    {
-      path: '/logout',
-      name: 'Logout',
+  router.addRoute({
+      name: 'logout',
+      path: '/auth/logout',
+      component: Module,
       beforeEnter: (to, from, next) => {
-        store.dispatch('logout').then(() => {
-          next({ name: 'notAuth' });
-        });
+          store.dispatch('logout').then(() => {
+              next({ name: 'notAuth' });
+          });
       }
-    },
+  }),
   )
 };

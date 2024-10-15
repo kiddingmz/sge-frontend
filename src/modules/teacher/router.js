@@ -1,7 +1,6 @@
 import {authorities} from "@/global";
 
 const Module = () => import("./Module.vue");
-const Login = () => import("./views/Login.vue");
 
 export default router => {
   router.addRoute({
@@ -12,7 +11,7 @@ export default router => {
       requiresAuth: true,
     },
     children: [
-      { path: '', component: Login, meta: { authority: authorities.TEACHER_VIEW } },
+      { path: '', component: '', meta: { authority: authorities.TEACHER_VIEW, requiresAuth: true} },
     ],
   })
 };

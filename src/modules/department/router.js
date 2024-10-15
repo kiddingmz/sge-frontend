@@ -6,9 +6,9 @@ export default router => {
     name: 'department',
     path: '/department',
     component: Module,
-    meta: { requiresVisitor: true },
+    meta: { requiresAuth: true },
     children: [
-      { path: '', component: Login, meta: { requiresVisitor: true }},
+      { path: '', component: Login, meta: { requiresAuth: true }},
     ],
   })
 };

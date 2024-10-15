@@ -8,9 +8,9 @@ export default router => {
     name: 'student',
     path: '/student',
     component: Layout,
-
+    meta: { requiresAuth: true },
     children: [
-      { path: '', component: ListStudents,  },
+      { path: '', component: ListStudents, meta: { requiresAuth: true } },
     ],
   })
 };

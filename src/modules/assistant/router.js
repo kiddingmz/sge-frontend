@@ -6,7 +6,7 @@ export default router => {
     name: 'assistant',
     path: '/assistant',
     component: Module,
-    meta: { requiresVisitor: true },
+    meta: { requiresAuth: true },
     children: [
       {  path: '', component: Login, meta: { requiresVisitor: true }},
     ],

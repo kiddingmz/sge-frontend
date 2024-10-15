@@ -57,12 +57,13 @@ export default {
           })
           .then((response) => {
             this.loading = false;
+            this.showSuccessAlert('Login efectuado com sucesso')
             // if (this.$router.history.current.name) {
             //   this.$router.go(-1);
             // } else {
             //   this.$router.push({ name: 'Home' });
             // }
-            this.$router.push({ name: 'student'});
+            this.$router.push({ name: 'Home'});
           })
           .catch((error) => {
             this.loading = false;
@@ -78,6 +79,16 @@ export default {
         showConfirmButton: false,
         timer: 3000,
         icon: "error",
+        title: msg,
+      });
+    },
+    showSuccessAlert(msg) {
+      this.$swal({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1500,
+        icon: "success",
         title: msg,
       });
     },

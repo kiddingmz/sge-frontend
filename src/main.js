@@ -42,28 +42,37 @@ registerModules({
 })
 
 router.beforeEach((to, from, next) => {
+    console.log('Logged In:', store.getters.loggedIn);
+    console.log('Authorities:', store.getters.getAuthorities);
+
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!store.getters.loggedIn) {
+            console.log('Rota atual NOAUTH:', to.name);
             next({
                 name: 'notAuth',
             })
         } else {
             if (!AuthStore.state.authorities.includes(to.meta.authority)) {
                 // next({ name: '403' })
+                console.log('Rota atual 403:', to.name);
                 next({ name: 'notAuth' })
             } else {
+                console.log('Rota atual A_403:', to.name);
                 next()
             }
         }
     } else if (to.matched.some(record => record.meta.requiresVisitor)) {
         if (store.getters.loggedIn) {
+            console.log('Rota atual STUDENT:', to.name);
             next({
-                name: 'student',
+                name: 'Home',
             })
         } else {
+            console.log('Rota atual A_STUDENT:', to.name);
             next()
         }
     } else {
+        console.log('Rota atual FORA:', to.name);
         next()
     }
 })
