@@ -2,7 +2,12 @@
   <div class="container">
     <div class="content-form">
       <div class="header-form">
-        <h3 class="text-uppercase text-center">SISTEMA DE GESTÃO DE ESTUDANTES</h3>
+        <div class="logo-acronym">
+          <img class="logo-image" :src="require('@/assets/logo-uem.png')" alt="imagem logo">
+          <div class="div-bar"></div>
+          <h3 class="text-uppercase text-center">SIGE</h3>
+        </div>
+        <h3 class="text-logo text-center">SISTEMA DE GESTAO DE ESTUDANTES</h3>
       </div>
       <form @submit.prevent="login" class="d-flex flex-column body-form">
 <!--        <div class="input-group mb-3">-->
@@ -89,13 +94,44 @@ export default {
   margin: 0 auto;
   padding: 20px;
   border-radius: 5px;
-  background-color: #ECECEC;
+  background-color:#fff;
+  border: 1px solid black;
 }
 
-.header-form {
-  margin-bottom: 20px;
+.header-form .logo-acronym{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin:.5rem;
   height: 130px;
+  
 }
+.header-form .logo-image{
+  height: 100px;
+  width: 100px;
+}
+.header-form .div-bar{
+  border-left: 5px solid black;
+  height: 100px;
+  border-color: #047D4B;
+}
+.header-form .text-uppercase{
+  font-weight: 900;
+  font-size: 2rem;
+  color: #047D4B;
+  
+}
+.header-form .text-logo{
+  display: block;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.6rem;
+  width: 100%;
+  margin:0 10px 25px 0px;
+
+}
+
 
 .body-form {
   background-color: #fff;
@@ -118,8 +154,14 @@ export default {
 
 input {
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 10px;
   width: 100%;
-}
+  height: 34px;
+  }
+  input:focus{
+   outline: solid .5px #047D4B;;
+     
+  }
+ 
 </style>
