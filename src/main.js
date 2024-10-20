@@ -43,6 +43,7 @@ import departmentModule from "@/modules/department";
 import evaluationModule from "@/modules/evaluation";
 import gradeModule from "@/modules/grade";
 import roleModule from "@/modules/role";
+import userModule from "@/modules/user";
 
 import { registerModules } from "./register-modules";
 
@@ -57,6 +58,7 @@ registerModules({
     evaluation: evaluationModule,
     grade: gradeModule,
     role: roleModule,
+    user: userModule,
 })
 
 // router.beforeEach((to, from, next) => {

@@ -1,8 +1,10 @@
 <template>
-  <aside :class="`${is_expanded ? 'is-expanded' : ''}`">
+  <aside :class="`${is_expanded ? 'is-expanded' : ''} size`">
     <div class="logo">
       <img :src="require('@/assets/logo.png')" alt="" />
     </div>
+
+    <h5>SGE</h5>
 
     <div class="menu-toggle-wrap">
       <button class="menu-toggle" @click="ToggleMenu" id="btn-toggle">
@@ -12,52 +14,70 @@
 
     <hr>
 
-    <h3>Menu</h3>
+    <h4 class="size">Menu</h4>
     <div class="menu scroll">
       <router-link to="/student" class="button">
-        <i class="fa fa-users" aria-hidden="true"></i>
-        <span class="text">Estudantes</span>
+        <div class="d-flex align-items-center justify-content-between aside-item">
+          <i class="fa fa-solid fa-people-line"></i>
+          <span class="text">Estudantes</span>
+        </div>
       </router-link>
 
       <router-link to="/teacher" class="button">
-        <i class="fa fa-user" aria-hidden="true"></i>
-        <span class="text">Docentes</span>
+        <div class="d-flex align-items-center justify-content-between aside-item">
+          <i class="fa fa-solid fa-chalkboard-user"></i>
+          <span class="text">Docentes</span>
+        </div>
       </router-link>
 
       <router-link to="/course" class="button">
-        <i class="fa fa-book" aria-hidden="true"></i>
-        <span class="text">Cursos</span>
+        <div class="d-flex align-items-center justify-content-between aside-item">
+          <i class="fa fa-solid fa-chalkboard"></i>
+          <span class="text">Cursos</span>
+        </div>
       </router-link>
 
       <router-link to="/department" class="button">
-        <i class="fa fa-building" aria-hidden="true"></i>
-        <span class="text">Departamentos</span>
+        <div class="d-flex align-items-center justify-content-between aside-item">
+          <i class="fa fa-solid fa-school"></i>
+          <span class="text">Departamentos</span>
+        </div>
       </router-link>
 
       <router-link to="/class" class="button">
-        <i class="fa fa-newspaper-o" aria-hidden="true"></i>
-        <span class="text">Cadeiras</span>
+        <div class="d-flex align-items-center justify-content-between aside-item">
+          <i class="fa fa-solid fa-swatchbook"></i>
+          <span class="text">Cadeiras</span>
+        </div>
       </router-link>
 
       <router-link to="/evaluation" class="button">
-        <i class="fa fa-pencil" aria-hidden="true"></i>
-        <span class="text">Avaliações</span>
+        <div class="d-flex align-items-center justify-content-between aside-item">
+          <i class="fa fa-regular fa-file-lines"></i>
+          <span class="text">Avaliações</span>
+        </div>
       </router-link>
 
       <router-link to="/grade" class="button">
-        <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-        <span class="text">Notas</span>
+        <div class="d-flex align-items-center justify-content-between aside-item">
+          <i class="fa fa-solid fa-square-poll-vertical"></i>
+          <span class="text">Notas</span>
+        </div>
       </router-link>
 
       <hr>
       <router-link to="/role" class="button">
-        <i class="fa fa-pencil" aria-hidden="true"></i>
-        <span class="text">Papel</span>
+        <div class="d-flex align-items-center justify-content-between aside-item">
+          <i class="fa fa-solid fa-user-shield"></i>
+          <span class="text">Papel</span>
+        </div>
       </router-link>
 
       <router-link to="/user" class="button">
-        <i class="fa fa-graduation-cap" aria-hidden="true"></i>
-        <span class="text">Usuario</span>
+        <div class="d-flex align-items-center justify-content-between aside-item">
+          <i class="fa fa-solid fa-users-gear"></i>
+          <span class="text">Usuario</span>
+        </div>
       </router-link>
     </div>
 
@@ -66,8 +86,10 @@
     <div class="menu">
       <hr>
       <router-link :to="{ name: 'logout' }" class="button">
-        <i class="fa fa-sign-out" aria-hidden="true"></i>
-        <span class="text">Logout</span>
+        <div class="d-flex align-items-center justify-content-between aside-item">
+          <i class="fa fa-solid fa-arrow-right-from-bracket"></i>
+          <span class="text">Sair</span>
+        </div>
       </router-link>
     </div>
   </aside>
@@ -99,6 +121,17 @@ export default {
 </script>
 
 <style scoped>
+.aside-item {
+  display: flex;
+}
+
+.aside-item .fa {
+  display: flex;
+  width: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
 .scroll {
   overflow-y: auto;
   overflow-x: hidden;
@@ -169,7 +202,7 @@ aside .menu .button {
   padding: 0.5rem 1rem;
 }
 aside .menu .button .fa {
-  font-size: 2rem;
+  font-size: 1.3rem;
   color: var(--light);
   transition: 0.2s ease-in-out;
 }
@@ -197,7 +230,7 @@ aside .footer {
   transition: opacity 0.3s ease-in-out;
 }
 aside .footer p {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: var(--grey);
 }
 aside.is-expanded {

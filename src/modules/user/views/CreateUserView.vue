@@ -1,19 +1,19 @@
 <template>
   <div class="card border-0">
-    <header-content title="Papel" show="off"></header-content>
+    <header-content title="Usuario" show="off"></header-content>
   </div>
   <div class="card mt-5 border-0 shadow-sm">
     <div class="card-header barra-vertical">
       <small>
         <div class="d-flex gap-2 align-items-center">
-          <i class="fa-solid fa-user-shield"></i>
-          <span class="ml-2">Novo Papel</span>
+          <i class="fa-solid fa-users-gear"></i>
+          <span class="ml-2">Novo Usuario</span>
         </div>
       </small>
     </div>
     <div class="card-body">
-      <div class="d-flex row align-items-center">
-        <div class="col-6">
+      <div class="d-flex row">
+        <div class="col-8 my-1">
           <InputGroup class="small-input-group">
             <InputGroupAddon>
               <i class="pi pi-user"></i>
@@ -21,7 +21,15 @@
             <InputText v-model="roleName" placeholder="Papel" class="custom-input" />
           </InputGroup>
         </div>
-        <div class="col-6">
+        <div class="col-4 my-1">
+          <InputGroup class="small-input-group">
+            <InputGroupAddon>
+              <i class="pi pi-book"></i>
+            </InputGroupAddon>
+            <InputText v-model="description" placeholder="Descrição" class="custom-input" />
+          </InputGroup>
+        </div>
+        <div class="col-6 my-1">
           <InputGroup class="small-input-group">
             <InputGroupAddon>
               <i class="pi pi-book"></i>
@@ -31,16 +39,15 @@
         </div>
       </div>
       <div class="mt-3 mx-1 size border p-4 row" >
-        <h6 class="size-m">Selecionar Permissões</h6>
+        <h6 class="size-m">Selecionar Papeis</h6>
         <div v-for="role in permissions" :key="role.id" class="col-4">
-          <h6><small class="size-m">{{ role.name }}</small></h6>
-          <div v-for="(permission, permIndex) in role.permissions" :key="permIndex" class="d-flex gap-2 bg-body-secondary mb-1">
+          <div class="d-flex gap-2 bg-body-secondary mb-1">
             <Checkbox
                 v-model="selectedPermissions"
-                :inputId="`permission_${role.id}_${permIndex}`"
-                :value="permission"
+                :inputId="`role_${role.id}`"
+                :value="role.name"
             />
-            <label :for="`permission_${role.id}_${permIndex}`">{{ permission }}</label>
+            <label :for="`role_${role.id}`">{{ role.name }}</label>
           </div>
         </div>
       </div>

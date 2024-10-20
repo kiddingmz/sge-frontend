@@ -1,13 +1,13 @@
 <template>
   <div class="card border-0">
-    <header-content title="Papel" show="off"></header-content>
+    <header-content title="Usuario" show="off"></header-content>
   </div>
   <div class="card mt-5 border-0 shadow-sm">
     <div class="card-header barra-vertical">
       <small>
         <div class="d-flex gap-2 align-items-center">
-          <i class="fa-solid fa-user-shield"></i>
-          <span class="ml-2">Novo Papel</span>
+          <i class="fa-solid fa-users-gear"></i>
+          <span class="ml-2">Editar Usuario</span>
         </div>
       </small>
     </div>
@@ -63,7 +63,7 @@ import HeaderContent from "@/components/headercontent/HeaderContent.vue";
 import { RoleService } from "@/modules/role/service/RoleService";
 
 export default {
-  name: 'CreateRole',
+  name: 'EditRole',
   components: {
     HeaderContent,
     InputGroup,

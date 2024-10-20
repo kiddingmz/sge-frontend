@@ -1,13 +1,13 @@
 <template>
   <div class="card border-0">
-    <header-content title="Papeis" show="on" :link="{ name: 'createRole' }"></header-content>
+    <header-content title="Usuarios" show="on" :link="{ name: 'createUser' }"></header-content>
   </div>
   <div class="card mt-5 border-0 shadow-sm">
     <div class="card-header barra-vertical">
       <small class="d-flex justify-content-between">
         <div class="d-flex gap-2 align-items-center">
-          <i class="fa-solid fa-user-shield"></i>
-          <span class="ml-2">Lista de Papeis : 12</span>
+          <i class="fa-solid fa-users-gear"></i>
+          <span class="ml-2">Lista de Usuarios : 12</span>
         </div>
         <div>
           <a href="#" class="btn-p">
@@ -20,10 +20,10 @@
       <DataTable :value="roles" responsiveLayout="scroll" table-style="font-size: 0.8rem">
         <Column field="id" header="ID"></Column>
         <Column field="name" header="Nome"></Column>
-        <Column header="Permissões">
+        <Column header="Papeis">
           <template #body="slotProps">
             <Tag
-                  v-for="permission in slotProps.data.permissions"
+                  v-for="permission in slotProps.data.roles"
                   :key="permission"
                   :value="permission"
                   severity="null"
@@ -34,7 +34,7 @@
         <Column field="actions" header="Acções">
           <template #body="slotProps" >
             <div class="d-flex gap-2">
-              <router-link :to="{name: 'editRole', params: {id: slotProps.data.id}}">
+              <router-link :to="{name: 'editUser', params: {id: slotProps.data.id}}">
                 <i class="pi pi-pen-to-square text-success"></i>
               </router-link>
               <a :href="slotProps.data.id">
@@ -54,7 +54,7 @@
 import Tag from "primevue/tag";
 
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
-import { RoleService } from "../service/RoleService";
+import { UserService } from "../service/UserService";
 
 export default {
   name: 'ListRoles',
@@ -74,7 +74,7 @@ export default {
     ];
   },
   mounted() {
-    RoleService.getRoles().then((data) => (this.roles = data));
+    UserService.getUsers().then((data) => (this.roles = data));
   },
   methods: {
   }
