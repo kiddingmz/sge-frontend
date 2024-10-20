@@ -39,11 +39,6 @@
         <span class="text">Cadeiras</span>
       </router-link>
 
-      <router-link to="/assistant" class="button">
-        <i class="fa fa-user-plus" aria-hidden="true"></i>
-        <span class="text">Assistentes</span>
-      </router-link>
-
       <router-link to="/evaluation" class="button">
         <i class="fa fa-pencil" aria-hidden="true"></i>
         <span class="text">Avaliações</span>
@@ -54,6 +49,16 @@
         <span class="text">Notas</span>
       </router-link>
 
+      <hr>
+      <router-link to="/role" class="button">
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+        <span class="text">Papel</span>
+      </router-link>
+
+      <router-link to="/user" class="button">
+        <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+        <span class="text">Usuario</span>
+      </router-link>
     </div>
 
     <div class="flex"></div>

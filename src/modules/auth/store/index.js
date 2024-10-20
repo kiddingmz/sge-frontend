@@ -11,7 +11,8 @@ export default {
   },
   getters: {
     loggedIn(state) {
-      return state.token !== null;
+      // return state.token !== null;
+        return state.token !== null && state.authorities !== null;
     },
     getUser(state) {
       return state.user;
