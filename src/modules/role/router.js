@@ -14,8 +14,8 @@ export default router => {
     },
     children: [
       { path: '', component: ListRoles },
-      { path: 'create', component: CreateRole},
-      { path: 'edit/:id', component: EditRole },
+      { name: 'createRole', path: 'create', component: CreateRole},
+      { name: 'editRole', path: 'edit/:id', component: EditRole },
     ],
   })
 };
