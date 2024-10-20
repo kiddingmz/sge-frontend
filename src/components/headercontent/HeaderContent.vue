@@ -18,9 +18,22 @@ import GoBackButton from "@/components/gobackbutton/GoBackButton.vue";
 
 export default {
   name: "HeaderContent",
-  components: {GoBackButton},
-  props: ['title', 'link', 'show'],
-}
+  components: { GoBackButton },
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    link: {
+      type: [String, Object],
+      required: false
+    },
+    show: {
+      type: String,
+      required: true
+    }
+  },
+};
 </script>
 
 <style scoped>

@@ -132,7 +132,44 @@ export const RoleService = {
             },
         ]
     },
+    getRolesGroupData() {
+        return [
+            {
+                id: '1',
+                name: 'Estudante',
+                permissions: [
+                    "ver_estudante",
+                    "adicionar_estudante",
+                    "eliminar_estudante",
+                    "editar_estudante",
+                ]
+            },
+            {
+                id: '2',
+                name: 'Docente',
+                permissions: [
+                    "ver_docente",
+                    "adicionar_docente",
+                    "eliminar_docente",
+                    "editar_docente",
+                ]
+            },
+            {
+                id: '3',
+                name: 'Curso',
+                permissions: [
+                    "ver_curso",
+                    "adicionar_curso",
+                    "eliminar_curso",
+                    "editar_curso",
+                ]
+            },
+        ]
+    },
     getRoles() {
         return Promise.resolve(this.getRolesData());
+    },
+    getRolesGroup() {
+        return Promise.resolve(this.getRolesGroupData());
     },
 };

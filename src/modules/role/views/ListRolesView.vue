@@ -1,6 +1,6 @@
 <template>
   <div class="card border-0">
-    <header-content title="Papeis" show="on"></header-content>
+    <header-content title="Papeis" show="on" :link="{ name: 'createRole' }"></header-content>
   </div>
   <div class="card mt-5 border-0 shadow-sm">
     <div class="card-header barra-vertical">
@@ -65,17 +65,17 @@ export default {
       columns: null
     };
   },
-      created() {
-        this.columns = [
-          { field: 'id', header: 'ID' },
-          { field: 'name', header: 'Nome' },
-          { field: 'permissions', header: 'Permissões' },
-          { field: 'actions', header: 'Acções' }
-        ];
-      },
-      mounted() {
-        RoleService.getRoles().then((data) => (this.roles = data));
-      },
+  created() {
+    this.columns = [
+      { field: 'id', header: 'ID' },
+      { field: 'name', header: 'Nome' },
+      { field: 'permissions', header: 'Permissões' },
+      { field: 'actions', header: 'Acções' }
+    ];
+  },
+  mounted() {
+    RoleService.getRoles().then((data) => (this.roles = data));
+  },
   methods: {
   }
 }
