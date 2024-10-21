@@ -17,7 +17,7 @@
       </small>
     </div>
     <div class="card-body">
-      <DataTable :value="roles" responsiveLayout="scroll" table-style="font-size: 0.8rem">
+      <DataTable :value="roles" responsiveLayout="scroll" table-style="font-size: 0.8rem" :size="'small'">
         <Column field="id" header="ID"></Column>
         <Column field="name" header="Nome"></Column>
         <Column header="Papeis">
