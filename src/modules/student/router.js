@@ -1,16 +1,21 @@
 // import {authorities} from "@/global";
-
-const Layout = () => import('@/components/layout/Layout.vue');
-const ListStudents = () => import('./views/ListStudents.vue');
+import Module from "./Module.vue";
+const ListRoles = () => import("./views/ListStudentsView.vue");
+const CreateRole = () => import("./views/CreateStudentView.vue");
+const EditRole = () => import("./views/EditStudentView.vue");
 
 export default router => {
   router.addRoute({
     name: 'student',
     path: '/student',
-    component: Layout,
-    meta: { requiresAuth: true },
+    component: Module,
+    meta: {
+      requiresAuth: true,
+    },
     children: [
-      { path: '', component: ListStudents, meta: { requiresAuth: true } },
+      { path: '', component: ListRoles },
+      { name: 'createStudent', path: 'create', component: CreateRole},
+      { name: 'editStudent', path: 'edit/:id', component: EditRole },
     ],
   })
 };

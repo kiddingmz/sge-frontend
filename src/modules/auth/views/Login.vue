@@ -7,7 +7,7 @@
           <div class="div-bar"></div>
           <h3 class="text-uppercase text-center">SIGE</h3>
         </div>
-        <h3 class="text-logo text-center">SISTEMA DE GESTAO DE ESTUDANTES</h3>
+        <h5 class="text-logo text-center">SISTEMA DE GESTAO DE ESTUDANTES</h5>
       </div>
       <form @submit.prevent="login" class="d-flex flex-column body-form">
 <!--        <div class="input-group mb-3">-->
@@ -17,15 +17,15 @@
 <!--          <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">-->
 <!--        </div>-->
         <div class="d-flex flex-column body-form-input">
-          <label for="email">Email</label>
-          <input type="email" v-model="email" id="email" name="email" placeholder="email" />
+          <label for="email" class="size-n">Email</label>
+          <input type="email" class="size-n" v-model="email" id="email" name="email" placeholder="email" />
         </div>
         <div class="d-flex flex-column body-form-input">
-          <label for="password">Password</label>
-          <input type="password" v-model="password" id="password" name="password" placeholder="password"/>
+          <label for="password" class="size-n">Password</label>
+          <input type="password" class="size-n" v-model="password" id="password" name="password" placeholder="password"/>
         </div>
-        <button type="submit" class="btn btn-success" :disabled="loading">Entrar</button>
-        <a href="#" class="a-link">Esqueceu senha?</a>
+        <button type="submit" class="btn btn-success size-n" :disabled="loading">Entrar</button>
+        <a href="#" class="a-link size-n">Esqueceu senha?</a>
       </form>
     </div>
   </div>
@@ -99,14 +99,26 @@ export default {
 </script>
 
 <style>
+.size-n {
+  font-size: 0.8rem !important;
+}
+
+.size-m {
+  font-size: 0.9rem !important;
+}
+
+.size-l {
+  font-size: 1rem !important;
+}
+
 .content-form {
   width: 100%;
-  max-width: 350px;
+  max-width: 300px;
   margin: 0 auto;
   padding: 20px;
   border-radius: 5px;
   background-color:#fff;
-  border: 1px solid black;
+  border: 1px solid #047D4B;
 }
 
 .header-form .logo-acronym{
@@ -118,17 +130,17 @@ export default {
   
 }
 .header-form .logo-image{
-  height: 100px;
-  width: 100px;
+  height: 80px;
+  width: 80px;
 }
 .header-form .div-bar{
   border-left: 5px solid black;
-  height: 100px;
+  height: 70px;
   border-color: #047D4B;
 }
 .header-form .text-uppercase{
   font-weight: 900;
-  font-size: 2rem;
+  font-size: 1.8rem;
   color: #047D4B;
   
 }
@@ -137,18 +149,16 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 1.6rem;
+  font-size: 1rem;
   width: 100%;
   margin:0 10px 25px 0px;
 
 }
 
-
 .body-form {
   background-color: #fff;
   border-radius: 5px;
-  gap: 20px;
-  padding: 20px 20px 50px;
+  gap: 11px;
 }
 
 .body-form-input {

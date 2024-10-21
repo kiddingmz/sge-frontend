@@ -12,8 +12,10 @@ export default {
 </script>
 
 <style scoped>
+
   .content-wh-100 {
     height: 100vh;
     width: 100vw;
+    background-color: white;
   }
 </style>
