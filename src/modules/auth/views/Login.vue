@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="content-form">
+    <div class="content-form shadow-sm">
       <div class="header-form">
         <div class="logo-acronym">
           <img class="logo-image" :src="require('@/assets/logo-uem.png')" alt="imagem logo">
@@ -18,13 +18,15 @@
 <!--        </div>-->
         <div class="d-flex flex-column body-form-input">
           <label for="email" class="size-n">Email</label>
-          <input type="email" class="size-n" v-model="email" id="email" name="email" placeholder="email" />
+          <InputText v-model="email" placeholder="email" class="size-n custom-input small-input-group"  id="email"/>
+<!--          <input type="email" class="size-n" v-model="email" id="email" name="email" placeholder="email" />-->
         </div>
         <div class="d-flex flex-column body-form-input">
           <label for="password" class="size-n">Password</label>
-          <input type="password" class="size-n" v-model="password" id="password" name="password" placeholder="password"/>
+          <InputText v-model="password" placeholder="password" class="size-n custom-input small-input-group" id="password" />
+<!--          <input type="password" class="size-n" v-model="password" id="password" name="password" placeholder="password"/>-->
         </div>
-        <button type="submit" class="btn btn-success size-n" :disabled="loading">Entrar</button>
+        <button type="submit" class="btn btn-success size-n small-input-group" :disabled="loading">Entrar</button>
         <a href="#" class="a-link size-n">Esqueceu senha?</a>
       </form>
     </div>
@@ -32,6 +34,7 @@
 </template>
 
 <script>
+import InputText from 'primevue/inputtext';
 /* eslint-disable */
 export default {
 
@@ -42,6 +45,9 @@ export default {
       password: "",
       loading: false,
     };
+  },
+  components: {
+    InputText,
   },
   methods: {
     login() {
@@ -99,6 +105,19 @@ export default {
 </script>
 
 <style>
+.custom-input:focus {
+  border-color: var(--primary) !important;
+}
+
+.small-input-group {
+  height: 30px;
+}
+
+.custom-input {
+  font-size: 0.9rem;
+  padding: 0.5rem;
+}
+
 .size-n {
   font-size: 0.8rem !important;
 }
@@ -115,7 +134,9 @@ export default {
   width: 100%;
   max-width: 300px;
   margin: 0 auto;
-  padding: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
   border-radius: 5px;
   background-color:#fff;
   border: 1px solid #047D4B;
@@ -125,8 +146,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  margin:.5rem;
-  height: 130px;
+  height: 92px;
   
 }
 .header-form .logo-image{
