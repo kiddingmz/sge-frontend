@@ -26,7 +26,12 @@
           <InputText v-model="password" placeholder="password" class="size-n custom-input small-input-group" id="password" />
 <!--          <input type="password" class="size-n" v-model="password" id="password" name="password" placeholder="password"/>-->
         </div>
-        <button type="submit" class="btn btn-success size-n small-input-group" :disabled="loading">Entrar</button>
+        <Button v-slot="slotProps" asChild raised>
+          <button raised
+              v-bind="slotProps.a11yAttrs"
+              class="btn btn-success size-n small-input-group"
+          >Entrar</button>
+        </Button>
         <a href="#" class="a-link size-n">Esqueceu senha?</a>
       </form>
     </div>
