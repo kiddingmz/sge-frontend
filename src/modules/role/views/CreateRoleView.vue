@@ -47,7 +47,7 @@
     </div>
     <div class="card-footer d-flex gap-3 justify-content-end">
       <Button label="Guardar" icon="pi pi-check" class="p-button-success" @click="saveRole" />
-      <Button label="Cancelar" icon="pi pi-times" severity="secondary" />
+      <Button label="Cancelar" icon="pi pi-times" severity="secondary" outlined/>
     </div>
   </div>
 </template>

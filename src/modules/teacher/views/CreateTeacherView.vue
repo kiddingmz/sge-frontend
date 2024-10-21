@@ -1,19 +1,19 @@
 <template>
   <div class="card border-0">
-    <header-content title="Usuario" show="off"></header-content>
+    <header-content title="Docente" show="off"></header-content>
   </div>
   <div class="card mt-5 border-0 shadow-sm">
     <div class="card-header barra-vertical">
       <small>
         <div class="d-flex gap-2 align-items-center">
-          <i class="fa-solid fa-users-gear"></i>
-          <span class="ml-2">Novo Usuario</span>
+          <i class="fa-solid fa-user-shield"></i>
+          <span class="ml-2">Novo Docente</span>
         </div>
       </small>
     </div>
     <div class="card-body">
-      <div class="d-flex row">
-        <div class="col-8 my-1">
+      <div class="d-flex row align-items-center">
+        <div class="col-6">
           <InputGroup class="small-input-group">
             <InputGroupAddon>
               <i class="pi pi-user"></i>
@@ -21,15 +21,7 @@
             <InputText v-model="roleName" placeholder="Papel" class="custom-input" />
           </InputGroup>
         </div>
-        <div class="col-4 my-1">
-          <InputGroup class="small-input-group">
-            <InputGroupAddon>
-              <i class="pi pi-book"></i>
-            </InputGroupAddon>
-            <InputText v-model="description" placeholder="Descrição" class="custom-input" />
-          </InputGroup>
-        </div>
-        <div class="col-6 my-1">
+        <div class="col-6">
           <InputGroup class="small-input-group">
             <InputGroupAddon>
               <i class="pi pi-book"></i>
@@ -39,22 +31,23 @@
         </div>
       </div>
       <div class="mt-3 mx-1 size border p-4 row" >
-        <h6 class="size-m">Selecionar Papeis</h6>
+        <h6 class="size-m">Selecionar Permissões</h6>
         <div v-for="role in permissions" :key="role.id" class="col-4">
-          <div class="d-flex gap-2 bg-body-secondary mb-1">
+          <h6><small class="size-m">{{ role.name }}</small></h6>
+          <div v-for="(permission, permIndex) in role.permissions" :key="permIndex" class="d-flex gap-2 bg-body-secondary mb-1">
             <Checkbox
                 v-model="selectedPermissions"
-                :inputId="`role_${role.id}`"
-                :value="role.name"
+                :inputId="`permission_${role.id}_${permIndex}`"
+                :value="permission"
             />
-            <label :for="`role_${role.id}`">{{ role.name }}</label>
+            <label :for="`permission_${role.id}_${permIndex}`">{{ permission }}</label>
           </div>
         </div>
       </div>
     </div>
     <div class="card-footer d-flex gap-3 justify-content-end">
       <Button label="Guardar" icon="pi pi-check" class="p-button-success" @click="saveRole" />
-      <Button label="Cancelar" icon="pi pi-times" severity="secondary" outlined/>
+      <Button label="Cancelar" icon="pi pi-times" severity="secondary" />
     </div>
   </div>
 </template>

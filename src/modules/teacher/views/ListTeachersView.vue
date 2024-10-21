@@ -1,13 +1,13 @@
 <template>
   <div class="card border-0">
-    <header-content title="Estudantes" show="on" :link="{ name: 'createStudent' }"></header-content>
+    <header-content title="Docentes" show="on" :link="{ name: 'createTeacher' }"></header-content>
   </div>
   <div class="card mt-5 border-0 shadow-sm">
     <div class="card-header barra-vertical">
       <small class="d-flex justify-content-between">
         <div class="d-flex gap-2 align-items-center">
           <i class="fa-solid fa-user-shield"></i>
-          <span class="ml-2">Lista de Estudantes : 12</span>
+          <span class="ml-2">Lista de Docentes : 12</span>
         </div>
         <div>
           <a href="#" class="btn-p">
@@ -34,17 +34,21 @@
         </template>
         <Column field="id" header="ID"></Column>
         <Column field="name" header="Nome"></Column>
-        <Column header="Nivel">
-<!--          <template #body="slotProps">-->
-<!--            <Tag-->
-<!--                  v-for="permission in slotProps.data.permissions"-->
-<!--                  :key="permission"-->
-<!--                  :value="permission"-->
-<!--                  severity="null"-->
-<!--                  class="m-1 p-0 px-1 size bg-body-secondary"-->
-<!--              />-->
-<!--          </template>-->
+        <Column field="name" header="Categoria"></Column>
+        <Column field="id"  header="Nivel">
+          <!--          <template #body="slotProps">-->
+          <!--            <Tag-->
+          <!--                  v-for="permission in slotProps.data.permissions"-->
+          <!--                  :key="permission"-->
+          <!--                  :value="permission"-->
+          <!--                  severity="null"-->
+          <!--                  class="m-1 p-0 px-1 size bg-body-secondary"-->
+          <!--              />-->
+          <!--          </template>-->
         </Column>
+        <Column field="name" header="Semestre"></Column>
+        <Column field="name" header="Tipo"></Column>
+
         <Column field="actions" header="Acções">
           <template #body="slotProps" >
             <div class="d-flex gap-2">
@@ -75,7 +79,7 @@
 
 
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
-import { StudentService } from "../service/StudentService";
+import { TeacherService } from "../service/TeacherService";
 
 export default {
   name: 'ListRoles',
@@ -98,7 +102,7 @@ export default {
     ];
   },
   mounted() {
-    StudentService.getRoles().then((data) => (this.roles = data));
+    TeacherService.getRoles().then((data) => (this.roles = data));
   },
   methods: {
   }

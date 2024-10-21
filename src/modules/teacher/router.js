@@ -1,6 +1,8 @@
-import {authorities} from "@/global";
-
-const Module = () => import("./Module.vue");
+// import {authorities} from "@/global";
+import Module from "./Module.vue";
+const ListRoles = () => import("./views/ListTeachersView.vue");
+const CreateRole = () => import("./views/CreateTeacherView.vue");
+const EditRole = () => import("./views/EditTeacherView.vue");
 
 export default router => {
   router.addRoute({
@@ -11,7 +13,9 @@ export default router => {
       requiresAuth: true,
     },
     children: [
-      { path: '', component: '', meta: { authority: authorities.TEACHER_VIEW, requiresAuth: true} },
+      { path: '', component: ListRoles },
+      { name: 'createTeacher', path: 'create', component: CreateRole},
+      { name: 'editTeacher', path: 'edit/:id', component: EditRole },
     ],
   })
 };
