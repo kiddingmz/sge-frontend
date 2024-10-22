@@ -1,6 +1,6 @@
 <template>
   <div class="card border-0">
-    <header-content title="Papeis" show="on" :link="{ name: 'createRole' }"></header-content>
+    <header-content title="Papeis" show-btn="off" show-link="on" :link="{ name: 'createRole' }"></header-content>
   </div>
   <div class="card mt-5 border-0 shadow-sm">
     <div class="card-header barra-vertical">

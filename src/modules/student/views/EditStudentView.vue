@@ -1,13 +1,13 @@
 <template>
   <div class="card border-0">
-    <header-content title="Papel" show-link="off" show-btn="off"></header-content>
+    <header-content title="Estudante" show-link="off" show-btn="off"></header-content>
   </div>
   <div class="card mt-5 border-0 shadow-sm">
     <div class="card-header barra-vertical">
       <small>
         <div class="d-flex gap-2 align-items-center">
           <i class="fa-solid fa-user-shield"></i>
-          <span class="ml-2">Editar papel</span>
+          <span class="ml-2">Editar estudante</span>
         </div>
       </small>
     </div>

@@ -33,18 +33,9 @@
           </div>
         </template>
         <Column field="id" header="ID"></Column>
-        <Column field="name" header="Nome"></Column>
-        <Column header="Nivel">
-<!--          <template #body="slotProps">-->
-<!--            <Tag-->
-<!--                  v-for="permission in slotProps.data.permissions"-->
-<!--                  :key="permission"-->
-<!--                  :value="permission"-->
-<!--                  severity="null"-->
-<!--                  class="m-1 p-0 px-1 size bg-body-secondary"-->
-<!--              />-->
-<!--          </template>-->
-        </Column>
+        <Column  header="Nome"></Column>
+        <Column  header="Curso"></Column>
+        <Column  header="Data de Entrada"></Column>
         <Column field="actions" header="Acções">
           <template #body="slotProps" >
             <div class="d-flex gap-2">

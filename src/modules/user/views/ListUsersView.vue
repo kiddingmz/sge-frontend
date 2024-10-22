@@ -1,6 +1,6 @@
 <template>
   <div class="card border-0">
-    <header-content title="Usuarios" show="on" :link="{ name: 'createUser' }"></header-content>
+    <header-content title="Usuarios" show-btn="off" show-link="on" :link="{ name: 'createUser' }"></header-content>
   </div>
   <div class="card mt-5 border-0 shadow-sm">
     <div class="card-header barra-vertical">
