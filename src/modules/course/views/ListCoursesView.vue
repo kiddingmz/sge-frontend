@@ -68,6 +68,7 @@
       </Select>
     </div>
 
+    <Divider />
 
     <div class="d-flex justify-content-end gap-2">
       <Button label="Cancelar" icon="pi pi-times" class="small-input-group size-n" severity="secondary" outlined @click="visible = false"
@@ -162,6 +163,7 @@ import InputGroup from "primevue/inputgroup";
 import InputGroupAddon from "primevue/inputgroupaddon";
 import InputNumber from 'primevue/inputnumber';
 import Select from 'primevue/select';
+import Divider from 'primevue/divider';
 
 
 
@@ -180,7 +182,8 @@ export default {
     InputGroup,
     InputGroupAddon,
     InputNumber,
-    Select
+    Select,
+    Divider
   },
   data() {
     return {
