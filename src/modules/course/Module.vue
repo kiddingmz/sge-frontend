@@ -1,13 +1,16 @@
 <template>
   <div class="content-wh-100 bg-grey d-flex align-items-center">
-    <router-view />
+    <layout-component></layout-component>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
+import LayoutComponent from "@/components/layout/Layout.vue";
+
 export default {
   name: 'Module',
+  components: {LayoutComponent},
 };
 </script>
 

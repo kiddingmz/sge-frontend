@@ -1,6 +1,6 @@
 <template>
   <div class="card border-0">
-    <header-content title="Estudantes" show="on" :link="{ name: 'createStudent' }"></header-content>
+    <header-content title="Estudantes" show-link="on" show-btn="off" :link="{ name: 'createStudent' }" ></header-content>
   </div>
   <div class="card mt-5 border-0 shadow-sm">
     <div class="card-header barra-vertical">
