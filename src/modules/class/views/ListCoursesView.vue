@@ -113,19 +113,12 @@
         <Column field="id" header="ID"></Column>
         <Column field="name" header="Nome"></Column>
         <Column field="name" header="Descrição"></Column>
-<!--        <Column field="id"  header="Nivel">-->
-<!--          &lt;!&ndash;          <template #body="slotProps">&ndash;&gt;-->
-<!--          &lt;!&ndash;            <Tag&ndash;&gt;-->
-<!--          &lt;!&ndash;                  v-for="permission in slotProps.data.permissions"&ndash;&gt;-->
-<!--          &lt;!&ndash;                  :key="permission"&ndash;&gt;-->
-<!--          &lt;!&ndash;                  :value="permission"&ndash;&gt;-->
-<!--          &lt;!&ndash;                  severity="null"&ndash;&gt;-->
-<!--          &lt;!&ndash;                  class="m-1 p-0 px-1 size bg-body-secondary"&ndash;&gt;-->
-<!--          &lt;!&ndash;              />&ndash;&gt;-->
-<!--          &lt;!&ndash;          </template>&ndash;&gt;-->
-<!--        </Column>-->
-<!--        <Column field="name" header="Semestre"></Column>-->
-<!--        <Column field="name" header="Tipo"></Column>-->
+        <Column field="id" header="Duração">
+          <template #body="slotProps">
+            <span>{{  `${slotProps.data.id + 1} - ${slotProps.data.id + 5}` }}</span>
+          </template>
+        </Column>
+        <Column field="name" header="Departamento"></Column>
 
         <Column field="actions" header="Acções">
           <template #body="slotProps" >
