@@ -7,7 +7,7 @@
       <small class="d-flex justify-content-between">
         <div class="d-flex gap-2 align-items-center">
           <i class="fa-solid fa-user-shield"></i>
-          <span class="ml-2">Lista de Estudantes : 12</span>
+          <span class="ml-2">Lista de Estudantes : 0</span>
         </div>
         <div>
           <a href="#" class="btn-p">
@@ -17,7 +17,7 @@
       </small>
     </div>
     <div class="card-body">
-      <DataTable :value="roles" responsiveLayout="scroll" table-style="font-size: 0.8rem"
+      <DataTable responsiveLayout="scroll" table-style="font-size: 0.8rem"
                  :paginator="true"
                  :rows="10"
                  paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"

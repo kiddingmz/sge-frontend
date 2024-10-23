@@ -6,15 +6,15 @@ axios.defaults.baseURL = baseApiUrl;
 function getHeaders() {
     return {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${store.state.token}`
+        'Authorization': `Bearer ${store.state.token}`,
     };
 }
 
 export const UserService = {
     async list() {
         try {
-            const response = await axios.get(`${baseApiUrl}/user`, { headers: getHeaders() });
-            return response.data;
+            const response = await axios.get(`${baseApiUrl}/auth/users`, { headers: getHeaders() });
+            return response.data.data;
         } catch (error) {
             console.error("Error fetching user:", error);
             throw error;
@@ -22,7 +22,7 @@ export const UserService = {
     },
     async create(User) {
         try {
-            const response = await axios.post(`${baseApiUrl}/user`, User, { headers: getHeaders() });
+            const response = await axios.post(`${baseApiUrl}/auth/users`, User, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error creating User:", error);

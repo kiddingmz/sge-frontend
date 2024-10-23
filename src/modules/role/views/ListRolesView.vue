@@ -7,7 +7,7 @@
       <small class="d-flex justify-content-between">
         <div class="d-flex gap-2 align-items-center">
           <i class="fa-solid fa-user-shield"></i>
-          <span class="ml-2">Lista de Papeis : 12</span>
+          <span class="ml-2">Lista de Papeis : {{ quantity }}</span>
         </div>
         <div>
           <a href="#" class="btn-p">
@@ -17,13 +17,13 @@
       </small>
     </div>
     <div class="card-body">
-      <DataTable :value="roles" responsiveLayout="scroll" table-style="font-size: 0.8rem" :size="'small'">
+      <DataTable :value="roles" responsiveLayout="scroll" table-style="font-size: 0.8rem" :size="'small'" :loading="loading">
         <Column field="id" header="ID"></Column>
-        <Column field="name" header="Nome"></Column>
+        <Column field="nome" header="Nome"></Column>
         <Column header="Permissões">
           <template #body="slotProps">
             <Tag
-                  v-for="permission in slotProps.data.permissions"
+                  v-for="permission in slotProps.data.permissoes"
                   :key="permission"
                   :value="permission"
                   severity="null"
@@ -62,20 +62,24 @@ export default {
   data() {
     return {
       roles: null,
-      columns: null
+      quantity: 0,
+      loading: true,
     };
   },
-  created() {
-    this.columns = [
-      { field: 'id', header: 'ID' },
-      { field: 'name', header: 'Nome' },
-      { field: 'permissions', header: 'Permissões' },
-      { field: 'actions', header: 'Acções' }
-    ];
+  watch: {
+    roles: {
+      handler: function (val) {
+        this.quantity = val.length;
+      },
+      deep: true,
+    },
   },
   mounted() {
-    RoleService.getRoles().then((data) => (this.roles = data));
-  },
+    RoleService.list().then((data) => {
+      this.roles = data;
+      this.loading = false;
+    });
+      },
   methods: {
   }
 }

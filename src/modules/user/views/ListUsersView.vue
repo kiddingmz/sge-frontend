@@ -7,7 +7,7 @@
       <small class="d-flex justify-content-between">
         <div class="d-flex gap-2 align-items-center">
           <i class="fa-solid fa-users-gear"></i>
-          <span class="ml-2">Lista de Usuarios : 12</span>
+          <span class="ml-2">Lista de Usuarios : {{ quantity }}</span>
         </div>
         <div>
           <a href="#" class="btn-p">
@@ -17,35 +17,56 @@
       </small>
     </div>
     <div class="card-body">
-      <DataTable :value="roles" responsiveLayout="scroll" table-style="font-size: 0.8rem" :size="'small'">
-        <Column field="id" header="ID"></Column>
-        <Column field="name" header="Nome"></Column>
+      <DataTable :value="users" responsiveLayout="scroll" table-style="font-size: 0.8rem" :size="'small'" :loading="loading"
+                 :paginator="true"
+                 :rows="10"
+                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                 :rowsPerPageOptions="[5, 10, 25]"
+      >
+        <!-- Coluna para o ID -->
+        <Column field="dadosPessoais.id" header="ID"></Column>
+
+        <!-- Coluna para o Nome -->
+        <Column field="dadosPessoais.nome" header="Nome"></Column>
+
+        <!-- Coluna para Papeis -->
         <Column header="Papeis">
           <template #body="slotProps">
+            <!-- Verifique se papel existe antes de tentar acessar -->
             <Tag
-                  v-for="permission in slotProps.data.roles"
-                  :key="permission"
-                  :value="permission"
-                  severity="null"
-                  class="m-1 p-0 px-1 size bg-body-secondary"
-              />
+                v-if="slotProps.data.papel"
+                :value="slotProps.data.papel.nome"
+            severity="null"
+            class="m-1 p-0 px-1 size bg-body-secondary"
+            />
           </template>
         </Column>
+
+        <!-- Coluna para Ações -->
         <Column field="actions" header="Acções">
           <template #body="slotProps" >
+            <span v-if="slotProps === 1"></span>
+<!--            <div class="d-flex gap-2">-->
+<!--              <router-link :to="{name: 'editUser', params: {id: slotProps.data.dadosPessoais.id}}">-->
+<!--                <i class="pi pi-pen-to-square text-success"></i>-->
+<!--              </router-link>-->
+<!--              <a :href="slotProps.data.dadosPessoais.id">-->
+<!--                <i class="pi pi-trash text-danger"></i>-->
+<!--              </a>-->
+<!--            </div>-->
             <div class="d-flex gap-2">
-              <router-link :to="{name: 'editUser', params: {id: slotProps.data.id}}">
+              <router-link :to="{name: 'editUser', params: {id: 1}}">
                 <i class="pi pi-pen-to-square text-success"></i>
               </router-link>
-              <a :href="slotProps.data.id">
+              <a href="#">
                 <i class="pi pi-trash text-danger"></i>
               </a>
             </div>
           </template>
         </Column>
-
-<!--        <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :body="getColumnBody(col.field, roles)" />-->
       </DataTable>
+
+
     </div>
   </div>
 </template>
@@ -62,19 +83,27 @@ export default {
   data() {
     return {
       roles: null,
-      columns: null
+      users: null,
+      loading: true,
+      quantity: 0,
     };
   },
-  created() {
-    this.columns = [
-      { field: 'id', header: 'ID' },
-      { field: 'name', header: 'Nome' },
-      { field: 'permissions', header: 'Permissões' },
-      { field: 'actions', header: 'Acções' }
-    ];
+  watch: {
+    users: {
+      handler: function (val) {
+        this.quantity = val.length;
+      },
+      deep: true,
+    },
   },
   mounted() {
     UserService.getUsers().then((data) => (this.roles = data));
+    UserService.list().then((data) => {
+      this.users = data;
+      this.loading = false;
+    });
+
+    // console.log(this.users);
   },
   methods: {
   }

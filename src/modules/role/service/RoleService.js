@@ -6,23 +6,24 @@ axios.defaults.baseURL = baseApiUrl;
 function getHeaders() {
     return {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${store.state.token}`
+        'Authorization': `Bearer ${store.state.token}`,
     };
 }
 
 export const RoleService = {
     async list() {
         try {
-            const response = await axios.get(`${baseApiUrl}/roles`, { headers: getHeaders() });
-            return response.data;
+            const response = await axios.get(`${baseApiUrl}/papel/papeis`, { headers: getHeaders() });
+            console.log(response.data.data);
+            return response.data.data;
         } catch (error) {
-            console.error("Error fetching roles:", error);
+            console.error("Error fetching papel/papeis:", error);
             throw error;
         }
     },
     async create(role) {
         try {
-            const response = await axios.post(`${baseApiUrl}/roles`, role, { headers: getHeaders() });
+            const response = await axios.post(`${baseApiUrl}/papel/papeis`, role, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error creating role:", error);
@@ -31,7 +32,7 @@ export const RoleService = {
     },
     async update(role) {
         try {
-            const response = await axios.put(`${baseApiUrl}/roles/${role.id}`, role, { headers: getHeaders() });
+            const response = await axios.put(`${baseApiUrl}/papel/papeis/${role.id}`, role, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error updating role:", error);
@@ -40,7 +41,7 @@ export const RoleService = {
     },
     async delete(id) {
         try {
-            const response = await axios.delete(`${baseApiUrl}/roles/${id}`, { headers: getHeaders() });
+            const response = await axios.delete(`${baseApiUrl}/papel/papeis/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error deleting role:", error);
@@ -49,7 +50,7 @@ export const RoleService = {
     },
     async findById(id) {
         try {
-            const response = await axios.get(`${baseApiUrl}/roles/${id}`, { headers: getHeaders() });
+            const response = await axios.get(`${baseApiUrl}/papel/papeis/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error finding role by ID:", error);

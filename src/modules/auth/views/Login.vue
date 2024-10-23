@@ -9,7 +9,7 @@
         </div>
         <h5 class="text-logo text-center">SISTEMA DE GESTAO DE ESTUDANTES</h5>
       </div>
-      <form @submit.prevent="login" class="d-flex flex-column body-form">
+      <form @submit.stop.prevent="login" class="d-flex flex-column body-form">
 <!--        <div class="input-group mb-3">-->
 <!--          <div class="input-group-prepend">-->
 <!--            <span class="input-group-text" id="basic-addon1">@</span>-->
@@ -23,7 +23,7 @@
         </div>
         <div class="d-flex flex-column body-form-input">
           <label for="password" class="size-n">Password</label>
-          <InputText v-model="password" placeholder="password" class="size-n custom-input small-input-group" id="password" />
+          <InputText v-model="password" placeholder="password" class="size-n custom-input small-input-group" id="password" type="password"/>
 <!--          <input type="password" class="size-n" v-model="password" id="password" name="password" placeholder="password"/>-->
         </div>
         <Button v-slot="slotProps" asChild raised>
@@ -78,7 +78,12 @@ export default {
           })
           .catch((error) => {
             this.loading = false;
-            this.showErrorAlert(error);
+            if (error.response.status === 404) {
+              this.showErrorAlert(error.response.data.error);
+            } else {
+              this.showErrorAlert('Erro ao tentar fazer login');
+            }
+            // this.showErrorAlert(error);
             this.password = "";
             this.email = "";
           });

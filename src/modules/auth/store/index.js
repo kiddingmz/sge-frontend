@@ -19,7 +19,7 @@ export default {
     },
     getAuthorities(state) {
       return state.authorities;
-    }
+    },
   },
   mutations: {
     retrieveToken(state, { token, user, authorities }) {
@@ -35,20 +35,20 @@ export default {
   },
   actions: {
     retrieveToken(context, credentials) {
-        console.log(axios.defaults.baseURL);
       return new Promise((resolve, reject) => {
         axios.post('/auth/login', {
           email: credentials.email,
           password: credentials.password,
         })
             .then(response => {
-                if (response.data.message === 'As credenciais que providenciou estão erradas') {
-                    reject(response.data.message);
-                }
+                // console.log(response.status);
+                // if (response.data.message === 'As suas credenciais estão erradas') {
+                //     reject(response.data.message);
+                // }
 
-                const token = response.data.token;
-                const user = response.data.user;
-                const authorities = response.data.user.permissoes;
+                const token = response.data.token_data.token;
+                const user = response.data.user_data;
+                const authorities = response.data.user_data.permissoes;
 
               sessionStorage.setItem('access_token', token);
               sessionStorage.setItem('user', JSON.stringify(user));

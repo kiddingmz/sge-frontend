@@ -13,46 +13,46 @@ function getHeaders() {
 export const TeacherService = {
     async list() {
         try {
-            const response = await axios.get(`${baseApiUrl}/roles`, { headers: getHeaders() });
-            return response.data;
+            const response = await axios.get(`${baseApiUrl}/docente/docente`, { headers: getHeaders() });
+            return response.data.data;
         } catch (error) {
-            console.error("Error fetching roles:", error);
+            console.error("Error fetching teachers:", error);
             throw error;
         }
     },
-    async create(role) {
+    async create(teacher) {
         try {
-            const response = await axios.post(`${baseApiUrl}/roles`, role, { headers: getHeaders() });
+            const response = await axios.post(`${baseApiUrl}/docente/docente`, teacher, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error creating role:", error);
+            console.error("Error creating teacher:", error);
             throw error;
         }
     },
-    async update(role) {
+    async update(teacher) {
         try {
-            const response = await axios.put(`${baseApiUrl}/roles/${role.id}`, role, { headers: getHeaders() });
+            const response = await axios.put(`${baseApiUrl}/docente/docente/${teacher.id}`, teacher, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error updating role:", error);
+            console.error("Error updating teacher:", error);
             throw error;
         }
     },
     async delete(id) {
         try {
-            const response = await axios.delete(`${baseApiUrl}/roles/${id}`, { headers: getHeaders() });
+            const response = await axios.delete(`${baseApiUrl}/docente/docente/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error deleting role:", error);
+            console.error("Error deleting teacher:", error);
             throw error;
         }
     },
     async findById(id) {
         try {
-            const response = await axios.get(`${baseApiUrl}/roles/${id}`, { headers: getHeaders() });
+            const response = await axios.get(`${baseApiUrl}/docente/docente/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error finding role by ID:", error);
+            console.error("Error finding teacher by ID:", error);
             throw error;
         }
     },
