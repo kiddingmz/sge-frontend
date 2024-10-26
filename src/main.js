@@ -30,9 +30,10 @@ import ColumnGroup from "primevue/columngroup";
 import Row from "primevue/row";
 import 'primeicons/primeicons.css'
 
-
 import Vue3Datatable from '@bhplugin/vue3-datatable'
 import '@bhplugin/vue3-datatable/dist/style.css'
+
+import authService from '@/modules/auth/service/AuthService';
 
 import authModule from '@/modules/auth';
 import studentModule from '@/modules/student';
@@ -122,4 +123,5 @@ app.component('DataTable', DataTable);
 app.component('Column', Column);
 app.component('ColumnGroup', ColumnGroup);
 app.component('Row', Row);
+app.config.globalProperties.$hasAnyAuthority = authService.hasAnyAuthority;
 app.mount('#app');

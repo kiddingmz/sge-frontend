@@ -16,49 +16,63 @@
 
     <h4 class="size">Menu</h4>
     <div class="menu scroll">
-      <router-link to="/student" class="button">
+      <router-link to="/student" class="button"
+      v-if="$hasAnyAuthority('STUDENT_VIEW', 'STUDENT_CREATE', 'STUDENT_EDIT', 'STUDENT_DELETE')"
+      >
         <div class="d-flex align-items-center justify-content-between aside-item">
           <i class="fa fa-solid fa-people-line"></i>
           <span class="text">Estudantes</span>
         </div>
       </router-link>
 
-      <router-link to="/teacher" class="button">
+      <router-link to="/teacher" class="button"
+      v-if="$hasAnyAuthority('TEACHER_VIEW', 'TEACHER_CREATE', 'TEACHER_EDIT', 'TEACHER_DELETE')"
+      >
         <div class="d-flex align-items-center justify-content-between aside-item">
           <i class="fa fa-solid fa-chalkboard-user"></i>
           <span class="text">Docentes</span>
         </div>
       </router-link>
 
-      <router-link to="/course" class="button">
+      <router-link to="/course" class="button"
+      v-if="$hasAnyAuthority('COURSE_VIEW', 'COURSE_CREATE', 'COURSE_EDIT', 'COURSE_DELETE')"
+      >
         <div class="d-flex align-items-center justify-content-between aside-item">
           <i class="fa fa-solid fa-chalkboard"></i>
           <span class="text">Cursos</span>
         </div>
       </router-link>
 
-      <router-link to="/department" class="button">
+      <router-link to="/department" class="button"
+      v-if="$hasAnyAuthority('DEPARTMENT_VIEW', 'DEPARTMENT_CREATE', 'DEPARTMENT_EDIT', 'DEPARTMENT_DELETE')"
+      >
         <div class="d-flex align-items-center justify-content-between aside-item">
           <i class="fa fa-solid fa-school"></i>
           <span class="text">Departamentos</span>
         </div>
       </router-link>
 
-      <router-link to="/class" class="button">
+      <router-link to="/class" class="button"
+      v-if="$hasAnyAuthority('CLASS_VIEW', 'CLASS_CREATE', 'CLASS_EDIT', 'CLASS_DELETE')"
+      >
         <div class="d-flex align-items-center justify-content-between aside-item">
           <i class="fa fa-solid fa-swatchbook"></i>
           <span class="text">Cadeiras</span>
         </div>
       </router-link>
 
-      <router-link to="/evaluation" class="button">
+      <router-link to="/evaluation" class="button"
+      v-if="$hasAnyAuthority('EVALUATION_VIEW', 'EVALUATION_CREATE', 'EVALUATION_EDIT', 'EVALUATION_DELETE')"
+      >
         <div class="d-flex align-items-center justify-content-between aside-item">
           <i class="fa fa-regular fa-file-lines"></i>
           <span class="text">Avaliações</span>
         </div>
       </router-link>
 
-      <router-link to="/grade" class="button">
+      <router-link to="/grade" class="button"
+      v-if="$hasAnyAuthority('GRADE_VIEW', 'GRADE_CREATE', 'GRADE_EDIT', 'GRADE_DELETE')"
+      >
         <div class="d-flex align-items-center justify-content-between aside-item">
           <i class="fa fa-solid fa-square-poll-vertical"></i>
           <span class="text">Notas</span>
@@ -66,14 +80,18 @@
       </router-link>
 
       <hr>
-      <router-link to="/role" class="button">
+      <router-link to="/role" class="button"
+      v-if="$hasAnyAuthority('USER_VIEW', 'USER_CREATE', 'USER_EDIT', 'USER_DELETE')"
+      >
         <div class="d-flex align-items-center justify-content-between aside-item">
           <i class="fa fa-solid fa-user-shield"></i>
           <span class="text">Papel</span>
         </div>
       </router-link>
 
-      <router-link to="/user" class="button">
+      <router-link to="/user" class="button"
+      v-if="$hasAnyAuthority('USER_VIEW', 'USER_CREATE', 'USER_EDIT', 'USER_DELETE')"
+      >
         <div class="d-flex align-items-center justify-content-between aside-item">
           <i class="fa fa-solid fa-users-gear"></i>
           <span class="text">Usuario</span>
@@ -97,6 +115,7 @@
 
 <script>
 import { ref, onMounted } from 'vue';
+
 
 export default {
   name: 'NavigationSidebar',

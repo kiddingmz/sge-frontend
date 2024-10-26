@@ -1,4 +1,4 @@
-export const baseApiUrl = process.env.NODE_ENV === 'development' ? `http://127.0.0.1:8000/api` : `http://127.0.0.1:8000/api`;
+export const baseApiUrl = process.env.NODE_ENV === 'development' ? `http://127.0.0.1:8090/api` : `http://127.0.0.1:8090/api`;
 
 export const authorities = {
     STUDENT_VIEW: "ver_estudante",
@@ -27,5 +27,9 @@ export const authorities = {
     EVALUATION_EDIT: "editar_avaliacao",
     GRADE_SUBMIT: "lancar_nota",
     GRADE_VIEW: "ver_nota",
-    GRADE_EDIT: "editar_nota"
+    GRADE_EDIT: "editar_nota",
+    USER_VIEW: "ver_usuario",
+    USER_CREATE: "adicionar_usuario",
+    USER_DELETE: "eliminar_usuario",
+    USER_EDIT: "editar_usuario",
 }

@@ -226,7 +226,7 @@ export default {
         NUIT: '',
         contacto1: '',
         contacto2: '',
-        papelId: []
+        papelId: 2
       }
     };
   },
@@ -269,7 +269,6 @@ export default {
       this.$toast.add({
         severity: 'error',
         summary: msg,
-
         life: 3000 });
     },
 
