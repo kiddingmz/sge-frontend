@@ -127,8 +127,8 @@
             <label for="name" class="font-semibold w-24">Contacto Principal <small class="text-danger">*
               <label
                   class="font-weight-normal text-danger"
-                  v-if="errorsValidation.contacto1">
-                {{ errorsValidation.contacto1 }}
+                  v-if="errorsValidation.contacto_1">
+                {{ errorsValidation.contacto_1 }}
               </label>
             </small></label>
             <InputGroup>
@@ -136,16 +136,16 @@
                 <i class="pi pi-user size-n"></i>
               </InputGroupAddon>
               <InputNumber
-                  :invalid="errorsValidation.contacto1"
+                  :invalid="errorsValidation.contacto_1"
                   id="basi"  placeholder="8x-xxxxxx" class="size-n small-input-group" v-model="formData.contacto1"/>
             </InputGroup>
           </div>
           <div class="col-6 d-flex items-center gap-1 mb-3 flex-column size-n">
-            <label for="name" class="font-semibold w-24">Contacto Secundario <small class="text-danger">*
+            <label for="name" class="font-semibold w-24">Contacto Secundario <small class="text-danger">
               <label
                   class="font-weight-normal text-danger"
-                  v-if="errorsValidation.contacto2">
-                {{ errorsValidation.contacto2 }}
+                  v-if="errorsValidation.contacto_2">
+                {{ errorsValidation.contacto_2 }}
               </label>
             </small></label>
             <InputGroup>
@@ -153,7 +153,7 @@
                 <i class="pi pi-user size-n"></i>
               </InputGroupAddon>
               <InputNumber
-                  :invalid="errorsValidation.contacto2"
+                  :invalid="errorsValidation.contacto_2"
                   id="basic"  placeholder="8x-xxxxxx" class="size-n small-input-group" v-model="formData.contacto2"/>
             </InputGroup>
           </div>
@@ -162,8 +162,8 @@
           <h6 class="size-m">Selecionar Papeis: <small class="text-danger">*
             <label
                 class="font-weight-normal text-danger"
-                v-if="errorsValidation.papelId">
-              {{ errorsValidation.papelId }}
+                v-if="errorsValidation.papel_id">
+              {{ errorsValidation.papel_id }}
             </label>
           </small></h6>
 
@@ -264,27 +264,13 @@ export default {
       this.errorsValidation = { ...errorsFormed };
     },
 
-    toastSuccess() {
+    toastSuccess(msg) {
       this.$toast.add({
         severity: 'success',
-        summary: 'Success Message',
-        detail: 'Message Content',
+        summary: msg,
         life: 3000 });
     },
-    toastInfo(title, msg) {
-      this.$toast.add({
-        severity: 'info',
-        summary: title,
-        detail: msg,
-        life: 3000 });
-    },
-    toastWarn() {
-      this.$toast.add({
-        severity: 'warn',
-        summary: 'Warn Message',
-        detail: 'Message Content',
-        life: 3000 });
-    },
+
     toastError(msg) {
       this.$toast.add({
         severity: 'error',
@@ -292,40 +278,30 @@ export default {
         life: 3000 });
     },
 
-    showErrorAlert(msg) {
-      this.$swal({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        icon: "error",
-        title: msg,
-      });
-    },
-    showSuccessAlert(msg) {
-      this.$swal({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 1500,
-        icon: "success",
-        title: msg,
-      });
-    },
-
     saveUser() {
-      console.log(this.formData);
       UserService.create(this.formData).then(() => {
-        this.showSuccessAlert('Usuario criado com sucesso');
+        this.toastSuccess('Usuario criado com sucesso');
+        this.formData = {
+          nome: '',
+          email: '',
+          password: '',
+          passwordConfirm: '',
+          BI: '',
+          NUIT: '',
+          contacto1: '',
+          contacto2: '',
+          papelId: ''
+        };
+
       }).catch((error) => {
         this.validateForm(error.response.data.errors);
+        console.log(error.response);
 
         if (error.response.status === 422){
-          // this.showErrorAlert('Verifique os campos obrigatorios');
           this.toastError('Verifique os campos obrigatorios');
           return;
         }
-        this.showErrorAlert('Erro ao criar usuario');
+        this.toastError('Erro ao criar usuario');
       });
     }
   },

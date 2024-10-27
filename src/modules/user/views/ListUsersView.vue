@@ -16,6 +16,8 @@
         </div>
       </small>
     </div>
+    <Toast />
+    <ConfirmDialog></ConfirmDialog>
     <div class="card-body">
       <DataTable :value="users" responsiveLayout="scroll" table-style="font-size: 0.8rem" :size="'small'" :loading="loading"
                  :paginator="true"
@@ -52,13 +54,13 @@
 <!--                <i class="pi pi-trash text-danger"></i>-->
 <!--              </a>-->
 <!--            </div>-->
-            <div class="d-flex gap-2">
-              <router-link :to="{name: 'editUser', params: {id: 1}}">
-                <i class="pi pi-pen-to-square text-success"></i>
-              </router-link>
-              <a href="#">
-                <i class="pi pi-trash text-danger"></i>
-              </a>
+            <div class="d-flex flex-wrap justify-center gap-1">
+              <Button icon="pi pi-pen-to-square" severity="success" text rounded aria-label="Search"
+                      @click="pushToEdit(slotProps.data.id)"
+              />
+              <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Cancelar"
+                      @click="deleteUser(slotProps.data.id)"
+              />
             </div>
           </template>
         </Column>
@@ -71,13 +73,15 @@
 
 <script>
 import Tag from "primevue/tag";
+import Toast from "primevue/toast";
+import ConfirmDialog from "primevue/confirmdialog";
 
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
 import { UserService } from "../service/UserService";
 
 export default {
   name: 'ListRoles',
-  components: { HeaderContent, Tag },
+  components: { HeaderContent, Tag, ConfirmDialog, Toast},
   data() {
     return {
       users: null,
@@ -101,6 +105,50 @@ export default {
 
   },
   methods: {
+    toastSuccess(msg) {
+      this.$toast.add({
+        severity: 'success',
+        summary: msg,
+        life: 3000 });
+    },
+
+    toastError(msg) {
+      this.$toast.add({
+        severity: 'error',
+        summary: msg,
+        life: 3000 });
+    },
+    pushToEdit(id) {
+      this.$router.push({ name: 'editUser', params: { id: id } });
+    },
+    deleteUser(id) {
+      this.$confirm.require({
+        message: 'Deseja excluir este usuario?',
+        header: 'Zona de perigo',
+        icon: 'pi pi-info-circle',
+        rejectProps: {
+          label: 'Cancelar',
+          severity: 'secondary',
+          outlined: true
+        },
+        acceptProps: {
+          label: 'Apagar',
+          severity: 'danger'
+        },
+        accept: () => {
+          UserService.delete(id).then((res) => {
+            this.toastSuccess('Usuario eliminado com sucesso');
+            console.log(res);
+            this.refresh();
+          }).catch(() => {
+            this.toastError('Erro ao eliminar o usuario');
+          });
+        },
+        reject: () => {
+          this.$toast.add({ severity: 'error', summary: 'Rejeitado', detail: 'Você rejeitou', life: 3000 });
+        }
+      });
+    },
     refresh() {
       this.loading = true;
       UserService.list().then((data) => {

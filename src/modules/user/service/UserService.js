@@ -16,7 +16,7 @@ export const UserService = {
             const response = await axios.get(`${baseApiUrl}/auth/users`, { headers: getHeaders() });
             return response.data.data;
         } catch (error) {
-            console.error("Error fetching user:", error);
+            console.error("Error fetching auth/users:", error);
             throw error;
         }
     },
@@ -29,9 +29,9 @@ export const UserService = {
             throw error;
         }
     },
-    async update(User) {
+    async update(id, User) {
         try {
-            const response = await axios.put(`${baseApiUrl}/user/${User.id}`, User, { headers: getHeaders() });
+            const response = await axios.put(`${baseApiUrl}/auth/users/${id}`, User, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error updating User:", error);
@@ -40,7 +40,7 @@ export const UserService = {
     },
     async delete(id) {
         try {
-            const response = await axios.delete(`${baseApiUrl}/user/${id}`, { headers: getHeaders() });
+            const response = await axios.delete(`${baseApiUrl}/auth/users/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error deleting User:", error);
@@ -49,7 +49,7 @@ export const UserService = {
     },
     async findById(id) {
         try {
-            const response = await axios.get(`${baseApiUrl}/user/${id}`, { headers: getHeaders() });
+            const response = await axios.get(`${baseApiUrl}/auth/users/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error finding User by ID:", error);

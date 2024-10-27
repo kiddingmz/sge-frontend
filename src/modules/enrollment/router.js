@@ -14,8 +14,8 @@ export default router => {
     },
     children: [
       { path: '', component: List, meta: { requiresAuth: true, authority:  authorities.USER_VIEW} },
-      { name: 'createUser', path: 'create', component: Create, meta: { requiresAuth: true, authority:  authorities.USER_CREATE}},
-      { name: 'editUser', path: 'edit/:id', component: Edit, meta: { requiresAuth: true, authority:  authorities.USER_EDIT} },
+      { name: 'createEnrollment', path: 'create', component: Create, meta: { requiresAuth: true, authority:  authorities.USER_CREATE}},
+      { name: 'editEnrollment', path: 'edit/:id', component: Edit, meta: { requiresAuth: true, authority:  authorities.USER_EDIT} },
     ],
   })
 };
