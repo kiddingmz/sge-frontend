@@ -17,8 +17,10 @@ export const authorities = {
     DEPARTMENT_CREATE: "adicionar_departamento",
     DEPARTMENT_DELETE: "eliminar_departamento",
     DEPARTMENT_EDIT: "editar_departamento",
-    CLASS_VIEW: "ver_cadeira_no_ano_lectivo",
-    CLASS_CREATE: "adicionar_cadeira_no_ano_lectivo",
+    CLASS_VIEW: "ver_cadeiras",
+    CLASS_CREATE: "adicionar_cadeira",
+    CLASS_DELETE: "eliminar_cadeira",
+    CLASS_EDIT: "editar_cadeira",
     ASSISTANT_CREATE: "adicionar_assistente",
     ASSISTANT_VIEW: "ver_assistente",
     ASSISTANT_DELETE: "eliminar_assistente",
@@ -32,4 +34,9 @@ export const authorities = {
     USER_CREATE: "adicionar_usuario",
     USER_DELETE: "eliminar_usuario",
     USER_EDIT: "editar_usuario",
+    ROLE_VIEW: "ver_papel",
+    ROLE_CREATE: "adicionar_papel",
+    ROLE_DELETE: "eliminar_papel",
+    ROLE_EDIT: "editar_papel",
+
 }

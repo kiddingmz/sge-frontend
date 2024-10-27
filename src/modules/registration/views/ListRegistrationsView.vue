@@ -10,7 +10,7 @@
           <span class="ml-2">Lista de Usuarios : {{ quantity }}</span>
         </div>
         <div>
-          <a @click="refresh" class="btn-p">
+          <a href="#" class="btn-p">
             <i class="fa-solid fa-rotate-right"></i>
           </a>
         </div>
@@ -73,13 +73,14 @@
 import Tag from "primevue/tag";
 
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
-import { UserService } from "../service/UserService";
+import { RegistrationService } from "../service/RegistrationService";
 
 export default {
   name: 'ListRoles',
   components: { HeaderContent, Tag },
   data() {
     return {
+      roles: null,
       users: null,
       loading: true,
       quantity: 0,
@@ -94,20 +95,15 @@ export default {
     },
   },
   mounted() {
-    UserService.list().then((data) => {
+    RegistrationService.getUsers().then((data) => (this.roles = data));
+    RegistrationService.list().then((data) => {
       this.users = data;
       this.loading = false;
     });
 
+    // console.log(this.users);
   },
   methods: {
-    refresh() {
-      this.loading = true;
-      UserService.list().then((data) => {
-        this.users = data;
-        this.loading = false;
-      });
-    }
   }
 }
 </script>

@@ -91,7 +91,7 @@ export default {
       console.log('Descrição:', this.description);
       console.log('Permissões Selecionadas:', this.selectedPermissions);
 
-      //UserService.createRole({ name: this.roleName, description: this.description, permissions: this.selectedPermissions });
+      //EnrollmentService.createRole({ name: this.roleName, description: this.description, permissions: this.selectedPermissions });
     }
   },
 }

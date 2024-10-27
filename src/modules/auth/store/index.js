@@ -46,9 +46,11 @@ export default {
                 //     reject(response.data.message);
                 // }
 
+                // console.log(response.data.user_data.permissoes);
+
                 const token = response.data.token_data.token;
-                const user = response.data.user_data;
-                const authorities = response.data.user_data.permissoes;
+                const user = response.data.user_data.papeis;
+                const authorities = response.data.user_data.permissao;
 
               sessionStorage.setItem('access_token', token);
               sessionStorage.setItem('user', JSON.stringify(user));

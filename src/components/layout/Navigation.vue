@@ -16,7 +16,25 @@
 
     <h4 class="size">Menu</h4>
     <div class="menu scroll">
-      <router-link to="/student" class="button"
+      <router-link to="registration" class="button"
+                   v-if="$hasAnyAuthority('STUDENT_VIEW', 'STUDENT_CREATE', 'STUDENT_EDIT', 'STUDENT_DELETE')"
+      >
+        <div class="d-flex align-items-center justify-content-between aside-item">
+          <i class="fa fa-solid fa-user-plus"></i>
+          <span class="text">Matriculas</span>
+        </div>
+      </router-link>
+
+      <router-link to="enrollment" class="button"
+                   v-if="$hasAnyAuthority('STUDENT_VIEW', 'STUDENT_CREATE', 'STUDENT_EDIT', 'STUDENT_DELETE')"
+      >
+        <div class="d-flex align-items-center justify-content-between aside-item">
+          <i class="fa fa-brands fa-readme"></i>
+          <span class="text">Inscrições</span>
+        </div>
+      </router-link>
+
+      <router-link to="student" class="button"
       v-if="$hasAnyAuthority('STUDENT_VIEW', 'STUDENT_CREATE', 'STUDENT_EDIT', 'STUDENT_DELETE')"
       >
         <div class="d-flex align-items-center justify-content-between aside-item">
@@ -25,7 +43,7 @@
         </div>
       </router-link>
 
-      <router-link to="/teacher" class="button"
+      <router-link to="teacher" class="button"
       v-if="$hasAnyAuthority('TEACHER_VIEW', 'TEACHER_CREATE', 'TEACHER_EDIT', 'TEACHER_DELETE')"
       >
         <div class="d-flex align-items-center justify-content-between aside-item">
@@ -34,7 +52,7 @@
         </div>
       </router-link>
 
-      <router-link to="/course" class="button"
+      <router-link to="course" class="button"
       v-if="$hasAnyAuthority('COURSE_VIEW', 'COURSE_CREATE', 'COURSE_EDIT', 'COURSE_DELETE')"
       >
         <div class="d-flex align-items-center justify-content-between aside-item">
@@ -43,7 +61,7 @@
         </div>
       </router-link>
 
-      <router-link to="/department" class="button"
+      <router-link to="department" class="button"
       v-if="$hasAnyAuthority('DEPARTMENT_VIEW', 'DEPARTMENT_CREATE', 'DEPARTMENT_EDIT', 'DEPARTMENT_DELETE')"
       >
         <div class="d-flex align-items-center justify-content-between aside-item">
@@ -52,7 +70,7 @@
         </div>
       </router-link>
 
-      <router-link to="/class" class="button"
+      <router-link to="class" class="button"
       v-if="$hasAnyAuthority('CLASS_VIEW', 'CLASS_CREATE', 'CLASS_EDIT', 'CLASS_DELETE')"
       >
         <div class="d-flex align-items-center justify-content-between aside-item">
@@ -61,7 +79,7 @@
         </div>
       </router-link>
 
-      <router-link to="/evaluation" class="button"
+      <router-link to="evaluation" class="button"
       v-if="$hasAnyAuthority('EVALUATION_VIEW', 'EVALUATION_CREATE', 'EVALUATION_EDIT', 'EVALUATION_DELETE')"
       >
         <div class="d-flex align-items-center justify-content-between aside-item">
@@ -70,7 +88,7 @@
         </div>
       </router-link>
 
-      <router-link to="/grade" class="button"
+      <router-link to="grade" class="button"
       v-if="$hasAnyAuthority('GRADE_VIEW', 'GRADE_CREATE', 'GRADE_EDIT', 'GRADE_DELETE')"
       >
         <div class="d-flex align-items-center justify-content-between aside-item">
@@ -80,8 +98,8 @@
       </router-link>
 
       <hr>
-      <router-link to="/role" class="button"
-      v-if="$hasAnyAuthority('USER_VIEW', 'USER_CREATE', 'USER_EDIT', 'USER_DELETE')"
+      <router-link to="role" class="button"
+      v-if="$hasAnyAuthority('ROLE_VIEW', 'ROLE_CREATE', 'ROLE_EDIT', 'ROLE_DELETE')"
       >
         <div class="d-flex align-items-center justify-content-between aside-item">
           <i class="fa fa-solid fa-user-shield"></i>
@@ -89,7 +107,7 @@
         </div>
       </router-link>
 
-      <router-link to="/user" class="button"
+      <router-link to="user" class="button"
       v-if="$hasAnyAuthority('USER_VIEW', 'USER_CREATE', 'USER_EDIT', 'USER_DELETE')"
       >
         <div class="d-flex align-items-center justify-content-between aside-item">
