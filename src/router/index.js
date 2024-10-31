@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import {authorities} from "@/global";
+// import {authorities} from "@/global";
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    meta: { requiresAuth: true, authority:  authorities.STUDENT_VIEW },
+    meta: { requiresAuth: true },
     component: () => import('@/components/layout/Layout.vue'),
   },
 ]

@@ -19,32 +19,69 @@
           </Tab>
         </TabList>
         <TabPanels>
-          <TabPanel value="0" as="p" class="m-0">
+          <form @submit.stop.prevent="saveClasse">
+
+            <TabPanel value="0" as="p" class="m-0">
             <div class="d-flex items-center gap-1 mb-3 flex-column size-n">
-              <label for="name" class="font-semibold w-24">Nome <small class="text-danger">*</small></label>
+              <label for="name" class="font-semibold w-24">Nome
+                <small class="text-danger">*
+                  <label
+                      class="font-weight-normal text-danger"
+                      v-if="errorsValidation.nome">
+                    {{ errorsValidation.nome }}
+                  </label>
+                </small>
+              </label>
               <InputGroup>
                 <InputGroupAddon>
                   <i class="pi pi-user size-n"></i>
                 </InputGroupAddon>
-                <InputText id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="nome" v-model="nome"/>
+                <InputText
+                    id="name"
+                    class="flex-auto size-n custom-input small-input-group"
+                    autocomplete="off"
+                    placeholder="nome"
+                    v-model="formData.nome"
+                    :invalid="errorsValidation.nome"
+                />
               </InputGroup>
             </div>
 
-            <div class="d-flex items-center gap-1 mb-5 flex-column size-n">
-              <label for="name" class="font-semibold w-24">Departamento <small class="text-danger">*</small></label>
+            <div class="d-flex items-center gap-1 mb-3 flex-column size-n"
+            >
+              <label for="name" class="font-semibold w-24">Departamento
+                <small class="text-danger">*
+                  <label
+                      class="font-weight-normal text-danger"
+                      v-if="errorsValidation.departamentoId">
+                    {{ errorsValidation.departamentoId }}
+                  </label>
+                </small>
+              </label>
 
-              <Select v-model="selectedCountry" :options="countries" filter optionLabel="name" placeholder="Selecione departamento" class="w-full md:w-56 small-input-group">
+              <Select
+                  v-model="formData.departamentoId"
+                  :options="departments"
+                  filter optionLabel="nome"
+                  placeholder="Selecione departamento"
+                  class="w-full md:w-56 small-input-group"
+                  optionValue="id"
+                  :invalid="errorsValidation.departamentoId"
+              >
                 <template #value="slotProps">
                   <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
-                    <div class="small-input-group">{{ slotProps.value.name }}</div>
+                    <div class="small-input-group">
+                      {{
+                        `${departments.find(c => c.id === slotProps.value)?.nome} - ${departments.find(c => c.id === slotProps.value)?.faculdade?.nome}`
+                      }}
+                    </div>
                   </div>
-                  <span v-else>
-                    {{ slotProps.placeholder }}
-                </span>
+                  <span v-else>{{ slotProps.placeholder }}</span>
                 </template>
+
                 <template #option="slotProps">
                   <div class="flex items-center small-input-group size-n">
-                    <div class="small-input-group">{{ slotProps.option.name }}</div>
+                    <div class="small-input-group">{{ `${slotProps.option.nome} - ${slotProps.option.faculdade.nome}` }}</div>
                   </div>
                 </template>
               </Select>
@@ -52,12 +89,13 @@
             <Divider />
 
             <div class="d-flex justify-content-end gap-2">
-              <Button label="Cancelar" icon="pi pi-times" class="small-input-group size-n" severity="secondary" outlined @click="visible = false"
+              <Button label="Cancelar" icon="pi pi-times" class="small-input-group size-n" severity="secondary" type="reset" outlined @click="visible = false"
               />
-              <Button label="Guardar" icon="pi pi-check" class="small-input-group size-n p-button-success" @click="visible = false"
+              <Button label="Guardar" icon="pi pi-check" class="small-input-group size-n p-button-success" type="submit"
               />
             </div>
           </TabPanel>
+          </form>
           <TabPanel value="1" as="p" class="m-0">
             <div class="d-flex items-center gap-1 mb-3 flex-column size-n">
               <label for="name" class="font-semibold w-24">Cadeira <small class="text-danger">*</small></label>
@@ -156,10 +194,10 @@
       <small class="d-flex justify-content-between">
         <div class="d-flex gap-2 align-items-center">
           <i class="fa-solid fa-user-shield"></i>
-          <span class="ml-2">Lista de Cadeiras : 12</span>
+          <span class="ml-2">Lista de Cadeiras : {{ quantity }}</span>
         </div>
         <div>
-          <a href="#" class="btn-p">
+          <a @click="refresh" class="btn-p">
             <i class="fa-solid fa-rotate-right"></i>
           </a>
         </div>
@@ -168,9 +206,10 @@
     <div class="card-body">
       <Toast />
       <ConfirmDialog></ConfirmDialog>
-      <DataTable :value="roles" responsiveLayout="scroll" table-style="font-size: 0.8rem"
+      <DataTable :value="classes" responsiveLayout="scroll" table-style="font-size: 0.8rem"
                  :paginator="true"
                  :rows="10"
+                 :loading="loading"
                  paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                  :rowsPerPageOptions="[5, 10, 25]"
                  :filters="filters"
@@ -184,15 +223,8 @@
           </div>
         </template>
         <Column field="id" header="ID"></Column>
-        <Column field="name" header="Nome"></Column>
-        <Column field="name" header="Descrição"></Column>
-        <Column field="id" header="Duração">
-          <template #body="slotProps">
-            <span>{{  `${slotProps.data.id + 1} - ${slotProps.data.id + 5}` }}</span>
-          </template>
-        </Column>
-        <Column field="name" header="Departamento"></Column>
-
+        <Column field="nome" header="Nome"></Column>
+        <Column field="departamento.nome" header="Departamento"></Column>
         <Column field="actions" header="Acções">
           <template #body="slotProps" >
             <span v-if="1===2">{{slotProps.data.name}}</span>
@@ -241,6 +273,7 @@ import TabPanel from 'primevue/tabpanel';
 
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
 import { ClassService } from "../service/ClassService";
+import {DepartmentService} from "@/modules/department/service/DepartmentService";
 
 export default {
   name: 'ListRoles',
@@ -264,78 +297,135 @@ export default {
   },
   data() {
     return {
-      roles: null,
-      columns: null,
+      errorsValidation: {},
+      loading: true,
+      classes: [],
       filters: {},
       visible: false,
-      selectedCountry: null,
-      countries: [
-        { name: 'Quimica', code: 'Q' },
-        { name: 'Electrotecnica', code: 'E' },
-        { name: 'Civil', code: 'C' },
-        { name: 'Mecanica', code: 'M' },
-      ]
+      departments: [],
+      quantity: 0,
+      formData: {
+        nome: '',
+        departamentoId: '',
+      },
     };
   },
-  created() {
-    this.columns = [
-      { field: 'id', header: 'ID' },
-      { field: 'name', header: 'Nome' },
-      { field: 'permissions', header: 'Permissões' },
-      { field: 'actions', header: 'Acções' }
-    ];
+  watch: {
+    classes: {
+      handler: function (val) {
+        this.quantity = val.length;
+      },
+      deep: true,
+    },
   },
   mounted() {
-    ClassService.getRoles().then((data) => (this.roles = data));
+    ClassService.list().then((data) => {
+      this.classes = data;
+      this.loading = false;
+    });
+
+    DepartmentService.list().then((data) => {
+      this.departments = data;
+    });
   },
   methods: {
     toggleVisibility() {
       this.visible = !this.visible;
     },
-    confirm1() {
-      this.$confirm.require({
-        message: 'Tem certeza de que deseja prosseguir?',
-        header: 'Confirmação',
-        icon: 'pi pi-exclamation-triangle',
-        rejectProps: {
-          label: 'Cancelar',
-          severity: 'secondary',
-          outlined: true
-        },
-        acceptProps: {
-          label: 'Guardar'
-        },
-        accept: () => {
-          this.$toast.add({ severity: 'info', summary: 'Confirmado', detail: 'Você aceitou', life: 3000 });
-        },
-        reject: () => {
-          this.$toast.add({ severity: 'error', summary: 'Rejeitado', detail: 'Você rejeitou', life: 3000 });
-        }
+
+    validateForm(error) {
+      let errorsFormed = {};
+      for (const [key, value] of Object.entries(error)) {
+        errorsFormed[key] = value[0];
+      }
+      this.errorsValidation = { ...errorsFormed };
+    },
+    toastSuccess(msg) {
+      this.$toast.add({
+        severity: 'success',
+        summary: msg,
+        life: 3000 });
+    },
+
+    toastError(msg) {
+      this.$toast.add({
+        severity: 'error',
+        summary: msg,
+        life: 3000 });
+    },
+    refresh() {
+      this.loading = true;
+      ClassService.list().then((data) => {
+        this.classes = data;
+        this.loading = false;
       });
     },
-    confirm2() {
-      this.$confirm.require({
-        message: 'Deseja excluir este registro?',
-        header: 'Zona de perigo',
-        icon: 'pi pi-info-circle',
-        rejectProps: {
-          label: 'Cancelar',
-          severity: 'secondary',
-          outlined: true
-        },
-        acceptProps: {
-          label: 'Apagar',
-          severity: 'danger'
-        },
-        accept: () => {
-          this.$toast.add({ severity: 'info', summary: 'Confirmado', detail: 'Registro excluído', life: 3000 });
-        },
-        reject: () => {
-          this.$toast.add({ severity: 'error', summary: 'Rejeitado', detail: 'Você rejeitou', life: 3000 });
+    saveClasse() {
+      ClassService.create(this.formData).then(() => {
+        this.toastSuccess('Cadeira criado com sucesso');
+        this.formData = {
+          nome: '',
+          departamentoId: '',
+        };
+      }).catch((error) => {
+        this.validateForm(error.response.data.errors);
+
+        if (error.response.status === 422){
+          this.toastError('Verifique os campos obrigatorios');
+          return;
         }
+        this.toastError('Erro ao criar cadeira');
       });
+
     }
-  }
+  },
+
+  // methods: {
+  //
+  //   confirm1() {
+  //     this.$confirm.require({
+  //       message: 'Tem certeza de que deseja prosseguir?',
+  //       header: 'Confirmação',
+  //       icon: 'pi pi-exclamation-triangle',
+  //       rejectProps: {
+  //         label: 'Cancelar',
+  //         severity: 'secondary',
+  //         outlined: true
+  //       },
+  //       acceptProps: {
+  //         label: 'Guardar'
+  //       },
+  //       accept: () => {
+  //         this.$toast.add({ severity: 'info', summary: 'Confirmado', detail: 'Você aceitou', life: 3000 });
+  //       },
+  //       reject: () => {
+  //         this.$toast.add({ severity: 'error', summary: 'Rejeitado', detail: 'Você rejeitou', life: 3000 });
+  //       }
+  //     });
+  //   },
+  //   confirm2() {
+  //     this.$confirm.require({
+  //       message: 'Deseja excluir este registro?',
+  //       header: 'Zona de perigo',
+  //       icon: 'pi pi-info-circle',
+  //       rejectProps: {
+  //         label: 'Cancelar',
+  //         severity: 'secondary',
+  //         outlined: true
+  //       },
+  //       acceptProps: {
+  //         label: 'Apagar',
+  //         severity: 'danger'
+  //       },
+  //       accept: () => {
+  //         this.$toast.add({ severity: 'info', summary: 'Confirmado', detail: 'Registro excluído', life: 3000 });
+  //       },
+  //       reject: () => {
+  //         this.$toast.add({ severity: 'error', summary: 'Rejeitado', detail: 'Você rejeitou', life: 3000 });
+  //       }
+  //     });
+  //   }
+  // }
 }
 </script>
 

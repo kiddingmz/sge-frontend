@@ -10,21 +10,21 @@
         <h5 class="text-logo text-center">SISTEMA DE GESTAO DE ESTUDANTES</h5>
       </div>
       <form @submit.stop.prevent="login" class="d-flex flex-column body-form">
-<!--        <div class="input-group mb-3">-->
-<!--          <div class="input-group-prepend">-->
-<!--            <span class="input-group-text" id="basic-addon1">@</span>-->
+<!--        <div class e="input-group mb-3">-->
+<!--          <div class e="input-group-prepend">-->
+<!--            <span class e="input-group-text" id="basic-addon1">@</span>-->
 <!--          </div>-->
-<!--          <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">-->
+<!--          <input type="text" class e="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">-->
 <!--        </div>-->
         <div class="d-flex flex-column body-form-input">
           <label for="email" class="size-n">Email</label>
           <InputText v-model="email" placeholder="email" class="size-n custom-input small-input-group"  id="email"/>
-<!--          <input type="email" class="size-n" v-model="email" id="email" name="email" placeholder="email" />-->
+<!--          <input type="email" class e="size-n" v-model="email" id="email" name="email" placeholder="email" />-->
         </div>
         <div class="d-flex flex-column body-form-input">
           <label for="password" class="size-n">Password</label>
           <InputText v-model="password" placeholder="password" class="size-n custom-input small-input-group" id="password" type="password"/>
-<!--          <input type="password" class="size-n" v-model="password" id="password" name="password" placeholder="password"/>-->
+<!--          <input type="password" class e="size-n" v-model="password" id="password" name="password" placeholder="password"/>-->
         </div>
         <Button v-slot="slotProps" asChild raised>
           <button raised

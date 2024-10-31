@@ -9,18 +9,20 @@ export default {
     user: JSON.parse(sessionStorage.getItem('user')) || null,
     authorities: sessionStorage.getItem('authorities') ? JSON.parse(atob(sessionStorage.getItem('authorities'))) : null,
   },
-  getters: {
+getters: {
     loggedIn(state) {
-      // return state.token !== null;
-        return state.token !== null && state.authorities !== null;
+        return state.token !== null;
+    },
+    hasAuthorities(state) {
+        return state.authorities !== null;
     },
     getUser(state) {
-      return state.user;
+        return state.user;
     },
     getAuthorities(state) {
-      return state.authorities;
+        return state.authorities;
     },
-  },
+},
   mutations: {
     retrieveToken(state, { token, user, authorities }) {
       state.token = token;
@@ -66,6 +68,7 @@ export default {
       });
     },
       logout(context) {
+        console.log('Login: ', context.getters.loggedIn);
           return new Promise((resolve) => {
               sessionStorage.removeItem('access_token');
               sessionStorage.removeItem('user');
@@ -73,6 +76,7 @@ export default {
 
               context.commit('destroyToken');
               resolve();
+              console.log('Login: ', context.getters.loggedIn);
           });
       }
   }

@@ -10,49 +10,58 @@ function getHeaders() {
     };
 }
 
-export const CourseService = {
+export const GradeService = {
     async list() {
         try {
-            const response = await axios.get(`${baseApiUrl}/roles`, { headers: getHeaders() });
-            return response.data;
+            const response = await axios.get(`${baseApiUrl}/docente/notasTurma`, { headers: getHeaders() });
+            return response.data.data;
         } catch (error) {
-            console.error("Error fetching roles:", error);
+            console.error("Error fetching docente/notasTurma:", error);
             throw error;
         }
     },
-    async create(role) {
+    async listWithData(data) {
         try {
-            const response = await axios.post(`${baseApiUrl}/roles`, role, { headers: getHeaders() });
-            return response.data;
+            const response = await axios.post(`${baseApiUrl}/docente/notasTurma`, data, { headers: getHeaders() });
+            return response.data.data;
         } catch (error) {
-            console.error("Error creating role:", error);
+            console.error("Error fetching docente/notasTurma:", error);
             throw error;
         }
     },
-    async update(role) {
+    async create(grade) {
         try {
-            const response = await axios.put(`${baseApiUrl}/roles/${role.id}`, role, { headers: getHeaders() });
+            const response = await axios.post(`${baseApiUrl}/docente/notasTurma`, grade, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error updating role:", error);
+            console.error("Error creating grade:", error);
+            throw error;
+        }
+    },
+    async update(grade) {
+        try {
+            const response = await axios.put(`${baseApiUrl}/docente/docentes/${grade.id}`, grade, { headers: getHeaders() });
+            return response.data;
+        } catch (error) {
+            console.error("Error updating grade:", error);
             throw error;
         }
     },
     async delete(id) {
         try {
-            const response = await axios.delete(`${baseApiUrl}/roles/${id}`, { headers: getHeaders() });
+            const response = await axios.delete(`${baseApiUrl}/docente/notasTurma/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error deleting role:", error);
+            console.error("Error deleting grade:", error);
             throw error;
         }
     },
     async findById(id) {
         try {
-            const response = await axios.get(`${baseApiUrl}/roles/${id}`, { headers: getHeaders() });
+            const response = await axios.get(`${baseApiUrl}/docente/notasTurma/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error finding role by ID:", error);
+            console.error("Error finding grade by ID:", error);
             throw error;
         }
     },

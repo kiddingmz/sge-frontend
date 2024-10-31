@@ -2,6 +2,7 @@
   <div class="card border-0">
     <header-content title="Docente" show-link="off" show-btn="off"></header-content>
   </div>
+  <Toast />
   <div class="card mt-5 border-0 shadow-sm">
     <form @submit.stop.prevent="saveTeacher">
       <div class="card-header barra-vertical">
@@ -15,16 +16,30 @@
       <div class="card-body">
         <div class="d-flex row align-items-center col-12">
           <div class="col-6 d-flex items-center gap-1 mb-3 flex-column size-n">
-            <label for="name" class="font-semibold w-24">Nome <small class="text-danger">*</small></label>
+            <label for="name" class="font-semibold w-24">Nome
+              <small class="text-danger">*
+                <label
+                    class="font-weight-normal text-danger"
+                    v-if="errorsValidation.nome">
+                  {{ errorsValidation.nome }}
+                </label>
+              </small></label>
             <InputGroup>
               <InputGroupAddon>
                 <i class="pi pi-user size-n"></i>
               </InputGroupAddon>
-              <InputText id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="nome" v-model="formData.nome"/>
+              <InputText :invalid="errorsValidation.nome" id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="nome" v-model="formData.nome"/>
             </InputGroup>
           </div>
           <div class="col-3 d-flex items-center gap-1 mb-3 flex-column size-n">
-            <label for="name" class="font-semibold w-24">Email <small class="text-danger">*</small></label>
+            <label for="name" class="font-semibold w-24">Email
+              <small class="text-danger">*
+                <label
+                    class="font-weight-normal text-danger"
+                    v-if="errorsValidation.email">
+                  {{ errorsValidation.email }}
+                </label>
+              </small></label>
             <InputGroup>
               <InputGroupAddon>
                 <i class="pi pi-user size-n"></i>
@@ -33,67 +48,109 @@
             </InputGroup>
           </div>
           <div class="col-3 d-flex items-center gap-1 mb-3 flex-column size-n">
-            <label for="name" class="font-semibold w-24">Formação <small class="text-danger">*</small></label>
+            <label for="name" class="font-semibold w-24">Formação
+              <small class="text-danger">*
+                <label
+                    class="font-weight-normal text-danger"
+                    v-if="errorsValidation.formacao">
+                  {{ errorsValidation.formacao }}
+                </label>
+              </small></label>
             <InputGroup>
               <InputGroupAddon>
                 <i class="pi pi-user size-n"></i>
               </InputGroupAddon>
-              <InputText id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="formação" v-model="formData.formacao"/>
+              <InputText :invalid="errorsValidation.formacao" id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="formação" v-model="formData.formacao"/>
             </InputGroup>
           </div>
           <div class="col-6 d-flex items-center gap-1 mb-3 flex-column size-n">
-            <label for="name" class="font-semibold w-24">BI <small class="text-danger">*</small></label>
+            <label for="name" class="font-semibold w-24">BI
+              <small class="text-danger">*
+                <label
+                    class="font-weight-normal text-danger"
+                    v-if="errorsValidation.BI">
+                  {{ errorsValidation.BI }}
+                </label>
+              </small></label>
             <InputGroup>
               <InputGroupAddon>
                 <i class="pi pi-user size-n"></i>
               </InputGroupAddon>
-              <InputText id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="bi" v-model="formData.BI"/>
+              <InputText :invalid="errorsValidation.BI" id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="bi" v-model="formData.BI"/>
             </InputGroup>
           </div>
           <div class="col-6 d-flex items-center gap-1 mb-3 flex-column size-n">
-            <label for="name" class="font-semibold w-24">NUIT <small class="text-danger">*</small></label>
+            <label for="name" class="font-semibold w-24">NUIT
+              <small class="text-danger">*
+                <label
+                    class="font-weight-normal text-danger"
+                    v-if="errorsValidation.NUIT">
+                  {{ errorsValidation.NUIT }}
+                </label>
+              </small></label>
             <InputGroup>
               <InputGroupAddon>
                 <i class="pi pi-user size-n"></i>
               </InputGroupAddon>
-              <InputText id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="NUIT" v-model="formData.NUIT"/>
+              <InputText :invalid="errorsValidation.NUIT" id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="NUIT" v-model="formData.NUIT"/>
             </InputGroup>
           </div>
           <div class="col-6 d-flex items-center gap-1 mb-3 flex-column size-n">
-            <label for="name" class="font-semibold w-24">Senha <small class="text-danger">*</small></label>
+            <label for="name" class="font-semibold w-24">Senha
+              <small class="text-danger">*
+                <label
+                    class="font-weight-normal text-danger"
+                    v-if="errorsValidation.password">
+                  {{ errorsValidation.password }}
+                </label>
+              </small></label>
             <InputGroup>
               <InputGroupAddon>
                 <i class="pi pi-user size-n"></i>
               </InputGroupAddon>
-              <InputText id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="senha" v-model="formData.password"/>
+              <InputText :invalid="errorsValidation.password" id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="senha" v-model="formData.password"/>
             </InputGroup>
           </div>
           <div class="col-6 d-flex items-center gap-1 mb-3 flex-column size-n">
-            <label for="name" class="font-semibold w-24">Confirmar senha <small class="text-danger">*</small></label>
+            <label for="name" class="font-semibold w-24">Confirmar senha
+              <small class="text-danger">*
+                <label
+                    class="font-weight-normal text-danger"
+                    v-if="errorsValidation.passwordConfirm">
+                  {{ errorsValidation.passwordConfirm }}
+                </label>
+              </small></label>
             <InputGroup>
               <InputGroupAddon>
                 <i class="pi pi-user size-n"></i>
               </InputGroupAddon>
-              <InputText id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="confirmar senha" v-model="formData.passwordConfirm"/>
+              <InputText :invalid="errorsValidation.passwordConfirm" id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="confirmar senha" v-model="formData.passwordConfirm"/>
             </InputGroup>
           </div>
 
           <div class="d-flex items-center gap-1 mb-3 flex-column size-n col-6">
-            <label for="name" class="font-semibold w-24">Contacto Principal <small class="text-danger">*</small></label>
+            <label for="name" class="font-semibold w-24">Contacto Principal
+              <small class="text-danger">*
+                <label
+                    class="font-weight-normal text-danger"
+                    v-if="errorsValidation.contacto_1">
+                  {{ errorsValidation.contacto_1 }}
+                </label>
+              </small></label>
             <InputGroup>
               <InputGroupAddon>
                 <i class="pi pi-user size-n"></i>
               </InputGroupAddon>
-              <InputNumber placeholder="8x-xxxxxx" class="size-n small-input-group" v-model="formData.contacto_1"/>
+              <InputNumber :invalid="errorsValidation.contacto_1" placeholder="8x-xxxxxx" class="size-n small-input-group" v-model="formData.contacto1"/>
             </InputGroup>
           </div>
           <div class="col-6 d-flex items-center gap-1 mb-3 flex-column size-n">
-            <label for="name" class="font-semibold w-24">Contacto Secundario <small class="text-danger">*</small></label>
+            <label for="name" class="font-semibold w-24">Contacto Secundario </label>
             <InputGroup>
               <InputGroupAddon>
                 <i class="pi pi-user size-n"></i>
               </InputGroupAddon>
-              <InputNumber id="basic" placeholder="8x-xxxxxx" class="size-n small-input-group" v-model="formData.contacto1"/>
+              <InputNumber id="basic" placeholder="8x-xxxxxx" class="size-n small-input-group" v-model="formData.contacto2"/>
             </InputGroup>
           </div>
         </div>
@@ -111,6 +168,7 @@ import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
+import Toast from 'primevue/toast';
 
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
 import {TeacherService} from "@/modules/teacher/service/TeacherService";
@@ -124,10 +182,12 @@ export default {
     InputGroupAddon,
     Button,
     InputText,
-    InputNumber
+    InputNumber,
+    Toast
   },
   data() {
     return {
+      errorsValidation: {},
       permissions: [],
       selectedPermissions: [],
       roleName: '',
@@ -139,44 +199,63 @@ export default {
         passwordConfirm: '',
         BI: '',
         NUIT: '',
-        contacto_1: '',
         contacto1: '',
+        contacto2: '',
         formacao: '',
-        papel_id: 2
       }
     };
   },
   mounted() {
   },
   methods: {
-    showErrorAlert(msg) {
-      this.$swal({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        icon: "error",
-        title: msg,
-      });
+    validateForm(error) {
+      let errorsFormed = {};
+      for (const [key, value] of Object.entries(error)) {
+        errorsFormed[key] = value[0];
+      }
+      this.errorsValidation = { ...errorsFormed };
     },
-    showSuccessAlert(msg) {
-      this.$swal({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 1500,
-        icon: "success",
-        title: msg,
-      });
+    toastSuccess(msg) {
+      this.$toast.add({
+        severity: 'success',
+        summary: msg,
+        life: 3000 });
     },
+
+    toastError(msg) {
+      this.$toast.add({
+        severity: 'error',
+        summary: msg,
+        life: 3000 });
+    },
+
     saveTeacher() {
       console.log(this.formData);
       TeacherService.create(this.formData).then(() => {
-        this.showSuccessAlert('Docente criado com sucesso');
-      }).catch(() => {
-        this.showErrorAlert('Erro ao criar docente');
+        this.toastSuccess('Docente criado com sucesso');
+        this.formData = {
+          nome: '',
+          email: '',
+          password: '',
+          passwordConfirm: '',
+          BI: '',
+          NUIT: '',
+          contacto_1: '',
+          contacto1: '',
+          formacao: '',
+        };
+      }).catch((error) => {
+        this.validateForm(error.response.data.errors);
+        console.log(error.response);
+        console.log(this.formData);
+
+        if (error.response.status === 422){
+          this.toastError('Verifique os campos obrigatorios');
+          return;
+        }
+        this.toastError('Erro ao criar docente');
       });
-    }
+    },
   },
 }
 </script>

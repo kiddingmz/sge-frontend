@@ -15,8 +15,8 @@
       </div>
       <div class="card-body">
         <!--      <div>-->
-        <!--        <i class="pi pi-info-circle"></i> Campos obrigatorios contem-->
-        <!--        <small class="text-danger">*</small>-->
+        <!--        <i class e="pi pi-info-circle"></i> Campos obrigatorios contem-->
+        <!--        <small class e="text-danger">*</small>-->
         <!--      </div>-->
         <div class="d-flex row align-items-center col-12">
           <div class="col-6 d-flex items-center gap-1 mb-3 flex-column size-n">

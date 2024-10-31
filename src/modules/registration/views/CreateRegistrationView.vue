@@ -1,22 +1,22 @@
 <template>
   <div class="card border-0">
-    <header-content title="Usuario" show-btn="off" show-link="off"></header-content>
+    <header-content title="Matricula" show-btn="off" show-link="off"></header-content>
   </div>
   <Toast />
   <div class="card mt-5 border-0 shadow-sm">
-    <form @submit.stop.prevent="saveUser">
+    <form @submit.stop.prevent="saveRegistration">
     <div class="card-header barra-vertical">
       <small>
         <div class="d-flex gap-2 align-items-center">
           <i class="fa-solid fa-users-gear"></i>
-          <span class="ml-2">Novo Usuario</span>
+          <span class="ml-2">Nova Matricula</span>
         </div>
       </small>
     </div>
     <div class="card-body">
 <!--      <div>-->
-<!--        <i class="pi pi-info-circle"></i> Campos obrigatorios contem-->
-<!--        <small class="text-danger">*</small>-->
+<!--        <i class e="pi pi-info-circle"></i> Campos obrigatorios contem-->
+<!--        <small class e="text-danger">*</small>-->
 <!--      </div>-->
         <div class="d-flex row align-items-center col-12">
           <div class="col-6 d-flex items-center gap-1 mb-3 flex-column size-n">
@@ -127,8 +127,8 @@
             <label for="name" class="font-semibold w-24">Contacto Principal <small class="text-danger">*
               <label
                   class="font-weight-normal text-danger"
-                  v-if="errorsValidation.contacto1">
-                {{ errorsValidation.contacto1 }}
+                  v-if="errorsValidation.contacto_1">
+                {{ errorsValidation.contacto_1 }}
               </label>
             </small></label>
             <InputGroup>
@@ -136,7 +136,7 @@
                 <i class="pi pi-user size-n"></i>
               </InputGroupAddon>
               <InputNumber
-                  :invalid="errorsValidation.contacto1"
+                  :invalid="errorsValidation.contacto_1"
                   id="basi"  placeholder="8x-xxxxxx" class="size-n small-input-group" v-model="formData.contacto1"/>
             </InputGroup>
           </div>
@@ -144,8 +144,8 @@
             <label for="name" class="font-semibold w-24">Contacto Secundario <small class="text-danger">*
               <label
                   class="font-weight-normal text-danger"
-                  v-if="errorsValidation.contacto2">
-                {{ errorsValidation.contacto2 }}
+                  v-if="errorsValidation.contacto_2">
+                {{ errorsValidation.contacto_2 }}
               </label>
             </small></label>
             <InputGroup>
@@ -153,41 +153,44 @@
                 <i class="pi pi-user size-n"></i>
               </InputGroupAddon>
               <InputNumber
-                  :invalid="errorsValidation.contacto2"
+                  :invalid="errorsValidation.contacto_2"
                   id="basic"  placeholder="8x-xxxxxx" class="size-n small-input-group" v-model="formData.contacto2"/>
             </InputGroup>
           </div>
-        </div>
-        <div class="mt-3 mx-1 size border p-4 row" >
-          <h6 class="size-m">Selecionar Papeis: <small class="text-danger">*
-            <label
-                class="font-weight-normal text-danger"
-                v-if="errorsValidation.papelId">
-              {{ errorsValidation.papelId }}
-            </label>
-          </small></h6>
+          <div class="d-flex items-center col-6 gap-1 mb-3 flex-column size-n">
+            <label for="name" class="font-semibold w-24">Curso
+              <small class="text-danger">*
+                <label
+                    class="font-weight-normal text-danger"
+                    v-if="errorsValidation.curso_id">
+                  {{ errorsValidation.curso_id }}
+                </label>
+              </small></label>
 
-          <div class="col-12">
-            <div class="d-flex gap-2 bg-body-secondary mb-1 col-2">
-              <Checkbox
-                  inputId="all_role"
-                  v-model="allSelected"
-                  @change="toggleAllRoles"
-              />
-              <label for="all_role">Selecionar tudo</label>
-            </div>
+            <Select
+                v-model="formData.cursoId"
+                :options="curses"
+                filter optionLabel="nome"
+                placeholder="Selecione curso"
+                class="w-full md:w-56 small-input-group"
+                optionValue="id"
+                :invalid="errorsValidation.curso_id"
+            >
+              <template #value="slotProps">
+                <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
+                  <div class="small-input-group">{{ curses.find(c => c.id === slotProps.value)?.nome }}</div>
+                </div>
+                <span v-else>{{ slotProps.placeholder }}</span>
+              </template>
+
+              <template #option="slotProps">
+                <div class="flex items-center small-input-group size-n">
+                  <div class="small-input-group">{{ slotProps.option.nome }}</div>
+                </div>
+              </template>
+            </Select>
           </div>
 
-          <div v-for="role in roles" :key="role.id" class="col-4">
-            <div class="d-flex gap-2 bg-body-secondary mb-1">
-              <Checkbox
-                  v-model="formData.papelId"
-                  :inputId="`role_${role.id}`"
-                  :value="role.id"
-              />
-              <label :for="`role_${role.id}`">{{ role.nome }}</label>
-            </div>
-          </div>
         </div>
     </div>
     <div class="card-footer d-flex gap-3 justify-content-end">
@@ -204,11 +207,11 @@ import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
-import Checkbox from 'primevue/checkbox';
 import InputNumber from 'primevue/inputnumber';
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
-import { RoleService } from "@/modules/role/service/RoleService";
-import {UserService} from "@/modules/user/service/UserService";
+import {RegistrationService} from "@/modules/registration/service/RegistrationService";
+import Select from 'primevue/select';
+import {CourseService} from "@/modules/course/service/CourseService";
 
 export default {
   name: 'CreateRole',
@@ -218,14 +221,14 @@ export default {
     InputGroupAddon,
     Button,
     InputText,
-    Checkbox,
     InputNumber,
-    Toast
+    Toast,
+    Select
   },
   data() {
     return {
+      curses: [],
       allSelected: false,
-      roles: [],
       selectedRoles: [],
       roleName: '',
       description: '',
@@ -239,23 +242,21 @@ export default {
         NUIT: '',
         contacto1: '',
         contacto2: '',
-        papelId: ''
+        cursoId: ''
       }
     };
   },
+  watch: {
+    curso_id(value) {
+      this.formData.curso_id = value.id;
+    }
+  },
   mounted() {
-    RoleService.list().then((data) => {
-      this.roles = data;
+    CourseService.list().then((data) => {
+      this.curses = data;
     });
   },
   methods: {
-    toggleAllRoles() {
-      if (this.allSelected) {
-        this.formData.papelId = this.roles.map(role => role.id);
-      } else {
-        this.formData.papelId = [];
-      }
-    },
     validateForm(error) {
       let errorsFormed = {};
       for (const [key, value] of Object.entries(error)) {
@@ -263,28 +264,13 @@ export default {
       }
       this.errorsValidation = { ...errorsFormed };
     },
-
-    toastSuccess() {
+    toastSuccess(msg) {
       this.$toast.add({
         severity: 'success',
-        summary: 'Success Message',
-        detail: 'Message Content',
+        summary: msg,
         life: 3000 });
     },
-    toastInfo(title, msg) {
-      this.$toast.add({
-        severity: 'info',
-        summary: title,
-        detail: msg,
-        life: 3000 });
-    },
-    toastWarn() {
-      this.$toast.add({
-        severity: 'warn',
-        summary: 'Warn Message',
-        detail: 'Message Content',
-        life: 3000 });
-    },
+
     toastError(msg) {
       this.$toast.add({
         severity: 'error',
@@ -292,41 +278,33 @@ export default {
         life: 3000 });
     },
 
-    showErrorAlert(msg) {
-      this.$swal({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        icon: "error",
-        title: msg,
-      });
-    },
-    showSuccessAlert(msg) {
-      this.$swal({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 1500,
-        icon: "success",
-        title: msg,
-      });
-    },
-
-    saveUser() {
+    saveRegistration() {
       console.log(this.formData);
-      UserService.create(this.formData).then(() => {
-        this.showSuccessAlert('Usuario criado com sucesso');
+      RegistrationService.create(this.formData).then(() => {
+        this.toastSuccess('Matricula criado com sucesso');
+        this.formData = {
+          nome: '',
+          email: '',
+          password: '',
+          passwordConfirm: '',
+          BI: '',
+          NUIT: '',
+          contacto_1: '',
+          contacto_2: '',
+          curso_id: ''
+        };
       }).catch((error) => {
         this.validateForm(error.response.data.errors);
+        console.log(error.response);
+        console.log(this.formData);
 
         if (error.response.status === 422){
-          // this.showErrorAlert('Verifique os campos obrigatorios');
           this.toastError('Verifique os campos obrigatorios');
           return;
         }
-        this.showErrorAlert('Erro ao criar usuario');
+        this.toastError('Erro ao criar matricula');
       });
+
     }
   },
 }

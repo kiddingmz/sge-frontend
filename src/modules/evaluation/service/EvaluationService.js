@@ -10,19 +10,19 @@ function getHeaders() {
     };
 }
 
-export const ClassService = {
+export const EvaluationService = {
     async list() {
         try {
-            const response = await axios.get(`${baseApiUrl}/roles`, { headers: getHeaders() });
-            return response.data;
+            const response = await axios.get(`${baseApiUrl}/docente/notasTurma`, { headers: getHeaders() });
+            return response.data.data;
         } catch (error) {
-            console.error("Error fetching roles:", error);
+            console.error("Error fetching docente/notasTurma:", error);
             throw error;
         }
     },
     async create(role) {
         try {
-            const response = await axios.post(`${baseApiUrl}/roles`, role, { headers: getHeaders() });
+            const response = await axios.post(`${baseApiUrl}/docente/notasTurma`, role, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error creating role:", error);
@@ -31,7 +31,7 @@ export const ClassService = {
     },
     async update(role) {
         try {
-            const response = await axios.put(`${baseApiUrl}/roles/${role.id}`, role, { headers: getHeaders() });
+            const response = await axios.put(`${baseApiUrl}/docente/notasTurma/${role.id}`, role, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error updating role:", error);
@@ -40,7 +40,7 @@ export const ClassService = {
     },
     async delete(id) {
         try {
-            const response = await axios.delete(`${baseApiUrl}/roles/${id}`, { headers: getHeaders() });
+            const response = await axios.delete(`${baseApiUrl}/docente/notasTurma/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error deleting role:", error);
@@ -49,7 +49,7 @@ export const ClassService = {
     },
     async findById(id) {
         try {
-            const response = await axios.get(`${baseApiUrl}/roles/${id}`, { headers: getHeaders() });
+            const response = await axios.get(`${baseApiUrl}/docente/notasTurma/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error finding role by ID:", error);

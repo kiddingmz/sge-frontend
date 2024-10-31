@@ -66,6 +66,7 @@ registerModules({
     enrollment: enrollmentModule
 })
 
+
 // router.beforeEach((to, from, next) => {
 //     console.log('Logged In:', store.getters.loggedIn);
 //     console.log('Authorities:', store.getters.getAuthorities);
@@ -101,6 +102,31 @@ registerModules({
 //         next()
 //     }
 // })
+
+// router.beforeEach((to, from, next) => {
+//     const isLoggedIn = AuthStore.getters.loggedIn;
+//
+//     if (to.matched.some(record => record.meta.requiresAuth)) {
+//         if (!isLoggedIn) {
+//             console.log('Usuário não autenticado, redirecionando para Login');
+//             return next({ name: 'notAuth' });
+//         }
+//         const requiredAuthority = to.meta.authority;
+//         if (requiredAuthority && !AuthStore.getters.getAuthorities.includes(requiredAuthority)) {
+//             console.log(`Acesso negado - Autoridade "${requiredAuthority}" necessária para acessar esta rota:`, to.name);
+//             return next({ name: 'NotAuthorized' });
+//         }
+//     }
+//
+//     // if (to.matched.some(record => record.meta.requiresVisitor) && isLoggedIn && from.name) {
+//     //     console.log('Usuário autenticado tentando acessar rota de visitante, redirecionando para Home');
+//     //     return next({ name: 'Home' });
+//     // }
+//
+//     console.log('Acesso permitido à rota:', to.name);
+//     next();
+// });
+
 
 const app  = createApp(App);
 app.use(store);

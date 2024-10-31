@@ -9,50 +9,49 @@ function getHeaders() {
         'Authorization': `Bearer ${store.state.token}`
     };
 }
-
-export const DepartmentService = {
+export const ClassService = {
     async list() {
         try {
-            const response = await axios.get(`${baseApiUrl}/curso/departamentos`, { headers: getHeaders() });
+            const response = await axios.get(`${baseApiUrl}/curso/cadeiras`, { headers: getHeaders() });
             return response.data.data;
         } catch (error) {
-            console.error("Error fetching curso/departamentos:", error);
+            console.error("Error fetching curso/cadeiras:", error);
             throw error;
         }
     },
-    async create(departament) {
+    async create(myclass) {
         try {
-            const response = await axios.post(`${baseApiUrl}/curso/departamentos`, departament, { headers: getHeaders() });
+            const response = await axios.post(`${baseApiUrl}/curso/cadeiras`, myclass, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error creating departament:", error);
+            console.error("Error creating myclass:", error);
             throw error;
         }
     },
-    async update(departament) {
+    async update(myclass) {
         try {
-            const response = await axios.put(`${baseApiUrl}/curso/departamentos/${departament.id}`, departament, { headers: getHeaders() });
+            const response = await axios.put(`${baseApiUrl}/curso/cadeiras/${myclass.id}`, myclass, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error updating departament:", error);
+            console.error("Error updating myclass:", error);
             throw error;
         }
     },
     async delete(id) {
         try {
-            const response = await axios.delete(`${baseApiUrl}/curso/departamentos/${id}`, { headers: getHeaders() });
+            const response = await axios.delete(`${baseApiUrl}/curso/cadeiras/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error deleting departament:", error);
+            console.error("Error deleting myclass:", error);
             throw error;
         }
     },
     async findById(id) {
         try {
-            const response = await axios.get(`${baseApiUrl}/curso/departamentos/${id}`, { headers: getHeaders() });
+            const response = await axios.get(`${baseApiUrl}/curso/cadeiras/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error finding departament by ID:", error);
+            console.error("Error finding myclass by ID:", error);
             throw error;
         }
     },

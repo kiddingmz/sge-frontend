@@ -13,16 +13,16 @@ function getHeaders() {
 export const RegistrationService = {
     async list() {
         try {
-            const response = await axios.get(`${baseApiUrl}/auth/users`, { headers: getHeaders() });
+            const response = await axios.get(`${baseApiUrl}/matricula/estudantes`, { headers: getHeaders() });
             return response.data.data;
         } catch (error) {
-            console.error("Error fetching user:", error);
+            console.error("Error fetching matricula/estudantes:", error);
             throw error;
         }
     },
     async create(User) {
         try {
-            const response = await axios.post(`${baseApiUrl}/auth/users`, User, { headers: getHeaders() });
+            const response = await axios.post(`${baseApiUrl}/matricula/estudantes`, User, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error creating User:", error);
@@ -31,7 +31,7 @@ export const RegistrationService = {
     },
     async update(User) {
         try {
-            const response = await axios.put(`${baseApiUrl}/user/${User.id}`, User, { headers: getHeaders() });
+            const response = await axios.put(`${baseApiUrl}/matricula/estudantes/${User.id}`, User, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error updating User:", error);
@@ -40,7 +40,7 @@ export const RegistrationService = {
     },
     async delete(id) {
         try {
-            const response = await axios.delete(`${baseApiUrl}/user/${id}`, { headers: getHeaders() });
+            const response = await axios.delete(`${baseApiUrl}/matricula/estudantes/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error deleting User:", error);
@@ -49,7 +49,7 @@ export const RegistrationService = {
     },
     async findById(id) {
         try {
-            const response = await axios.get(`${baseApiUrl}/user/${id}`, { headers: getHeaders() });
+            const response = await axios.get(`${baseApiUrl}/matricula/estudantes/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error finding User by ID:", error);

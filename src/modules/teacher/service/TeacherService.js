@@ -13,7 +13,7 @@ function getHeaders() {
 export const TeacherService = {
     async list() {
         try {
-            const response = await axios.get(`${baseApiUrl}/docente/docente`, { headers: getHeaders() });
+            const response = await axios.get(`${baseApiUrl}/docente/docentes`, { headers: getHeaders() });
             return response.data.data;
         } catch (error) {
             console.error("Error fetching teachers:", error);
@@ -22,7 +22,7 @@ export const TeacherService = {
     },
     async create(teacher) {
         try {
-            const response = await axios.post(`${baseApiUrl}/docente/docente`, teacher, { headers: getHeaders() });
+            const response = await axios.post(`${baseApiUrl}/docente/docentes`, teacher, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error creating teacher:", error);
@@ -31,7 +31,7 @@ export const TeacherService = {
     },
     async update(teacher) {
         try {
-            const response = await axios.put(`${baseApiUrl}/docente/docente/${teacher.id}`, teacher, { headers: getHeaders() });
+            const response = await axios.put(`${baseApiUrl}/docente/docentes/${teacher.id}`, teacher, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error updating teacher:", error);
@@ -40,7 +40,7 @@ export const TeacherService = {
     },
     async delete(id) {
         try {
-            const response = await axios.delete(`${baseApiUrl}/docente/docente/${id}`, { headers: getHeaders() });
+            const response = await axios.delete(`${baseApiUrl}/docente/docentes/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error deleting teacher:", error);
@@ -49,7 +49,7 @@ export const TeacherService = {
     },
     async findById(id) {
         try {
-            const response = await axios.get(`${baseApiUrl}/docente/docente/${id}`, { headers: getHeaders() });
+            const response = await axios.get(`${baseApiUrl}/docente/docentes/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error finding teacher by ID:", error);

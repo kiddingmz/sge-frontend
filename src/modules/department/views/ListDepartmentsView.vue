@@ -6,7 +6,7 @@
   </div>
 
   <Dialog v-model:visible="visible" modal header="Adicionar Departamento" :style="{ width: '25rem' }">
-<!--    <span class="text-surface-500 dark:text-surface-400 block mb-8">Adicionar Departamento</span>-->
+<!--    <span class e="text-surface-500 dark:text-surface-400 block mb-8">Adicionar Departamento</span>-->
     <div class="d-flex items-center gap-1 mb-3 flex-column size-n">
       <label for="name" class="font-semibold w-24">Nome <small class="text-danger">*</small></label>
       <InputText id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="nome" />
@@ -40,9 +40,10 @@
     <div class="card-body">
       <Toast />
       <ConfirmDialog></ConfirmDialog>
-      <DataTable :value="roles" responsiveLayout="scroll" table-style="font-size: 0.8rem"
+      <DataTable :value="departments" responsiveLayout="scroll" table-style="font-size: 0.8rem"
                  :paginator="true"
                  :rows="10"
+                 :loading="loading"
                  paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                  :rowsPerPageOptions="[5, 10, 25]"
                  :filters="filters"
@@ -56,8 +57,9 @@
           </div>
         </template>
         <Column field="id" header="ID"></Column>
-        <Column field="name" header="Nome"></Column>
-        <Column field="name" header="Descrição"></Column>
+        <Column field="nome" header="Nome"></Column>
+        <Column field="descricao" header="Descrição"></Column>
+        <Column field="faculdade.nome" header="Faculdade"></Column>
 <!--        <Column field="id"  header="Nivel">-->
 <!--          &lt;!&ndash;          <template #body="slotProps">&ndash;&gt;-->
 <!--          &lt;!&ndash;            <Tag&ndash;&gt;-->
@@ -65,7 +67,7 @@
 <!--          &lt;!&ndash;                  :key="permission"&ndash;&gt;-->
 <!--          &lt;!&ndash;                  :value="permission"&ndash;&gt;-->
 <!--          &lt;!&ndash;                  severity="null"&ndash;&gt;-->
-<!--          &lt;!&ndash;                  class="m-1 p-0 px-1 size bg-body-secondary"&ndash;&gt;-->
+<!--          &lt;!&ndash;                  class e="m-1 p-0 px-1 size bg-body-secondary"&ndash;&gt;-->
 <!--          &lt;!&ndash;              />&ndash;&gt;-->
 <!--          &lt;!&ndash;          </template>&ndash;&gt;-->
 <!--        </Column>-->
@@ -120,70 +122,27 @@ export default {
   },
   data() {
     return {
-      roles: null,
-      columns: null,
+      loading: true,
+      departments: [],
       filters: {},
-      visible: false
+      visible: false,
+      formData: {
+        nome: '',
+        descricao: '',
+        faculdadeId: ''
+      }
     };
   },
-  created() {
-    this.columns = [
-      { field: 'id', header: 'ID' },
-      { field: 'name', header: 'Nome' },
-      { field: 'permissions', header: 'Permissões' },
-      { field: 'actions', header: 'Acções' }
-    ];
-  },
   mounted() {
-    DepartmentService.getRoles().then((data) => (this.roles = data));
+    DepartmentService.list().then((data) => {
+      this.departments = data;
+      this.loading = false;
+    });
   },
   methods: {
     toggleVisibility() {
       this.visible = !this.visible;
     },
-    confirm1() {
-      this.$confirm.require({
-        message: 'Tem certeza de que deseja prosseguir?',
-        header: 'Confirmação',
-        icon: 'pi pi-exclamation-triangle',
-        rejectProps: {
-          label: 'Cancelar',
-          severity: 'secondary',
-          outlined: true
-        },
-        acceptProps: {
-          label: 'Guardar'
-        },
-        accept: () => {
-          this.$toast.add({ severity: 'info', summary: 'Confirmado', detail: 'Você aceitou', life: 3000 });
-        },
-        reject: () => {
-          this.$toast.add({ severity: 'error', summary: 'Rejeitado', detail: 'Você rejeitou', life: 3000 });
-        }
-      });
-    },
-    confirm2() {
-      this.$confirm.require({
-        message: 'Deseja excluir este registro?',
-        header: 'Zona de perigo',
-        icon: 'pi pi-info-circle',
-        rejectProps: {
-          label: 'Cancelar',
-          severity: 'secondary',
-          outlined: true
-        },
-        acceptProps: {
-          label: 'Apagar',
-          severity: 'danger'
-        },
-        accept: () => {
-          this.$toast.add({ severity: 'info', summary: 'Confirmado', detail: 'Registro excluído', life: 3000 });
-        },
-        reject: () => {
-          this.$toast.add({ severity: 'error', summary: 'Rejeitado', detail: 'Você rejeitou', life: 3000 });
-        }
-      });
-    }
   }
 }
 </script>

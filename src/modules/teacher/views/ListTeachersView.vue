@@ -7,17 +7,17 @@
       <small class="d-flex justify-content-between">
         <div class="d-flex gap-2 align-items-center">
           <i class="fa-solid fa-user-shield"></i>
-          <span class="ml-2">Lista de Docentes : 12</span>
+          <span class="ml-2">Lista de Docentes : {{ quantity }}</span>
         </div>
         <div>
-          <a href="#" class="btn-p">
+          <a @click="refresh" class="btn-p">
             <i class="fa-solid fa-rotate-right"></i>
           </a>
         </div>
       </small>
     </div>
     <div class="card-body">
-      <DataTable :value="roles" responsiveLayout="scroll" table-style="font-size: 0.8rem"
+      <DataTable :value="teachers" responsiveLayout="scroll" table-style="font-size: 0.8rem"
                  :paginator="true"
                  :rows="10"
                  paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -33,22 +33,9 @@
           </div>
         </template>
         <Column field="id" header="ID"></Column>
-        <Column field="name" header="Nome"></Column>
-        <Column field="name" header="Categoria"></Column>
-        <Column field="id"  header="Nivel">
-          <!--          <template #body="slotProps">-->
-          <!--            <Tag-->
-          <!--                  v-for="permission in slotProps.data.permissions"-->
-          <!--                  :key="permission"-->
-          <!--                  :value="permission"-->
-          <!--                  severity="null"-->
-          <!--                  class="m-1 p-0 px-1 size bg-body-secondary"-->
-          <!--              />-->
-          <!--          </template>-->
-        </Column>
-        <Column field="name" header="Semestre"></Column>
-        <Column field="name" header="Tipo"></Column>
-
+        <Column field="nome" header="Nome"></Column>
+        <Column field="email" header="Email"></Column>
+        <Column field="formacao"  header="Formação"></Column>
         <Column field="actions" header="Acções">
           <template #body="slotProps" >
             <div class="d-flex gap-2">
@@ -62,7 +49,7 @@
           </template>
         </Column>
 
-<!--        <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :body="getColumnBody(col.field, roles)" />-->
+<!--        <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :body="getColumnBody(col.field, teachers)" />-->
       </DataTable>
     </div>
   </div>
@@ -80,6 +67,7 @@
 
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
 import { TeacherService } from "../service/TeacherService";
+import {UserService} from "@/modules/user/service/UserService";
 
 export default {
   name: 'ListRoles',
@@ -88,23 +76,34 @@ export default {
   },
   data() {
     return {
-      roles: null,
-      columns: null,
       filters: {},
+      teachers: null,
+      loading: true,
+      quantity: 0,
     };
   },
-  created() {
-    this.columns = [
-      { field: 'id', header: 'ID' },
-      { field: 'name', header: 'Nome' },
-      { field: 'permissions', header: 'Permissões' },
-      { field: 'actions', header: 'Acções' }
-    ];
+  watch: {
+    teachers: {
+      handler: function (val) {
+        this.quantity = val.length;
+      },
+      deep: true,
+    },
   },
   mounted() {
-    TeacherService.getRoles().then((data) => (this.roles = data));
+    TeacherService.list().then((data) => {
+      this.teachers = data;
+      this.loading = false;
+    });
   },
   methods: {
+    refresh() {
+      this.loading = true;
+      UserService.list().then((data) => {
+        this.users = data;
+        this.loading = false;
+      });
+    }
   }
 }
 </script>

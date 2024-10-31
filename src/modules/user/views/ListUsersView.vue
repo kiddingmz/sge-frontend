@@ -46,12 +46,12 @@
         <Column field="actions" header="Acções">
           <template #body="slotProps" >
             <span v-if="slotProps === 1"></span>
-<!--            <div class="d-flex gap-2">-->
+<!--            <div class e="d-flex gap-2">-->
 <!--              <router-link :to="{name: 'editUser', params: {id: slotProps.data.dadosPessoais.id}}">-->
-<!--                <i class="pi pi-pen-to-square text-success"></i>-->
+<!--                <i class e="pi pi-pen-to-square text-success"></i>-->
 <!--              </router-link>-->
 <!--              <a :href="slotProps.data.dadosPessoais.id">-->
-<!--                <i class="pi pi-trash text-danger"></i>-->
+<!--                <i class e="pi pi-trash text-danger"></i>-->
 <!--              </a>-->
 <!--            </div>-->
             <div class="d-flex flex-wrap justify-center gap-1">
