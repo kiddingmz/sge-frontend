@@ -1,8 +1,8 @@
 // import {authorities} from "@/global";
 import Module from "./Module.vue";
-const ListRoles = () => import("./views/ListDepartmentsView.vue");
-const CreateRole = () => import("./views/CreateDepartmentView.vue");
-const EditRole = () => import("./views/EditDepartmentView.vue");
+const List = () => import("./views/ListDepartmentsView.vue");
+const Create = () => import("./views/CreateDepartmentView.vue");
+const Edit = () => import("./views/EditDepartmentView.vue");
 
 export default router => {
   router.addRoute({
@@ -13,9 +13,9 @@ export default router => {
       requiresAuth: true,
     },
     children: [
-      { path: '', component: ListRoles },
-      { name: 'createDepartment', path: 'create', component: CreateRole},
-      { name: 'editDepartment', path: 'edit/:id', component: EditRole },
+      { path: '', component: List },
+      { name: 'createDepartment', path: 'create', component: Create},
+      { name: 'editDepartment', path: 'edit/:id', component: Edit },
     ],
   })
 };

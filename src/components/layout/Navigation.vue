@@ -52,6 +52,15 @@
         </div>
       </router-link>
 
+      <router-link to="college" class="button"
+                   v-if="$hasAnyAuthority('COURSE_VIEW', 'COURSE_CREATE', 'COURSE_EDIT', 'COURSE_DELETE')"
+      >
+        <div class="d-flex align-items-center justify-content-between aside-item">
+          <i class="fa fa-solid fa-building-columns"></i>
+          <span class="text">Faculdades</span>
+        </div>
+      </router-link>
+
       <router-link to="course" class="button"
       v-if="$hasAnyAuthority('COURSE_VIEW', 'COURSE_CREATE', 'COURSE_EDIT', 'COURSE_DELETE')"
       >

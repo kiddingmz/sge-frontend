@@ -5,22 +5,108 @@
     ></header-content>
   </div>
 
-  <Dialog v-model:visible="visible" modal header="Adicionar Departamento" :style="{ width: '25rem' }">
+  <Dialog v-model:visible="visible" modal header="Adicionar Departamento" :style="{ width: '30rem' }">
 <!--    <span class e="text-surface-500 dark:text-surface-400 block mb-8">Adicionar Departamento</span>-->
-    <div class="d-flex items-center gap-1 mb-3 flex-column size-n">
-      <label for="name" class="font-semibold w-24">Nome <small class="text-danger">*</small></label>
-      <InputText id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="nome" />
-    </div>
-    <div class="d-flex items-center gap-1 mb-3 flex-column size-n">
-      <label for="description" class="font-semibold w-24 ">Descrição</label>
-      <InputText id="description" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="descrição"/>
-    </div>
-    <div class="d-flex justify-content-end gap-2">
-      <Button label="Cancelar" icon="pi pi-times" class="small-input-group size-n" severity="secondary" outlined @click="visible = false"
-      />
-      <Button label="Guardar" icon="pi pi-check" class="small-input-group size-n p-button-success" @click="visible = false"
-      />
-    </div>
+    <form @submit.stop.prevent="saveCollege">
+      <div class="d-flex items-center gap-1 mb-3 flex-column size-n">
+        <label for="name" class="font-semibold w-24">Nome
+          <small class="text-danger">*
+            <label
+                class="font-weight-normal text-danger"
+                v-if="errorsValidation.nome">
+              {{ errorsValidation.nome }}
+            </label>
+          </small>
+        </label>
+        <InputGroup>
+          <InputGroupAddon>
+            <i class="pi pi-user size-n"></i>
+          </InputGroupAddon>
+          <InputText
+              id="name"
+              class="flex-auto size-n custom-input small-input-group"
+              autocomplete="off"
+              placeholder="nome"
+              v-model="formData.nome"
+              :invalid="errorsValidation.nome"
+          />
+        </InputGroup>
+      </div>
+
+      <div class="d-flex items-center gap-1 mb-3 flex-column size-n">
+        <label for="name" class="font-semibold w-24">Descrição
+          <small class="text-danger">*
+            <label
+                class="font-weight-normal text-danger"
+                v-if="errorsValidation.descricao">
+              {{ errorsValidation.descricao }}
+            </label>
+          </small>
+        </label>
+        <InputGroup>
+          <InputGroupAddon>
+            <i class="pi pi-user size-n"></i>
+          </InputGroupAddon>
+          <Textarea
+              id="name"
+              class="flex-auto size-n custom-input"
+              placeholder="descrição"
+              v-model="formData.descricao"
+              rows="5"
+              style="width: 100%"
+              :invalid="errorsValidation.descricao"
+          />
+        </InputGroup>
+      </div>
+      <div class="d-flex items-center gap-1 mb-3 flex-column size-n"
+      >
+        <label for="name" class="font-semibold w-24">Director
+          <small class="text-danger">*
+            <label
+                class="font-weight-normal text-danger"
+                v-if="errorsValidation.faculdadeId">
+              {{ errorsValidation.faculdadeId }}
+            </label>
+          </small>
+        </label>
+
+        <Select
+            v-model="formData.faculdadeId"
+            :options="colleges"
+            filter optionLabel="nome"
+            placeholder="Selecione director"
+            class="w-full md:w-56 small-input-group"
+            optionValue="id"
+            :invalid="errorsValidation.faculdadeId"
+        >
+          <template #value="slotProps">
+            <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
+              <div class="small-input-group">
+                {{
+                  colleges.find(c => c.id === slotProps.value)?.nome
+                }}
+              </div>
+            </div>
+            <span v-else>{{ slotProps.placeholder }}</span>
+          </template>
+
+          <template #option="slotProps">
+            <div class="flex items-center small-input-group size-n">
+              <div class="small-input-group">{{ slotProps.option.nome }}</div>
+            </div>
+          </template>
+        </Select>
+      </div>
+
+      <Divider />
+
+      <div class="d-flex justify-content-end gap-2">
+        <Button label="Cancelar" icon="pi pi-times" class="small-input-group size-n" severity="secondary" type="reset" outlined @click="visible = false"
+        />
+        <Button label="Guardar" icon="pi pi-check" class="small-input-group size-n p-button-success" type="submit"
+        />
+      </div>
+    </form>
   </Dialog>
 
   <div class="card mt-5 border-0 shadow-sm">
@@ -28,10 +114,10 @@
       <small class="d-flex justify-content-between">
         <div class="d-flex gap-2 align-items-center">
           <i class="fa-solid fa-user-shield"></i>
-          <span class="ml-2">Lista de Departamentos : 12</span>
+          <span class="ml-2">Lista de Departamentos : {{ quantity }}</span>
         </div>
         <div>
-          <a href="#" class="btn-p">
+          <a @click="refresh" class="btn-p">
             <i class="fa-solid fa-rotate-right"></i>
           </a>
         </div>
@@ -42,8 +128,8 @@
       <ConfirmDialog></ConfirmDialog>
       <DataTable :value="departments" responsiveLayout="scroll" table-style="font-size: 0.8rem"
                  :paginator="true"
-                 :rows="10"
                  :loading="loading"
+                 :rows="10"
                  paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                  :rowsPerPageOptions="[5, 10, 25]"
                  :filters="filters"
@@ -60,21 +146,7 @@
         <Column field="nome" header="Nome"></Column>
         <Column field="descricao" header="Descrição"></Column>
         <Column field="faculdade.nome" header="Faculdade"></Column>
-<!--        <Column field="id"  header="Nivel">-->
-<!--          &lt;!&ndash;          <template #body="slotProps">&ndash;&gt;-->
-<!--          &lt;!&ndash;            <Tag&ndash;&gt;-->
-<!--          &lt;!&ndash;                  v-for="permission in slotProps.data.permissions"&ndash;&gt;-->
-<!--          &lt;!&ndash;                  :key="permission"&ndash;&gt;-->
-<!--          &lt;!&ndash;                  :value="permission"&ndash;&gt;-->
-<!--          &lt;!&ndash;                  severity="null"&ndash;&gt;-->
-<!--          &lt;!&ndash;                  class e="m-1 p-0 px-1 size bg-body-secondary"&ndash;&gt;-->
-<!--          &lt;!&ndash;              />&ndash;&gt;-->
-<!--          &lt;!&ndash;          </template>&ndash;&gt;-->
-<!--        </Column>-->
-<!--        <Column field="name" header="Semestre"></Column>-->
-<!--        <Column field="name" header="Tipo"></Column>-->
-
-        <Column field="actions" header="Acções">
+        <Column header="Acções">
           <template #body="slotProps" >
             <span v-if="1===2">{{slotProps.data.name}}</span>
             <div class="d-flex flex-wrap justify-center gap-1">
@@ -95,21 +167,21 @@
 </template>
 
 <script>
-// import Tag from "primevue/tag";
-// import Toolbar from "primevue/toolbar";
 import Button from "primevue/button";
 import ConfirmDialog from "primevue/confirmdialog";
 import Toast from "primevue/toast";
 import Dialog from 'primevue/dialog';
-
-// import FileUpload from "primevue/fileupload";
-// import IconField from "primevue/iconfield";
-// import InputIcon from "primevue/inputicon";
-// import InputText from "primevue/inputtext";
-
+import Textarea from 'primevue/textarea';
+import InputText from "primevue/inputtext";
+import InputGroup from "primevue/inputgroup";
+import InputGroupAddon from "primevue/inputgroupaddon";
+import Select from 'primevue/select';
+import Divider from 'primevue/divider';
 
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
 import { DepartmentService } from "../service/DepartmentService";
+import {UserService} from "@/modules/user/service/UserService";
+import {CollegeService} from "@/modules/college/service/CollegeService";
 
 export default {
   name: 'ListRoles',
@@ -119,35 +191,116 @@ export default {
     ConfirmDialog,
     Toast,
     Dialog,
+    InputText,
+    InputGroup,
+    InputGroupAddon,
+    Select,
+    Divider,
+    Textarea,
   },
   data() {
     return {
-      loading: true,
       departments: [],
+      columns: null,
       filters: {},
       visible: false,
+      loading: true,
+      colleges: [],
+      quantity: 0,
+      errorsValidation: {},
       formData: {
         nome: '',
         descricao: '',
-        faculdadeId: ''
-      }
+        faculdadeId: '',
+      },
     };
+  },
+  watch: {
+    departments: {
+      handler: function (val) {
+        this.quantity = val.length;
+      },
+      deep: true,
+    },
   },
   mounted() {
     DepartmentService.list().then((data) => {
       this.departments = data;
       this.loading = false;
     });
+   CollegeService.list().then((data) => {
+      this.colleges = data;
+    });
   },
   methods: {
     toggleVisibility() {
       this.visible = !this.visible;
     },
+
+    validateForm(error) {
+      let errorsFormed = {};
+      for (const [key, value] of Object.entries(error)) {
+        errorsFormed[key] = value[0];
+      }
+      this.errorsValidation = { ...errorsFormed };
+    },
+    toastSuccess(msg) {
+      this.$toast.add({
+        severity: 'success',
+        summary: msg,
+        life: 3000 });
+    },
+
+    toastError(msg) {
+      this.$toast.add({
+        severity: 'error',
+        summary: msg,
+        life: 3000 });
+    },
+
+    refresh() {
+      this.loading = true;
+      DepartmentService.list().then((data) => {
+        this.departments = data;
+        this.loading = false;
+      });
+    },
+
+    saveCollege() {
+      DepartmentService.create(this.formData).then(() => {
+        this.toastSuccess('Faculdade criado com sucesso');
+        this.formData = {
+          nome: '',
+          descricao: '',
+          faculdadeId: '',
+        };
+        this.refresh();
+      }).catch((error) => {
+        this.validateForm(error.response.data.errors);
+
+        if (error.response.status === 422){
+          this.toastError('Verifique os campos obrigatorios');
+          return;
+        }
+        this.toastError('Erro ao criar faculdade');
+      });
+
+    }
   }
 }
 </script>
 
 <style scoped>
+.custom-input-number:focus {
+  border-color: var(--primary) !important;
+}
+
+InputNumber:focus {
+  border-color: var(--primary) !important;
+}
+.p-inputtext:enabled:focus {
+  border-color: var(--primary) !important;
+}
 .size {
   font-size: 0.7rem;
   font-weight: bolder;
@@ -155,7 +308,7 @@ export default {
 }
 
 .size-n {
-  font-size: 0.7rem;
+  font-size: 0.7rem !important;
 }
 
  .table-header {
@@ -170,7 +323,7 @@ export default {
 }
 
 .small-input-group {
-  height: 30px;
+  height: 30px !important;
 }
 
 .custom-input {

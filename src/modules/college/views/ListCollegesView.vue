@@ -1,39 +1,65 @@
 <template>
   <div class="card border-0">
-    <header-content title="Inscrições"
+    <header-content title="Faculdades"
       @toggle-visibility="toggleVisibility" show-link="off" show-btn="on"
     ></header-content>
   </div>
 
-  <Dialog v-model:visible="visible" modal header="Adicionar inscrição" :style="{ width: '30rem' }">
+  <Dialog v-model:visible="visible" modal header="Adicionar Faculdade" :style="{ width: '30rem' }">
 <!--    <span class e="text-surface-500 dark:text-surface-400 block mb-8">Adicionar Departamento</span>-->
-    <form @submit.stop.prevent="saveEnrollment">
-      <div class="d-flex items-center gap-1 mb-3 flex-column size-n"
-      >
-        <label for="name" class="font-semibold w-24">Estudante
+    <form @submit.stop.prevent="saveCollege">
+      <div class="d-flex items-center gap-1 mb-3 flex-column size-n">
+        <label for="name" class="font-semibold w-24">Nome
           <small class="text-danger">*
             <label
                 class="font-weight-normal text-danger"
-                v-if="errorsValidation.estudanteId">
-              {{ errorsValidation.estudanteId }}
+                v-if="errorsValidation.nome">
+              {{ errorsValidation.nome }}
+            </label>
+          </small>
+        </label>
+        <InputGroup>
+          <InputGroupAddon>
+            <i class="pi pi-user size-n"></i>
+          </InputGroupAddon>
+          <InputText
+              id="name"
+              class="flex-auto size-n custom-input small-input-group"
+              autocomplete="off"
+              placeholder="nome"
+              v-model="formData.nome"
+              :invalid="errorsValidation.nome"
+          />
+        </InputGroup>
+      </div>
+      
+
+      <div class="d-flex items-center gap-1 mb-3 flex-column size-n"
+      >
+        <label for="name" class="font-semibold w-24">Director
+          <small class="text-danger">*
+            <label
+                class="font-weight-normal text-danger"
+                v-if="errorsValidation.director">
+              {{ errorsValidation.director }}
             </label>
           </small>
         </label>
 
         <Select
-            v-model="formData.estudanteId"
-            :options="students"
+            v-model="formData.director"
+            :options="users"
             filter optionLabel="nome"
-            placeholder="Selecione estudante"
+            placeholder="Selecione director"
             class="w-full md:w-56 small-input-group"
             optionValue="id"
-            :invalid="errorsValidation.estudanteId"
+            :invalid="errorsValidation.director"
         >
           <template #value="slotProps">
             <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
               <div class="small-input-group">
                 {{
-                  classes.find(c => c.id === slotProps.value)?.nome
+                  users.find(c => c.id === slotProps.value)?.nome
                 }}
               </div>
             </div>
@@ -48,32 +74,6 @@
         </Select>
       </div>
 
-      <div class="col-12 d-flex items-center gap-1 mb-3 flex-column size-n">
-        <label for="name" class="font-semibold w-24">Cadeiras <small class="text-danger">*
-          <label
-              class="font-weight-normal text-danger"
-              v-if="errorsValidation.cadeiraId">
-            {{ errorsValidation.cadeiraId }}
-          </label>
-        </small>
-        </label>
-        <InputGroup>
-          <InputGroupAddon>
-            <i class="pi pi-user size-n"></i>
-          </InputGroupAddon>
-          <MultiSelect
-              v-model="cadeiraId"
-              display="chip"
-              :options="classes"
-              optionLabel="nome"
-              filter
-              placeholder="Seleciona cadeiras"
-              class="size-n custom-input expandable-multiselect"
-              @change="limitSelection"
-          />
-
-        </InputGroup>
-      </div>
       <Divider />
 
       <div class="d-flex justify-content-end gap-2">
@@ -90,7 +90,7 @@
       <small class="d-flex justify-content-between">
         <div class="d-flex gap-2 align-items-center">
           <i class="fa-solid fa-user-shield"></i>
-          <span class="ml-2">Lista de Inscrição</span>
+          <span class="ml-2">Lista de Faculdades : {{ quantity }}</span>
         </div>
         <div>
           <a @click="refresh" class="btn-p">
@@ -102,7 +102,7 @@
     <div class="card-body">
       <Toast />
       <ConfirmDialog></ConfirmDialog>
-      <DataTable :value="students" responsiveLayout="scroll" table-style="font-size: 0.8rem"
+      <DataTable :value="colleges" responsiveLayout="scroll" table-style="font-size: 0.8rem"
                  :paginator="true"
                  :loading="loading"
                  :rows="10"
@@ -120,8 +120,7 @@
         </template>
         <Column field="id" header="ID"></Column>
         <Column field="nome" header="Nome"></Column>
-        <Column field="descricao" header="Descrição"></Column>
-        <Column field="faculdade.nome" header="Faculdade"></Column>
+        <Column field="director.nome" header="Director"></Column>
         <Column header="Acções">
           <template #body="slotProps" >
             <span v-if="1===2">{{slotProps.data.name}}</span>
@@ -147,16 +146,16 @@ import Button from "primevue/button";
 import ConfirmDialog from "primevue/confirmdialog";
 import Toast from "primevue/toast";
 import Dialog from 'primevue/dialog';
+
 import InputText from "primevue/inputtext";
 import InputGroup from "primevue/inputgroup";
 import InputGroupAddon from "primevue/inputgroupaddon";
 import Select from 'primevue/select';
 import Divider from 'primevue/divider';
-import MultiSelect from 'primevue/multiselect';
+
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
-import { EnrollmentService } from "../service/EnrollmentService";
-import {ClassService} from "@/modules/class/service/ClassService";
-import {RegistrationService} from "@/modules/registration/service/RegistrationService";
+import { CollegeService } from "../service/CollegeService";
+import {UserService} from "@/modules/user/service/UserService";
 
 export default {
   name: 'ListRoles',
@@ -171,26 +170,25 @@ export default {
     InputGroupAddon,
     Select,
     Divider,
-    MultiSelect
   },
   data() {
     return {
-      students: [],
+      colleges: [],
+      columns: null,
       filters: {},
       visible: false,
       loading: true,
-      classes: [],
+      users: [],
       quantity: 0,
-      selectedClasses: [],
       errorsValidation: {},
       formData: {
-        estudanteId: '',
-        cadeiraId: '',
+        nome: '',
+        director: '',
       },
     };
   },
   watch: {
-    students: {
+    colleges: {
       handler: function (val) {
         this.quantity = val.length;
       },
@@ -198,22 +196,15 @@ export default {
     },
   },
   mounted() {
-    this.loading = false;
-    ClassService.list().then((data) => {
-      this.classes = data;
+    CollegeService.list().then((data) => {
+      this.colleges = data;
+      this.loading = false;
     });
-    RegistrationService.list().then((data) => {
-      this.students = data;
-      console.log(data);
+   UserService.list().then((data) => {
+      this.users = data;
     });
   },
   methods: {
-    limitSelection() {
-      if (this.selectedClasses.length > 8) {
-        this.selectedClasses = this.selectedClasses.slice(0, 8);
-        this.toastError('Você só pode selecionar no máximo 8 cadeiras');
-      }
-    },
     toggleVisibility() {
       this.visible = !this.visible;
     },
@@ -241,18 +232,20 @@ export default {
 
     refresh() {
       this.loading = true;
-      EnrollmentService.list().then((data) => {
-        this.students = data;
+      CollegeService.list().then((data) => {
+        this.colleges = data;
         this.loading = false;
       });
     },
 
-    saveEnrollment() {
-      EnrollmentService.create(this.formData).then(() => {
-        this.toastSuccess('Inscricao criado com sucesso');
+    saveCollege() {
+      this.formData.director = String(this.formData.director);
+      console.log('Faculdade:', this.formData);
+      CollegeService.create(this.formData).then(() => {
+        this.toastSuccess('Faculdade criado com sucesso');
         this.formData = {
-          estudanteId: '',
-          cadeiraId: '',
+          nome: '',
+          director: '',
         };
         this.refresh();
       }).catch((error) => {
@@ -262,7 +255,7 @@ export default {
           this.toastError('Verifique os campos obrigatorios');
           return;
         }
-        this.toastError('Erro ao criar inscricao');
+        this.toastError('Erro ao criar faculdade');
       });
 
     }

@@ -237,7 +237,7 @@ import Divider from 'primevue/divider';
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
 import { EvaluationService } from "../service/EvaluationService";
 import {RegistrationService} from "@/modules/registration/service/RegistrationService";
-// import {GradeService} from "@/modules/department/service/GradeService";
+// import {GradeService} from "@/modules/department I/service/GradeService";
 
 import DatePicker from 'primevue/datepicker';
 

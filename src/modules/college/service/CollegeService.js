@@ -10,49 +10,49 @@ function getHeaders() {
     };
 }
 
-export const EnrollmentService = {
+export const CollegeService = {
     async list() {
         try {
-            const response = await axios.get(`${baseApiUrl}/inscricao/inscricoes`, { headers: getHeaders() });
+            const response = await axios.get(`${baseApiUrl}/curso/faculdades`, { headers: getHeaders() });
             return response.data.data;
         } catch (error) {
-            console.error("Error fetching inscricao/inscricoes:", error);
+            console.error("Error fetching curso/faculdades:", error);
             throw error;
         }
     },
-    async create(enrollment) {
+    async create(college) {
         try {
-            const response = await axios.post(`${baseApiUrl}/inscricao/inscricoes`, enrollment, { headers: getHeaders() });
+            const response = await axios.post(`${baseApiUrl}/curso/faculdades`, college, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error creating enrollment:", error);
+            console.error("Error creating college:", error);
             throw error;
         }
     },
-    async update(enrollment) {
+    async update(college) {
         try {
-            const response = await axios.put(`${baseApiUrl}/inscricao/inscricoes/${enrollment.id}`, enrollment, { headers: getHeaders() });
+            const response = await axios.put(`${baseApiUrl}/curso/faculdades/${college.id}`, college, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error updating enrollment:", error);
+            console.error("Error updating college:", error);
             throw error;
         }
     },
     async delete(id) {
         try {
-            const response = await axios.delete(`${baseApiUrl}/inscricao/inscricoes/${id}`, { headers: getHeaders() });
+            const response = await axios.delete(`${baseApiUrl}/curso/faculdades/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error deleting enrollment:", error);
+            console.error("Error deleting college:", error);
             throw error;
         }
     },
     async findById(id) {
         try {
-            const response = await axios.get(`${baseApiUrl}/inscricao/inscricoes/${id}`, { headers: getHeaders() });
+            const response = await axios.get(`${baseApiUrl}/curso/faculdades/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error finding enrollment by ID:", error);
+            console.error("Error finding college by ID:", error);
             throw error;
         }
     },

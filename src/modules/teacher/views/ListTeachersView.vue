@@ -20,6 +20,7 @@
       <DataTable :value="teachers" responsiveLayout="scroll" table-style="font-size: 0.8rem"
                  :paginator="true"
                  :rows="10"
+                 :loading="loading"
                  paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                  :rowsPerPageOptions="[5, 10, 25]"
                  :filters="filters"
@@ -32,14 +33,15 @@
             <InputText v-model="filters['global']" placeholder="Digite para pesquisar" class="custom-input small-input-group" />
           </div>
         </template>
-        <Column field="id" header="ID"></Column>
-        <Column field="nome" header="Nome"></Column>
-        <Column field="email" header="Email"></Column>
+        <Column field="dadosPessoais.id" header="ID"></Column>
+        <Column field="dadosPessoais.nome" header="Nome"></Column>
+        <Column field="dadosPessoais.email" header="Email"></Column>
+        <Column field="dadosPessoais.contacto.0"  header="Contacto"></Column>
         <Column field="formacao"  header="Formação"></Column>
-        <Column field="actions" header="Acções">
+        <Column header="Acções">
           <template #body="slotProps" >
             <div class="d-flex gap-2">
-              <router-link :to="{name: 'editRole', params: {id: slotProps.data.id}}">
+              <router-link :to="{name: 'editRole', params: {id: 1}}">
                 <i class="pi pi-pen-to-square text-success"></i>
               </router-link>
               <a :href="slotProps.data.id">
@@ -67,7 +69,6 @@
 
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
 import { TeacherService } from "../service/TeacherService";
-import {UserService} from "@/modules/user/service/UserService";
 
 export default {
   name: 'ListRoles',
@@ -99,8 +100,8 @@ export default {
   methods: {
     refresh() {
       this.loading = true;
-      UserService.list().then((data) => {
-        this.users = data;
+      TeacherService.list().then((data) => {
+        this.teachers = data;
         this.loading = false;
       });
     }

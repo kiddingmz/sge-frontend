@@ -34,7 +34,6 @@ import Vue3Datatable from '@bhplugin/vue3-datatable'
 import '@bhplugin/vue3-datatable/dist/style.css'
 
 import authService from '@/modules/auth/service/AuthService';
-
 import authModule from '@/modules/auth';
 import studentModule from '@/modules/student';
 import teacherModule from '@/modules/teacher';
@@ -47,6 +46,7 @@ import roleModule from "@/modules/role";
 import userModule from "@/modules/user";
 import registrationModule from "@/modules/registration";
 import enrollmentModule from "@/modules/enrollment";
+import collegeModule from "@/modules/college";
 
 import { registerModules } from "./register-modules";
 
@@ -63,7 +63,8 @@ registerModules({
     role: roleModule,
     user: userModule,
     registration: registrationModule,
-    enrollment: enrollmentModule
+    enrollment: enrollmentModule,
+    college: collegeModule
 })
 
 

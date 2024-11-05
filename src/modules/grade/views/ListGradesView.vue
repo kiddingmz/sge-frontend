@@ -280,10 +280,12 @@ export default {
       filters: {},
       visible: false,
       formData: {
-        nomeAvaliacao: "teste trigger criarAvaliacoes",
-        cadeiraId: 21,
-        cursoId: 3,
-        ano: 2024
+        "cursoId":"3",
+        "cadeiraId":"21",
+        "ano":"2024",
+        "estudanteId":"73",
+        "nota":"20",
+        "nomeAvaliacao":"teste trigger criarAvaliacoes "
       }
     };
   },
