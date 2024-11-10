@@ -16,7 +16,7 @@
 
     <h4 class="size">Menu</h4>
     <div class="menu scroll">
-      <router-link to="registration" class="button"
+      <router-link to="/registration" class="button"
                    v-if="$hasAnyAuthority('STUDENT_VIEW', 'STUDENT_CREATE', 'STUDENT_EDIT', 'STUDENT_DELETE')"
       >
         <div class="d-flex align-items-center justify-content-between aside-item">
@@ -25,7 +25,7 @@
         </div>
       </router-link>
 
-      <router-link to="enrollment" class="button"
+      <router-link to="/enrollment" class="button"
                    v-if="$hasAnyAuthority('STUDENT_VIEW', 'STUDENT_CREATE', 'STUDENT_EDIT', 'STUDENT_DELETE')"
       >
         <div class="d-flex align-items-center justify-content-between aside-item">
@@ -34,7 +34,7 @@
         </div>
       </router-link>
 
-      <router-link to="student" class="button"
+      <router-link to="/student" class="button"
       v-if="$hasAnyAuthority('STUDENT_VIEW', 'STUDENT_CREATE', 'STUDENT_EDIT', 'STUDENT_DELETE')"
       >
         <div class="d-flex align-items-center justify-content-between aside-item">
@@ -43,7 +43,7 @@
         </div>
       </router-link>
 
-      <router-link to="teacher" class="button"
+      <router-link to="/teacher" class="button"
       v-if="$hasAnyAuthority('TEACHER_VIEW', 'TEACHER_CREATE', 'TEACHER_EDIT', 'TEACHER_DELETE')"
       >
         <div class="d-flex align-items-center justify-content-between aside-item">
@@ -52,7 +52,7 @@
         </div>
       </router-link>
 
-      <router-link to="college" class="button"
+      <router-link to="/college" class="button"
                    v-if="$hasAnyAuthority('COURSE_VIEW', 'COURSE_CREATE', 'COURSE_EDIT', 'COURSE_DELETE')"
       >
         <div class="d-flex align-items-center justify-content-between aside-item">

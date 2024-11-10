@@ -20,6 +20,15 @@ export const CourseService = {
             throw error;
         }
     },
+    async listTurma() {
+        try {
+            const response = await axios.get(`${baseApiUrl}/docente/turmas`, { headers: getHeaders() });
+            return response.data.data;
+        } catch (error) {
+            console.error("Error fetching curso/cursos:", error);
+            throw error;
+        }
+    },
     async create(curse) {
         try {
             const response = await axios.post(`${baseApiUrl}/curso/cursos`, curse, { headers: getHeaders() });
@@ -53,6 +62,15 @@ export const CourseService = {
             return response.data;
         } catch (error) {
             console.error("Error finding curse by ID:", error);
+            throw error;
+        }
+    },
+    async findTurmaByCurso(id) {
+        try {
+            const response = await axios.get(`${baseApiUrl}/docente/notasTurma/${id}`, { headers: getHeaders() });
+            return response.data;
+        } catch (error) {
+            console.error("Error finding role by ID:", error);
             throw error;
         }
     },

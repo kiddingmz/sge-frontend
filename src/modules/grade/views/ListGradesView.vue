@@ -1,9 +1,10 @@
 <template>
   <div class="card border-0">
     <header-content title="Notas"
-      @toggle-visibility="toggleVisibility" show-link="off" show-btn="on"
+      @toggle-visibility="toggleVisibility" show-link="off" show-btn="off"
     ></header-content>
   </div>
+  <Toast />
 
   <Dialog v-model:visible="visible" modal header="Adicionar Notas" :style="{ width: '25rem' }">
 <!--    <span class e="text-surface-500 dark:text-surface-400 block mb-8">Adicionar Departamento</span>-->
@@ -22,80 +23,150 @@
       />
     </div>
   </Dialog>
-  <div class="card border-0 shadow mt-5">
-    <div class="d-flex justify-content-between p-2">
-      <div class="d-flex items-center col-4 gap-1 mb-3 flex-column size-n">
-        <label for="name" class="font-semibold w-24">Turma
-          <small class="text-danger">*
-            <label
-                class="font-weight-normal text-danger"
-                v-if="errorsValidation.curso_id">
-              {{ errorsValidation.curso_id }}
-            </label>
-          </small></label>
 
-        <Select
-            v-model="formData.cursoId"
-            :options="curses"
-            filter optionLabel="nome"
-            placeholder="Selecione turma"
-            class="w-full md:w-56 small-input-group"
-            optionValue="id"
-            :invalid="errorsValidation.curso_id"
-        >
-          <template #value="slotProps">
-            <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
-              <div class="small-input-group">{{ curses.find(c => c.id === slotProps.value)?.nome }}</div>
-            </div>
-            <span v-else>{{ slotProps.placeholder }}</span>
-          </template>
+  <div class="card border-0 shadow-sm mt-5">
+    <form @submit.stop.prevent="searchGrade">
+      <div class="d-flex justify-content-between p-2 flex-wrap">
+        <div class="d-flex items-center col-3 gap-1 mb-2 flex-column size-n">
+          <label for="name" class="font-semibold w-24">Curso
+            <small class="text-danger">*
+              <label
+                  class="font-weight-normal text-danger"
+                  v-if="errorsValidation.cursoId_error">
+                {{ errorsValidation.cursoId_error }}
+              </label>
+            </small></label>
 
-          <template #option="slotProps">
-            <div class="flex items-center small-input-group size-n">
-              <div class="small-input-group">{{ slotProps.option.nome }}</div>
-            </div>
-          </template>
-        </Select>
+          <Select
+              v-model="cursoId"
+              :options="curses"
+              filter optionLabel="nome"
+              placeholder="Selecione curso"
+              class="w-full md:w-56 small-input-group"
+              optionValue="id"
+              :invalid="errorsValidation.cursoId_error"
+          >
+            <template #value="slotProps">
+              <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
+                <div class="small-input-group">{{ curses.find(c => c.id === slotProps.value)?.nome }}</div>
+              </div>
+              <span v-else>{{ slotProps.placeholder }}</span>
+            </template>
+
+            <template #option="slotProps">
+              <div class="flex items-center small-input-group size-n">
+                <div class="small-input-group">{{ slotProps.option.nome }}</div>
+              </div>
+            </template>
+          </Select>
+        </div>
+        <div class="d-flex items-center col-2 gap-1 mb-2 flex-column size-n">
+          <label for="name" class="font-semibold w-24">Ano
+            <small class="text-danger">*
+              <label
+                  class="font-weight-normal text-danger"
+                  v-if="errorsValidation.yearCourse_error">
+                {{ errorsValidation.yearCourse_error }}
+              </label>
+            </small></label>
+
+          <Select
+              v-model="yearCourse"
+              :options="yearsCourse"
+              filter optionLabel="ano"
+              placeholder="Selecione ano"
+              class="w-full md:w-56 small-input-group"
+              optionValue="ano"
+              :invalid="errorsValidation.yearCourse_error"
+          >
+            <template #value="slotProps">
+              <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
+                <div class="small-input-group">{{ slotProps.value }}</div>
+              </div>
+              <span v-else>{{ slotProps.placeholder }}</span>
+            </template>
+
+            <template #option="slotProps">
+              <div class="flex items-center small-input-group size-n">
+                <div class="small-input-group">{{ slotProps.option.ano }}</div>
+              </div>
+            </template>
+          </Select>
+        </div>
+        <div class="d-flex items-center col-3 gap-1 mb-2 flex-column size-n">
+          <label for="name" class="font-semibold w-24">Cadeira
+            <small class="text-danger">*
+              <label
+                  class="font-weight-normal text-danger"
+                  v-if="errorsValidation.classByCourse_error">
+                {{ errorsValidation.classByCourse_error }}
+              </label>
+            </small></label>
+
+          <Select
+              v-model="classByCourse"
+              :options="classesByCourse"
+              filter optionLabel="cadeiraNome"
+              placeholder="Selecione cadeira"
+              class="w-full md:w-56 small-input-group"
+              optionValue="cadeiraId"
+              :disabled="allEvaluationChecked"
+              :invalid="errorsValidation.classByCourse_error"
+          >
+            <template #value="slotProps">
+              <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
+                <div class="small-input-group">{{ classesByCourse.find(c => c.cadeiraId === slotProps.value)?.cadeiraNome }}</div>
+              </div>
+              <span v-else>{{ slotProps.placeholder }}</span>
+            </template>
+
+            <template #option="slotProps">
+              <div class="flex items-center small-input-group size-n">
+                <div class="small-input-group">{{ slotProps.option.cadeiraNome }}</div>
+              </div>
+            </template>
+          </Select>
+        </div>
+        <div class="d-flex items-center col-3 gap-1 mb-2 flex-column size-n">
+          <label for="name" class="font-semibold w-24">Avaliação
+            <small class="text-danger">*
+              <label
+                  class="font-weight-normal text-danger"
+                  v-if="errorsValidation.classByCourse_error">
+                {{ errorsValidation.classByCourse_error }}
+              </label>
+            </small></label>
+
+          <Select
+              v-model="nomeAvaliacao"
+              :options="classesByCourse"
+              filter optionLabel="cadeiraNome"
+              placeholder="Selecione cadeira"
+              class="w-full md:w-56 small-input-group"
+              optionValue="cadeiraId"
+              :disabled="allEvaluationChecked"
+              :invalid="errorsValidation.classByCourse_error"
+          >
+            <template #value="slotProps">
+              <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
+                <div class="small-input-group">{{ classesByCourse.find(c => c.cadeiraId === slotProps.value)?.cadeiraNome }}</div>
+              </div>
+              <span v-else>{{ slotProps.placeholder }}</span>
+            </template>
+
+            <template #option="slotProps">
+              <div class="flex items-center small-input-group size-n">
+                <div class="small-input-group">{{ slotProps.option.cadeiraNome }}</div>
+              </div>
+            </template>
+          </Select>
+        </div>
       </div>
-      <div class="d-flex items-center col-4 gap-1 mb-3 flex-column size-n">
-        <label for="name" class="font-semibold w-24">Avaliação
-          <small class="text-danger">*
-            <label
-                class="font-weight-normal text-danger"
-                v-if="errorsValidation.curso_id">
-              {{ errorsValidation.curso_id }}
-            </label>
-          </small></label>
-
-        <Select
-            v-model="formData.cursoId"
-            :options="curses"
-            filter optionLabel="nome"
-            placeholder="Selecione Avaliação"
-            class="w-full md:w-56 small-input-group"
-            optionValue="id"
-            :invalid="errorsValidation.curso_id"
-        >
-          <template #value="slotProps">
-            <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
-              <div class="small-input-group">{{ curses.find(c => c.id === slotProps.value)?.nome }}</div>
-            </div>
-            <span v-else>{{ slotProps.placeholder }}</span>
-          </template>
-
-          <template #option="slotProps">
-            <div class="flex items-center small-input-group size-n">
-              <div class="small-input-group">{{ slotProps.option.nome }}</div>
-            </div>
-          </template>
-        </Select>
+      <div class="d-flex justify-content-end p-2">
+        <Button label="Pesquisar" class="small-input-group size-n" severity="success" size="small" icon="pi pi-search"  iconPos="left" type="submit"/>
       </div>
-      <div class="align-content-end">
-        <Button label="Pesquisar" class="small-input-group size-n" severity="success" size="small" icon="pi pi-search"  iconPos="left" />
-      </div>
-    </div>
+    </form>
   </div>
-
   <div class="card size-n shadow border-0 mt-4 border-radius">
 
     <Tabs value="0">
@@ -119,7 +190,7 @@
                   <span class="ml-2">Lista de Estudantes : 12</span>
                 </div>
                 <div>
-                  <a href="#" class="btn-p">
+                  <a @click="refresh" class="btn-p">
                     <i class="fa-solid fa-rotate-right"></i>
                   </a>
                 </div>
@@ -175,7 +246,7 @@
                   <span class="ml-2">Lista de Estudantes : 12</span>
                 </div>
                 <div>
-                  <a href="#" class="btn-p">
+                  <a @click="refresh" class="btn-p">
                     <i class="fa-solid fa-rotate-right"></i>
                   </a>
                 </div>
@@ -183,7 +254,6 @@
             </div>
 
             <div class="card-body">
-              <Toast />
               <ConfirmDialog></ConfirmDialog>
                 <DataTable :value="grades" editMode="cell" @cell-edit-complete="onCellEditComplete"
                            size="'small'"
@@ -240,6 +310,9 @@ import TabPanel from 'primevue/tabpanel';
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
 import { GradeService } from "../service/GradeService";
 import Select from "primevue/select";
+import {CourseService} from "@/modules/course/service/CourseService";
+import {ClassService} from "@/modules/class/service/ClassService";
+import {EvaluationService} from "@/modules/evaluation/service/EvaluationService";
 
 export default {
   name: 'ListRoles',
@@ -261,20 +334,20 @@ export default {
   },
   data() {
     return {
-      curses: [
-        { id: 1, nome: 'Turma 1' },
-        { id: 2, nome: 'Turma 2' },
-        { id: 3, nome: 'Turma 3' },
-        { id: 4, nome: 'Turma 4' },
-        { id: 5, nome: 'Turma 5' },
-        { id: 6, nome: 'Turma 6' },
-        { id: 7, nome: 'Turma 7' },
-        { id: 8, nome: 'Turma 8' },
-        { id: 9, nome: 'Turma 9' },
-        { id: 10, nome: 'Turma 10' },
-        { id: 11, nome: 'Turma 11' },
-        { id: 12, nome: 'Turma 12' },
-      ],
+      allEvaluationChecked: false,
+      ano: '',
+      loading: true,
+      yearsCourse: [],
+      classes: [],
+      quantity: 0,
+      cursoId: '',
+      yearCourse: '',
+      classByCourse: '',
+      classesByCourse: [],
+      dataEvaluation: null,
+      evaluationTableType: null,
+      nomeAvaliacao: '',
+      curses: [],
       errorsValidation: {},
       grades: [],
       filters: {},
@@ -289,13 +362,120 @@ export default {
       }
     };
   },
+  watch: {
+    cursoId: {
+      handler: function (val) {
+        this.getYearByCourse(val);
+      },
+      deep: true,
+    },
+    yearCourse: {
+      handler: function (val) {
+        this.getClassByCourseAndYear(val);
+      },
+      deep: true,
+    },
+    tableData: {
+      handler: function (val) {
+        this.quantity = val.length;
+      },
+      deep: true,
+    },
+  },
   mounted() {
-    GradeService.listWithData(this.formData).then((data) => {
-      this.grades = data.notas;
-      console.log('Notas:', data.notas);
+    CourseService.list().then((data) => {
+        this.curses = data;
     });
+
+    ClassService.list().then((data) => {
+      this.classes = data;
+    });
+
+  },
+  computed: {
+    tableData() {
+      return this.dataEvaluation ? [this.dataEvaluation] : [];
+    }
   },
   methods: {
+    searchGrade() {
+      let error = {};
+
+      if (this.allEvaluationChecked) {
+        if (this.cursoId === '' || this.yearCourse === '') {
+          this.toastError('Verifique os campos obrigatórios');
+          if (this.cursoId === '') {
+            error.cursoId_error = ['Campo obrigatório'];
+          }
+          if (this.yearCourse === '') {
+            error.yearCourse_error = ['Campo obrigatório'];
+          }
+          this.validateForm(error);
+          return;
+        }
+      } else {
+        if (this.classByCourse === '' || this.cursoId === '' || this.yearCourse === '') {
+          this.toastError('Verifique os campos obrigatórios');
+          if (this.classByCourse === '') {
+            error.classByCourse_error = ['Campo obrigatório'];
+          }
+          if (this.cursoId === '') {
+            error.cursoId_error = ['Campo obrigatório'];
+          }
+          if (this.yearCourse === '') {
+            error.yearCourse_error = ['Campo obrigatório'];
+          }
+          this.validateForm(error);
+          return;
+        }
+      }
+
+      this.loading = true;
+
+      GradeService.list(JSON.stringify({
+        'cursoId': this.cursoId,
+        'cadeiraId': this.classByCourse,
+        'ano': this.yearCourse,
+        'nomeAvaliacao': this.nomeAvaliacao
+      }))
+          .then((data) => {
+            this.toastSuccess(`Avaliações do curso ${this.allEvaluationChecked ? 'obtidas' : 'por classe obtidas'} com sucesso`);
+            this.evaluationTableType = this.allEvaluationChecked ? 'all' : 'class';
+            this.dataEvaluation = data.data;
+            console.log(this.dataEvaluation);
+            this.loading = false;
+          })
+          .catch(() => {
+            this.evaluationTableType = null;
+            this.toastError('Erro ao obter avaliações do curso');
+            this.loading = false;
+          });
+    }
+    ,
+    getYearByCourse(id) {
+      EvaluationService.findYearByCourse(JSON.stringify({'cursoId': id})).then((data) => {
+        this.toastSuccess('Anos do curso com sucesso');
+        data.forEach(item => {
+          this.yearsCourse.push(
+              {'ano':item}
+          );
+        });
+      }).catch(() => {
+        this.toastError('Erro ao obter Anos do curso');
+      });
+    },
+    getClassByCourseAndYear(year) {
+      EvaluationService.findClassByCourseAndYear(JSON.stringify({
+            'cursoId': this.cursoId,
+            'ano': year
+          },
+      )).then((data) => {
+        this.toastSuccess('Cadeira(as) do curso com sucesso');
+        this.classesByCourse = data;
+      }).catch(() => {
+        this.toastError('Erro ao obter Cadeira(as) do curso');
+      });
+    },
     toggleVisibility() {
       this.visible = !this.visible;
     },
@@ -378,6 +558,31 @@ export default {
 
       return n !== Infinity && String(n) === str && n >= 0;
     },
+
+    validateForm(error) {
+      let errorsFormed = {};
+      for (const [key, value] of Object.entries(error)) {
+        errorsFormed[key] = value[0];
+      }
+      this.errorsValidation = { ...errorsFormed };
+    },
+    toastSuccess(msg) {
+      this.$toast.add({
+        severity: 'success',
+        summary: msg,
+        life: 3000 });
+    },
+
+    toastError(msg) {
+      this.$toast.add({
+        severity: 'error',
+        summary: msg,
+        life: 3000 });
+    },
+
+    refresh() {
+      this.loading = true;
+    }
   }
 }
 </script>

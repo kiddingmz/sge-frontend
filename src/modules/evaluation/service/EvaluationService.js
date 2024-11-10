@@ -11,30 +11,39 @@ function getHeaders() {
 }
 
 export const EvaluationService = {
-    async list() {
+    async list(data) {
         try {
-            const response = await axios.get(`${baseApiUrl}/docente/notasTurma`, { headers: getHeaders() });
-            return response.data.data;
+            const response = await axios.post(`${baseApiUrl}/avaliacao/veravaliacoesturma`, data,{ headers: getHeaders() });
+            return response.data;
         } catch (error) {
-            console.error("Error fetching docente/notasTurma:", error);
+            console.error("Error finding evaluation by ID:", error);
             throw error;
         }
     },
-    async create(role) {
+    async listByClass(data) {
         try {
-            const response = await axios.post(`${baseApiUrl}/docente/notasTurma`, role, { headers: getHeaders() });
+            const response = await axios.post(`${baseApiUrl}/avaliacao/veravaliacao`, data,{ headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error creating role:", error);
+            console.error("Error finding evaluation by ID:", error);
             throw error;
         }
     },
-    async update(role) {
+    async create(evaluation) {
         try {
-            const response = await axios.put(`${baseApiUrl}/docente/notasTurma/${role.id}`, role, { headers: getHeaders() });
+            const response = await axios.post(`${baseApiUrl}/avaliacao/adicionaravaliacao`, evaluation, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error updating role:", error);
+            console.error("Error creating evaluation:", error);
+            throw error;
+        }
+    },
+    async update(evaluation) {
+        try {
+            const response = await axios.put(`${baseApiUrl}/docente/notasTurma/${evaluation.id}`, evaluation, { headers: getHeaders() });
+            return response.data;
+        } catch (error) {
+            console.error("Error updating evaluation:", error);
             throw error;
         }
     },
@@ -43,7 +52,7 @@ export const EvaluationService = {
             const response = await axios.delete(`${baseApiUrl}/docente/notasTurma/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error deleting role:", error);
+            console.error("Error deleting evaluation:", error);
             throw error;
         }
     },
@@ -52,7 +61,34 @@ export const EvaluationService = {
             const response = await axios.get(`${baseApiUrl}/docente/notasTurma/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error finding role by ID:", error);
+            console.error("Error finding evaluation by ID:", error);
+            throw error;
+        }
+    },
+    async findYearByCourse(id) {
+        try {
+            const response = await axios.post(`${baseApiUrl}/avaliacao/veranos`, id,{ headers: getHeaders() });
+            return response.data;
+        } catch (error) {
+            console.error("Error finding evaluation by ID:", error);
+            throw error;
+        }
+    },
+    async findClassByCourseAndYear(data) {
+        try {
+            const response = await axios.post(`${baseApiUrl}/avaliacao/verturmas`, data,{ headers: getHeaders() });
+            return response.data;
+        } catch (error) {
+            console.error("Error finding evaluation by ID:", error);
+            throw error;
+        }
+    },
+    async findAvaliacaoByCurso(id) {
+        try {
+            const response = await axios.post(`${baseApiUrl}/avaliacao/veravaliacao`, id,{ headers: getHeaders() });
+            return response.data;
+        } catch (error) {
+            console.error("Error finding evaluation by ID:", error);
             throw error;
         }
     },

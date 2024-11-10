@@ -311,7 +311,7 @@ export default {
 
       }).catch((error) => {
         this.validateForm(error.response.data.errors);
-        console.log(error.response);
+        console.log(error);
 
         if (error.response.status === 422){
           this.toastError('Verifique os campos obrigatorios');

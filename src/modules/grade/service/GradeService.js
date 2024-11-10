@@ -11,7 +11,34 @@ function getHeaders() {
 }
 
 export const GradeService = {
-    async list() {
+    // async list() {
+    //     try {
+    //         const response = await axios.get(`${baseApiUrl}/docente/notasTurma`, { headers: getHeaders() });
+    //         return response.data.data;
+    //     } catch (error) {
+    //         console.error("Error fetching docente/notasTurma:", error);
+    //         throw error;
+    //     }
+    // },
+    async list(data) {
+        try {
+            const response = await axios.post(`${baseApiUrl}/docente/notasturma`, data,{ headers: getHeaders() });
+            return response.data;
+        } catch (error) {
+            console.error("Error finding evaluation by ID:", error);
+            throw error;
+        }
+    },
+    async listTurma() {
+        try {
+            const response = await axios.get(`${baseApiUrl}/docente/notasTurma`, { headers: getHeaders() });
+            return response.data.data;
+        } catch (error) {
+            console.error("Error fetching docente/notasTurma:", error);
+            throw error;
+        }
+    },
+    async listAvaliacao() {
         try {
             const response = await axios.get(`${baseApiUrl}/docente/notasTurma`, { headers: getHeaders() });
             return response.data.data;
@@ -65,6 +92,7 @@ export const GradeService = {
             throw error;
         }
     },
+
     getRolesData() {
         return [
             {

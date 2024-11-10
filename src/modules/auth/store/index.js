@@ -68,7 +68,8 @@ getters: {
       });
     },
       logout(context) {
-        console.log('Login: ', context.getters.loggedIn);
+        // console.log('Login: ', context.getters.loggedIn);
+
           return new Promise((resolve) => {
               sessionStorage.removeItem('access_token');
               sessionStorage.removeItem('user');
@@ -76,7 +77,7 @@ getters: {
 
               context.commit('destroyToken');
               resolve();
-              console.log('Login: ', context.getters.loggedIn);
+              // console.log('Login: ', context.getters.loggedIn);
           });
       }
   }

@@ -180,7 +180,7 @@ import Divider from 'primevue/divider';
 
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
 import { DepartmentService } from "../service/DepartmentService";
-import {UserService} from "@/modules/user/service/UserService";
+// import {UserService} from "@/modules/user/service/UserService";
 import {CollegeService} from "@/modules/college/service/CollegeService";
 
 export default {
