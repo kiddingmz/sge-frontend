@@ -136,27 +136,25 @@
                 {{ errorsValidation.classByCourse_error }}
               </label>
             </small></label>
-
           <Select
               v-model="nomeAvaliacao"
-              :options="classesByCourse"
-              filter optionLabel="cadeiraNome"
-              placeholder="Selecione cadeira"
+              :options="dataEvaluation"
+              filter optionLabel="nomeAvaliacao"
+              placeholder="Selecione avaliação"
               class="w-full md:w-56 small-input-group"
-              optionValue="cadeiraId"
-              :disabled="allEvaluationChecked"
+              optionValue="nomeAvaliacao"
               :invalid="errorsValidation.classByCourse_error"
           >
             <template #value="slotProps">
               <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
-                <div class="small-input-group">{{ classesByCourse.find(c => c.cadeiraId === slotProps.value)?.cadeiraNome }}</div>
+                <div class="small-input-group">{{slotProps.value}}</div>
               </div>
               <span v-else>{{ slotProps.placeholder }}</span>
             </template>
 
             <template #option="slotProps">
               <div class="flex items-center small-input-group size-n">
-                <div class="small-input-group">{{ slotProps.option.cadeiraNome }}</div>
+                <div class="small-input-group">{{ slotProps.option.nomeAvaliacao }}</div>
               </div>
             </template>
           </Select>
@@ -200,7 +198,7 @@
             <div class="card-body">
               <Toast />
               <ConfirmDialog></ConfirmDialog>
-              <DataTable :value="grades" responsiveLayout="scroll" table-style="font-size: 0.8rem"
+              <DataTable :value="dataGrades" responsiveLayout="scroll" table-style="font-size: 0.8rem"
                          :paginator="true"
                          :rows="10"
                          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -208,6 +206,7 @@
                          :filters="filters"
                          :globalFilterFields="['name', 'role']"
                          :size="'small'"
+                         :loading="loading"
               >
                 <template #header>
                   <div class="custom-input">
@@ -215,8 +214,8 @@
                     <InputText v-model="filters['global']" placeholder="Digite para pesquisar" class="custom-input small-input-group" />
                   </div>
                 </template>
-                <Column field="numero_estudante" header="Numero Estudante"></Column>
-                <Column field="nome" header="Nome"></Column>
+                <Column field="estudante.numero_estudante" header="Numero Estudante"></Column>
+                <Column field="estudante.nome" header="Nome"></Column>
                 <Column field="nota" header="Nota"></Column>
                 <!--        <Column field="id"  header="Nivel">-->
                 <!--          &lt;!&ndash;          <template #body="slotProps">&ndash;&gt;-->
@@ -255,7 +254,7 @@
 
             <div class="card-body">
               <ConfirmDialog></ConfirmDialog>
-                <DataTable :value="grades" editMode="cell" @cell-edit-complete="onCellEditComplete"
+                <DataTable :loading="loading" :value="dataGrades" editMode="cell" @cell-edit-complete="onCellEditComplete"
                            size="'small'"
                            :pt="{
                 table: { style: 'min-width: 50rem' },
@@ -267,8 +266,8 @@
             }"
                 >
 
-                  <Column field="numero_estudante" header="Numero Estudante" style="font-size: 0.8rem"></Column>
-                  <Column field="nome" header="Nome" style="font-size: 0.8rem"></Column>
+                  <Column field="estudante.numero_estudante" header="Numero Estudante" style="font-size: 0.8rem"></Column>
+                  <Column field="estudante.nome" header="Nome" style="font-size: 0.8rem"></Column>
                   <Column field="nota" header="Nota" style="font-size: 0.8rem">
                     <template #editor="{ data, field }">
                         <InputNumber v-model="data[field]" style="font-size: 0.8rem" class="small-input-group size-n"/>
@@ -344,7 +343,6 @@ export default {
       yearCourse: '',
       classByCourse: '',
       classesByCourse: [],
-      dataEvaluation: null,
       evaluationTableType: null,
       nomeAvaliacao: '',
       curses: [],
@@ -352,6 +350,8 @@ export default {
       grades: [],
       filters: {},
       visible: false,
+      dataEvaluation: [],
+      dataGrades: [],
       formData: {
         "cursoId":"3",
         "cadeiraId":"21",
@@ -381,6 +381,12 @@ export default {
       },
       deep: true,
     },
+    classByCourse: {
+      handler: function () {
+        this.getEvaluation();
+      },
+      deep: true,
+    }
   },
   mounted() {
     CourseService.list().then((data) => {
@@ -401,19 +407,6 @@ export default {
     searchGrade() {
       let error = {};
 
-      if (this.allEvaluationChecked) {
-        if (this.cursoId === '' || this.yearCourse === '') {
-          this.toastError('Verifique os campos obrigatórios');
-          if (this.cursoId === '') {
-            error.cursoId_error = ['Campo obrigatório'];
-          }
-          if (this.yearCourse === '') {
-            error.yearCourse_error = ['Campo obrigatório'];
-          }
-          this.validateForm(error);
-          return;
-        }
-      } else {
         if (this.classByCourse === '' || this.cursoId === '' || this.yearCourse === '') {
           this.toastError('Verifique os campos obrigatórios');
           if (this.classByCourse === '') {
@@ -428,10 +421,9 @@ export default {
           this.validateForm(error);
           return;
         }
-      }
-
-      this.loading = true;
-
+        this.getAllGrades();
+    },
+    getAllGrades() {
       GradeService.list(JSON.stringify({
         'cursoId': this.cursoId,
         'cadeiraId': this.classByCourse,
@@ -439,19 +431,17 @@ export default {
         'nomeAvaliacao': this.nomeAvaliacao
       }))
           .then((data) => {
-            this.toastSuccess(`Avaliações do curso ${this.allEvaluationChecked ? 'obtidas' : 'por classe obtidas'} com sucesso`);
-            this.evaluationTableType = this.allEvaluationChecked ? 'all' : 'class';
-            this.dataEvaluation = data.data;
-            console.log(this.dataEvaluation);
+            this.toastSuccess(`Notas de ${this.nomeAvaliacao} obtidas com sucesso`);
+            this.dataGrades = data.data;
+            console.log(this.dataGrades);
             this.loading = false;
           })
           .catch(() => {
             this.evaluationTableType = null;
-            this.toastError('Erro ao obter avaliações do curso');
+            this.toastError(`Erro ao obter notas de ${this.nomeAvaliacao}`);
             this.loading = false;
           });
-    }
-    ,
+    },
     getYearByCourse(id) {
       EvaluationService.findYearByCourse(JSON.stringify({'cursoId': id})).then((data) => {
         this.toastSuccess('Anos do curso com sucesso');
@@ -474,6 +464,20 @@ export default {
         this.classesByCourse = data;
       }).catch(() => {
         this.toastError('Erro ao obter Cadeira(as) do curso');
+      });
+    },
+    getEvaluation() {
+      EvaluationService.listByClass(JSON.stringify({
+        'cursoId': this.cursoId,
+        'cadeiraId': this.classByCourse,
+        'ano': this.yearCourse
+      }))
+          .then((data) => {
+            this.toastSuccess(`Avaliações do curso obtidas com sucesso`);
+            this.dataEvaluation = [data.data];
+            console.log(this.dataEvaluation);
+          }).catch(() => {
+          this.toastError('Erro ao obter avaliações do curso');
       });
     },
     toggleVisibility() {
@@ -538,6 +542,15 @@ export default {
           break;
       }
 
+      data = {
+        numeroEstudante	: data.estudante.numero_estudante,
+        nota: data.nota,
+        cursoId: this.cursoId,
+        cadeiraId: this.classByCourse,
+        ano: this.yearCourse,
+        nomeAvaliacao: this.nomeAvaliacao
+      };
+
       GradeService.update(data).then(() => {
         this.$toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Nota atualizada com sucesso', life: 3000 });
       }).catch(() => {
@@ -582,6 +595,8 @@ export default {
 
     refresh() {
       this.loading = true;
+      this.getAllGrades();
+      this.loading = false;
     }
   }
 }

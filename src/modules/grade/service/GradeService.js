@@ -67,7 +67,7 @@ export const GradeService = {
     },
     async update(grade) {
         try {
-            const response = await axios.put(`${baseApiUrl}/docente/docentes/${grade.id}`, grade, { headers: getHeaders() });
+            const response = await axios.patch(`${baseApiUrl}/avaliacao/lancarnota`, grade, { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error updating grade:", error);

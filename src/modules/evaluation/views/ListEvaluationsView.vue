@@ -582,7 +582,6 @@ export default {
               this.toastSuccess(`Avaliações do curso ${this.allEvaluationChecked ? 'obtidas' : 'por classe obtidas'} com sucesso`);
               this.evaluationTableType = this.allEvaluationChecked ? 'all' : 'class';
               this.dataEvaluation = data.data;
-              console.log(this.dataEvaluation);
               this.loading = false;
             })
             .catch(() => {
