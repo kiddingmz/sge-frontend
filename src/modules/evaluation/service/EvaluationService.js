@@ -22,7 +22,7 @@ export const EvaluationService = {
     },
     async listByClass(data) {
         try {
-            const response = await axios.post(`${baseApiUrl}/avaliacao/veravaliacao`, data,{ headers: getHeaders() });
+            const response = await axios.post(`${baseApiUrl}/avaliacao/veravaliacoesturma`, data,{ headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error("Error finding evaluation by ID:", error);

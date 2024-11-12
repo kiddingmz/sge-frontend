@@ -185,7 +185,7 @@
               <small class="d-flex justify-content-between">
                 <div class="d-flex gap-2 align-items-center">
                   <i class="fa-solid fa-user-shield"></i>
-                  <span class="ml-2">Lista de Estudantes : 12</span>
+                  <span class="ml-2">Lista de Estudantes : {{ quantity }}</span>
                 </div>
                 <div>
                   <a @click="refresh" class="btn-p">
@@ -242,7 +242,7 @@
               <small class="d-flex justify-content-between">
                 <div class="d-flex gap-2 align-items-center">
                   <i class="fa-solid fa-user-shield"></i>
-                  <span class="ml-2">Lista de Estudantes : 12</span>
+                  <span class="ml-2">Lista de Estudantes : {{ quantity }}</span>
                 </div>
                 <div>
                   <a @click="refresh" class="btn-p">
@@ -375,7 +375,7 @@ export default {
       },
       deep: true,
     },
-    tableData: {
+    dataGrades: {
       handler: function (val) {
         this.quantity = val.length;
       },
@@ -397,11 +397,6 @@ export default {
       this.classes = data;
     });
 
-  },
-  computed: {
-    tableData() {
-      return this.dataEvaluation ? [this.dataEvaluation] : [];
-    }
   },
   methods: {
     searchGrade() {
@@ -474,7 +469,7 @@ export default {
       }))
           .then((data) => {
             this.toastSuccess(`Avaliações do curso obtidas com sucesso`);
-            this.dataEvaluation = [data.data];
+            this.dataEvaluation = data.data;
             console.log(this.dataEvaluation);
           }).catch(() => {
           this.toastError('Erro ao obter avaliações do curso');

@@ -137,7 +137,7 @@
             </div>
 
             <div class="d-flex items-center gap-1 mb-3 flex-column size-n">
-              <label for="name" class="font-semibold w-24">Precendencia <small class="text-danger">*</small></label>
+              <label for="name" class="font-semibold w-24">Precendencia </label>
               <InputGroup>
                 <InputGroupAddon>
                   <i class="pi pi-user size-n"></i>
@@ -147,17 +147,8 @@
             </div>
 
             <div class="d-flex row mb-5">
-              <div class="d-flex items-center gap-1 mb-3 flex-column size-n col-4 small-input-group">
-                <label for="minmax-buttons" class="font-semibold w-24">Ano de entrada em vigor <small class="text-danger">*</small></label>
-                <InputGroup class="small-input-group">
-                  <InputGroupAddon>
-                    <i class="pi pi-user size-n"></i>
-                  </InputGroupAddon>
-                  <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="2000" :max="3000" fluid class="custom-input-number"/>
-                </InputGroup>
-              </div>
-              <div class="d-flex items-center gap-1 mb-3 flex-column size-n col-4 small-input-group">
-                <label for="minmax-buttons" class="font-semibold w-24">Ano de saida em vigor  <small class="text-danger">*</small></label>
+              <div class="d-flex items-center gap-1 mb-3 flex-column size-n col-6 small-input-group">
+                <label for="minmax-buttons" class="font-semibold w-24">Ano  <small class="text-danger">*</small></label>
                 <InputGroup class="small-input-group">
                   <InputGroupAddon>
                     <i class="pi pi-user size-n"></i>
@@ -165,7 +156,7 @@
                   <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="0" :max="100" fluid class="custom-input-number"/>
                 </InputGroup>
               </div>
-              <div class="d-flex items-center gap-1 mb-3 flex-column size-n col-4 small-input-group">
+              <div class="d-flex items-center gap-1 mb-3 flex-column size-n col-6 small-input-group">
                 <label for="minmax-buttons" class="font-semibold w-24">Semestre <small class="text-danger">*</small></label>
                 <InputGroup class="small-input-group">
                   <InputGroupAddon>

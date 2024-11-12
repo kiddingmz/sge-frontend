@@ -4,7 +4,7 @@
       <img :src="require('@/assets/logo.png')" alt="" />
     </div>
 
-    <h5>SGE</h5>
+    <h5>SIGE</h5>
 
     <div class="menu-toggle-wrap">
       <button class="menu-toggle" @click="ToggleMenu" id="btn-toggle">
@@ -34,14 +34,14 @@
         </div>
       </router-link>
 
-      <router-link to="/student" class="button"
-      v-if="$hasAnyAuthority('STUDENT_VIEW', 'STUDENT_CREATE', 'STUDENT_EDIT', 'STUDENT_DELETE')"
-      >
-        <div class="d-flex align-items-center justify-content-between aside-item">
-          <i class="fa fa-solid fa-people-line"></i>
-          <span class="text">Estudantes</span>
-        </div>
-      </router-link>
+<!--      <router-link to="/student" class="button"-->
+<!--      v-if="$hasAnyAuthority('STUDENT_VIEW', 'STUDENT_CREATE', 'STUDENT_EDIT', 'STUDENT_DELETE')"-->
+<!--      >-->
+<!--        <div class="d-flex align-items-center justify-content-between aside-item">-->
+<!--          <i class="fa fa-solid fa-people-line"></i>-->
+<!--          <span class="text">Estudantes</span>-->
+<!--        </div>-->
+<!--      </router-link>-->
 
       <router-link to="/teacher" class="button"
       v-if="$hasAnyAuthority('TEACHER_VIEW', 'TEACHER_CREATE', 'TEACHER_EDIT', 'TEACHER_DELETE')"

@@ -60,7 +60,7 @@
       </div>
       <div class="d-flex items-center gap-1 mb-3 flex-column size-n"
       >
-        <label for="name" class="font-semibold w-24">Director
+        <label for="name" class="font-semibold w-24">Faculdade
           <small class="text-danger">*
             <label
                 class="font-weight-normal text-danger"
@@ -74,7 +74,7 @@
             v-model="formData.faculdadeId"
             :options="colleges"
             filter optionLabel="nome"
-            placeholder="Selecione director"
+            placeholder="Selecione faculdade"
             class="w-full md:w-56 small-input-group"
             optionValue="id"
             :invalid="errorsValidation.faculdadeId"
