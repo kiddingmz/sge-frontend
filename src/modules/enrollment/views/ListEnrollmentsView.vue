@@ -7,7 +7,7 @@
   </div>
 
   <Dialog v-model:visible="visible" modal header="Adicionar inscrição" :style="{ width: '30rem' }">
-<!--    <span class e="text-surface-500 dark:text-surface-400 block mb-8">Adicionar Departamento</span>-->
+    <!--    <span class e="text-surface-500 dark:text-surface-400 block mb-8">Adicionar Departamento</span>-->
     <form @submit.stop.prevent="saveEnrollment">
       <div class="d-flex items-center gap-1 mb-3 flex-column size-n"
       >
@@ -24,27 +24,27 @@
         <Select
             v-model="estudanteId"
             :options="filteredStudents"
-        filter
-        optionLabel="displayName"
-        placeholder="Selecione estudante"
-        class="w-full md:w-56 small-input-group"
-        optionValue="dadosMatricula.numeroEstudante"
-        :invalid="errorsValidation.estudanteId"
+            filter
+            optionLabel="displayName"
+            placeholder="Selecione estudante"
+            class="w-full md:w-56 small-input-group"
+            optionValue="dadosMatricula.numeroEstudante"
+            :invalid="errorsValidation.estudanteId"
         >
-        <template #value="slotProps">
-          <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
-            <div class="small-input-group">
-              {{ getStudentDisplayName(slotProps.value) }}
+          <template #value="slotProps">
+            <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
+              <div class="small-input-group">
+                {{ getStudentDisplayName(slotProps.value) }}
+              </div>
             </div>
-          </div>
-          <span v-else>{{ slotProps.placeholder }}</span>
-        </template>
+            <span v-else>{{ slotProps.placeholder }}</span>
+          </template>
 
-        <template #option="slotProps">
-          <div class="flex items-center small-input-group size-n">
-            <div class="small-input-group">{{ slotProps.option.displayName }}</div>
-          </div>
-        </template>
+          <template #option="slotProps">
+            <div class="flex items-center small-input-group size-n">
+              <div class="small-input-group">{{ slotProps.option.displayName }}</div>
+            </div>
+          </template>
         </Select>
 
 
@@ -87,61 +87,6 @@
       </div>
     </form>
   </Dialog>
-
-<!--  <div class="card mt-5 border-0 shadow-sm">-->
-<!--    <div class="card-header barra-vertical">-->
-<!--      <small class="d-flex justify-content-between">-->
-<!--        <div class="d-flex gap-2 align-items-center">-->
-<!--          <i class="fa-solid fa-user-shield"></i>-->
-<!--          <span class="ml-2">Lista de Inscrição</span>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--          <a @click="refresh" class="btn-p">-->
-<!--            <i class="fa-solid fa-rotate-right"></i>-->
-<!--          </a>-->
-<!--        </div>-->
-<!--      </small>-->
-<!--    </div>-->
-<!--    <div class="card-body">-->
-<!--      <ConfirmDialog></ConfirmDialog>-->
-<!--      <DataTable :value="students" responsiveLayout="scroll" table-style="font-size: 0.8rem"-->
-<!--                 :paginator="true"-->
-<!--                 :loading="loading"-->
-<!--                 :rows="10"-->
-<!--                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"-->
-<!--                 :rowsPerPageOptions="[5, 10, 25]"-->
-<!--                 :filters="filters"-->
-<!--                 :globalFilterFields="['name', 'role']"-->
-<!--                 :size="'small'"-->
-<!--      >-->
-<!--        <template #header>-->
-<!--          <div class="custom-input">-->
-<!--            <span>Pesquisar: </span>-->
-<!--            <InputText v-model="filters['global']" placeholder="Digite para pesquisar" class="custom-input small-input-group" />-->
-<!--          </div>-->
-<!--        </template>-->
-<!--        <Column field="id" header="ID"></Column>-->
-<!--        <Column field="nome" header="Nome"></Column>-->
-<!--        <Column field="descricao" header="Descrição"></Column>-->
-<!--        <Column field="faculdade.nome" header="Faculdade"></Column>-->
-<!--        <Column header="Acções">-->
-<!--          <template #body="slotProps" >-->
-<!--            <span v-if="1===2">{{slotProps.data.name}}</span>-->
-<!--            <div class="d-flex flex-wrap justify-center gap-1">-->
-<!--              <Button icon="pi pi-pen-to-square" severity="success" text rounded aria-label="Search"-->
-<!--                  @click="confirm1()"-->
-<!--              />-->
-<!--              <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Cancelar"-->
-<!--                  @click="confirm2()"-->
-<!--              />-->
-<!--            </div>-->
-<!--          </template>-->
-<!--        </Column>-->
-
-<!--&lt;!&ndash;        <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :body="getColumnBody(col.field, roles)" />&ndash;&gt;-->
-<!--      </DataTable>-->
-<!--    </div>-->
-<!--  </div>-->
 </template>
 
 <script>
@@ -215,11 +160,18 @@ export default {
   },
   computed: {
     filteredStudents() {
-      return this.students.map(student => ({
-        ...student,
-        displayName: `${student.dadosMatricula.numeroEstudante}: ${student.dadosPessoais.nome}`
-      }));
-    }
+      return this.students
+          .filter(
+              (student) =>
+                  student.dadosMatricula &&
+                  student.dadosPessoais &&
+                  student.dadosMatricula.numeroEstudante
+          )
+          .map((student) => ({
+            ...student,
+            displayName: `${student.dadosPessoais.nome} - ${student.dadosMatricula.numeroEstudante}`,
+          }));
+    },
   },
   mounted() {
     this.loading = false;
@@ -241,9 +193,17 @@ export default {
       });
     },
     getStudentDisplayName(numeroEstudante) {
-      this.refresh();
-      const student = this.students.find(c => c.dadosMatricula.numeroEstudante === numeroEstudante);
-      return student ? `${student.dadosPessoais.nome} - ${student.dadosMatricula.numeroEstudante}` : '';
+      const student = this.students.find(
+          (c) =>
+              c.dadosMatricula &&
+              c.dadosMatricula.numeroEstudante === numeroEstudante
+      );
+
+      if (student && student.dadosPessoais && student.dadosMatricula) {
+        return `${student.dadosPessoais.nome} - ${student.dadosMatricula.numeroEstudante}`;
+      }
+
+      return ''; // Retorna uma string vazia se não encontrar o estudante ou se os dados estiverem incompletos
     },
     limitSelection() {
       if (this.formData.cadeiraId.length > 8) {
@@ -297,12 +257,10 @@ export default {
       }
       EnrollmentService.create(this.formData).then(() => {
         this.toastSuccess('Inscricao criado com sucesso');
-        this.formData = {
-          cadeiraId: '',
-        };
-        this.refresh();
+        this.formData.cadeiraId = '';
+        // this.refresh();
       }).catch((error) => {
-
+        // this.refresh();
         if (error.response.data.errors === undefined) {
           this.toastError('Erro interno');
           return
