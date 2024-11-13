@@ -20,6 +20,15 @@ export const EnrollmentService = {
             throw error;
         }
     },
+    async listClassByStudentId(StudentId) {
+        try {
+            const response = await axios.post(`${baseApiUrl}/inscricao/cadeiras`, StudentId, { headers: getHeaders() });
+            return response.data;
+        } catch (error) {
+            console.error("Error creating enrollment:", error);
+            throw error;
+        }
+    },
     async create(enrollment) {
         try {
             const response = await axios.post(`${baseApiUrl}/inscricao/inscricoes`, enrollment, { headers: getHeaders() });

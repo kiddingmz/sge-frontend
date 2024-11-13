@@ -20,7 +20,6 @@
         </TabList>
         <TabPanels>
           <form @submit.stop.prevent="saveClasse">
-
             <TabPanel value="0" as="p" class="m-0">
             <div class="d-flex items-center gap-1 mb-3 flex-column size-n">
               <label for="name" class="font-semibold w-24">Nome
@@ -96,41 +95,82 @@
             </div>
           </TabPanel>
           </form>
-          <TabPanel value="1" as="p" class="m-0">
+          <form @submit.stop.prevent="saveClasseIntoCourse">
+            <TabPanel value="1" as="p" class="m-0">
             <div class="d-flex items-center gap-1 mb-3 flex-column size-n">
-              <label for="name" class="font-semibold w-24">Cadeira <small class="text-danger">*</small></label>
+              <label for="name" class="font-semibold w-24">Cadeira
+                <small class="text-danger">*
+                  <label
+                      class="font-weight-normal text-danger"
+                      v-if="errorsValidation.cadeiraId">
+                    {{ errorsValidation.cadeiraId }}
+                  </label>
+                </small>
+              </label>
 
-              <Select v-model="selectedCountry" :options="countries" filter optionLabel="name" placeholder="Selecione cadeira" class="w-full md:w-56 small-input-group">
+              <Select
+                  v-model="formData.cadeiraId"
+                  :options="classes"
+                  filter optionLabel="nome"
+                  placeholder="Selecione cadeira"
+                  class="w-full md:w-56 small-input-group"
+                  optionValue="id"
+                  :invalid="errorsValidation.cadeiraId"
+              >
                 <template #value="slotProps">
                   <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
-                    <div class="small-input-group">{{ slotProps.value.name }}</div>
+                    <div class="small-input-group">
+                      {{
+                        `${classes.find(c => c.id === slotProps.value)?.nome} - ${classes.find(c => c.id === slotProps.value)?.departamento?.nome}`
+                      }}
+                    </div>
                   </div>
-                  <span v-else>
-                    {{ slotProps.placeholder }}
-                </span>
+                  <span v-else>{{ slotProps.placeholder }}</span>
                 </template>
+
                 <template #option="slotProps">
                   <div class="flex items-center small-input-group size-n">
-                    <div class="small-input-group">{{ slotProps.option.name }}</div>
+                    <div class="small-input-group">
+                      {{ `${slotProps.option.nome} - ${slotProps.option.departamento.nome}` }}
+                    </div>
                   </div>
                 </template>
               </Select>
             </div>
             <div class="d-flex items-center gap-1 mb-3 flex-column size-n">
-              <label for="name" class="font-semibold w-24">Curso <small class="text-danger">*</small></label>
+              <label for="name" class="font-semibold w-24">Curso
+                <small class="text-danger">*
+                  <label
+                      class="font-weight-normal text-danger"
+                      v-if="errorsValidation.cursoId">
+                    {{ errorsValidation.cursoId }}
+                  </label>
+                </small>
+              </label>
 
-              <Select v-model="selectedCountry" :options="countries" filter optionLabel="name" placeholder="Selecione curso" class="w-full md:w-56 small-input-group">
+              <Select
+                  v-model="formData.cursoId"
+                  :options="courses"
+                  filter optionLabel="nome"
+                  placeholder="Selecione curso"
+                  class="w-full md:w-56 small-input-group"
+                  optionValue="id"
+                  :invalid="errorsValidation.cursoId"
+              >
                 <template #value="slotProps">
                   <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
-                    <div class="small-input-group">{{ slotProps.value.name }}</div>
+                    <div class="small-input-group">
+                      {{
+                        `${courses.find(c => c.id === slotProps.value)?.nome} - ${courses.find(c => c.id === slotProps.value)?.faculdade}`
+                      }}
+                    </div>
                   </div>
-                  <span v-else>
-                    {{ slotProps.placeholder }}
-                </span>
+                  <span v-else>{{ slotProps.placeholder }}</span>
                 </template>
+
                 <template #option="slotProps">
                   <div class="flex items-center small-input-group size-n">
-                    <div class="small-input-group">{{ slotProps.option.name }}</div>
+                    <div class="small-input-group">{{ `${slotProps.option.nome} - ${slotProps.option.faculdade}` }}</div>
                   </div>
                 </template>
               </Select>
@@ -148,33 +188,50 @@
 
             <div class="d-flex row mb-5">
               <div class="d-flex items-center gap-1 mb-3 flex-column size-n col-6 small-input-group">
-                <label for="minmax-buttons" class="font-semibold w-24">Ano  <small class="text-danger">*</small></label>
+                <label for="minmax-buttons" class="font-semibold w-24">Ano
+                  <small class="text-danger">*
+                    <label
+                        class="font-weight-normal text-danger"
+                        v-if="errorsValidation.ano">
+                      {{ errorsValidation.ano }}
+                    </label>
+                  </small>
+                </label>
                 <InputGroup class="small-input-group">
                   <InputGroupAddon>
                     <i class="pi pi-user size-n"></i>
                   </InputGroupAddon>
-                  <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="0" :max="100" fluid class="custom-input-number"/>
+                  <InputNumber :invalid="errorsValidation.ano" v-model="formData.ano" inputId="minmax-buttons" mode="decimal" showButtons :min="0" :max="100" fluid class="custom-input-number"/>
                 </InputGroup>
               </div>
               <div class="d-flex items-center gap-1 mb-3 flex-column size-n col-6 small-input-group">
-                <label for="minmax-buttons" class="font-semibold w-24">Semestre <small class="text-danger">*</small></label>
+                <label for="minmax-buttons" class="font-semibold w-24">Semestre
+                  <small class="text-danger">*
+                    <label
+                        class="font-weight-normal text-danger"
+                        v-if="errorsValidation.semestre">
+                      {{ errorsValidation.semestre }}
+                    </label>
+                  </small>
+                </label>
                 <InputGroup class="small-input-group">
                   <InputGroupAddon>
                     <i class="pi pi-user size-n"></i>
                   </InputGroupAddon>
-                  <InputNumber v-model="value2" inputId="minmax-buttons" mode="decimal" showButtons :min="0" :max="100" fluid class="custom-input-number"/>
+                  <InputNumber :invalid="errorsValidation.semestre" v-model="formData.semestre" inputId="minmax-buttons" mode="decimal" showButtons :min="0" :max="100" fluid class="custom-input-number"/>
                 </InputGroup>
               </div>
             </div>
             <Divider />
 
             <div class="d-flex justify-content-end gap-2">
-              <Button label="Cancelar" icon="pi pi-times" class="small-input-group size-n" severity="secondary" outlined @click="visible = false"
+              <Button label="Cancelar" icon="pi pi-times" class="small-input-group size-n" severity="secondary" type="reset" outlined @click="visible = false"
               />
-              <Button label="Guardar" icon="pi pi-check" class="small-input-group size-n p-button-success" @click="visible = false"
+              <Button label="Guardar" icon="pi pi-check" class="small-input-group size-n p-button-success" type="submit"
               />
             </div>
           </TabPanel>
+          </form>
         </TabPanels>
       </Tabs>
     </div>
@@ -265,6 +322,7 @@ import TabPanel from 'primevue/tabpanel';
 import HeaderContent from "@/components/headercontent/HeaderContent.vue";
 import { ClassService } from "../service/ClassService";
 import {DepartmentService} from "@/modules/department/service/DepartmentService";
+import {CourseService} from "@/modules/course/service/CourseService";
 
 export default {
   name: 'ListRoles',
@@ -295,9 +353,14 @@ export default {
       visible: false,
       departments: [],
       quantity: 0,
+      courses: [],
       formData: {
         nome: '',
         departamentoId: '',
+        cadeiraId: '',
+        cursoId: '',
+        ano: '',
+        semestre: '',
       },
     };
   },
@@ -317,6 +380,10 @@ export default {
 
     DepartmentService.list().then((data) => {
       this.departments = data;
+    });
+
+    CourseService.list().then((data) => {
+      this.courses = data;
     });
   },
   methods: {
@@ -366,6 +433,29 @@ export default {
           return;
         }
         this.toastError('Erro ao criar cadeira');
+      });
+
+    },
+    saveClasseIntoCourse() {
+      ClassService.createClasseIntoCourse(this.formData).then(() => {
+        this.toastSuccess('Cadeira adicionada com sucesso');
+        this.formData = {
+          nome: '',
+          departamentoId: '',
+        };
+      }).catch((error) => {
+
+        if (error.response.data.errors === undefined){
+          this.toastError('Erro interno');
+          return;
+        }
+        this.validateForm(error.response.data.errors);
+
+        if (error.response.status === 422){
+          this.toastError('Verifique os campos obrigatorios');
+          return;
+        }
+        this.toastError('Erro ao adicionar cadeira');
       });
 
     }

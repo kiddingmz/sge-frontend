@@ -97,6 +97,15 @@
         </div>
       </router-link>
 
+      <router-link to="/catalog" class="button"
+       v-if="$hasAnyAuthority('COURSE_VIEW', 'COURSE_CREATE', 'COURSE_EDIT', 'COURSE_DELETE')"
+      >
+        <div class="d-flex align-items-center justify-content-between aside-item">
+          <i class="fa fa-solid fa-boxes-stacked"></i>
+          <span class="text">Catalogo</span>
+        </div>
+      </router-link>
+
       <router-link to="grade" class="button"
       v-if="$hasAnyAuthority('GRADE_VIEW', 'GRADE_CREATE', 'GRADE_EDIT', 'GRADE_DELETE')"
       >

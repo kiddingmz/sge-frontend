@@ -335,7 +335,7 @@ export default {
     return {
       allEvaluationChecked: false,
       ano: '',
-      loading: true,
+      loading: false,
       yearsCourse: [],
       classes: [],
       quantity: 0,

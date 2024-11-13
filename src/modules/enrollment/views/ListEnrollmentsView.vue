@@ -1,4 +1,5 @@
 <template>
+  <Toast />
   <div class="card border-0">
     <header-content title="Inscrições"
       @toggle-visibility="toggleVisibility" show-link="off" show-btn="on"
@@ -21,31 +22,33 @@
         </label>
 
         <Select
-            v-model="formData.estudanteId"
-            :options="students"
-            filter optionLabel="nome"
-            placeholder="Selecione estudante"
-            class="w-full md:w-56 small-input-group"
-            optionValue="id"
-            :invalid="errorsValidation.estudanteId"
+            v-model="estudanteId"
+            :options="filteredStudents"
+        filter
+        optionLabel="displayName"
+        placeholder="Selecione estudante"
+        class="w-full md:w-56 small-input-group"
+        optionValue="dadosMatricula.numeroEstudante"
+        :invalid="errorsValidation.estudanteId"
         >
-          <template #value="slotProps">
-            <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
-              <div class="small-input-group">
-                {{
-                  classes.find(c => c.id === slotProps.value)?.nome
-                }}
-              </div>
+        <template #value="slotProps">
+          <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
+            <div class="small-input-group">
+              {{ getStudentDisplayName(slotProps.value) }}
             </div>
-            <span v-else>{{ slotProps.placeholder }}</span>
-          </template>
+          </div>
+          <span v-else>{{ slotProps.placeholder }}</span>
+        </template>
 
-          <template #option="slotProps">
-            <div class="flex items-center small-input-group size-n">
-              <div class="small-input-group">{{ slotProps.option.nome }}</div>
-            </div>
-          </template>
+        <template #option="slotProps">
+          <div class="flex items-center small-input-group size-n">
+            <div class="small-input-group">{{ slotProps.option.displayName }}</div>
+          </div>
+        </template>
         </Select>
+
+
+
       </div>
 
       <div class="col-12 d-flex items-center gap-1 mb-3 flex-column size-n">
@@ -62,16 +65,16 @@
             <i class="pi pi-user size-n"></i>
           </InputGroupAddon>
           <MultiSelect
-              v-model="cadeiraId"
+              v-model="formData.cadeiraId"
               display="chip"
-              :options="classes"
+              :options="dataClasses"
               optionLabel="nome"
+              option-value="cadeiraId"
               filter
               placeholder="Seleciona cadeiras"
               class="size-n custom-input expandable-multiselect"
-              @change="limitSelection"
+              :invalid="errorsValidation.cadeiraId"
           />
-
         </InputGroup>
       </div>
       <Divider />
@@ -85,69 +88,66 @@
     </form>
   </Dialog>
 
-  <div class="card mt-5 border-0 shadow-sm">
-    <div class="card-header barra-vertical">
-      <small class="d-flex justify-content-between">
-        <div class="d-flex gap-2 align-items-center">
-          <i class="fa-solid fa-user-shield"></i>
-          <span class="ml-2">Lista de Inscrição</span>
-        </div>
-        <div>
-          <a @click="refresh" class="btn-p">
-            <i class="fa-solid fa-rotate-right"></i>
-          </a>
-        </div>
-      </small>
-    </div>
-    <div class="card-body">
-      <Toast />
-      <ConfirmDialog></ConfirmDialog>
-      <DataTable :value="students" responsiveLayout="scroll" table-style="font-size: 0.8rem"
-                 :paginator="true"
-                 :loading="loading"
-                 :rows="10"
-                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                 :rowsPerPageOptions="[5, 10, 25]"
-                 :filters="filters"
-                 :globalFilterFields="['name', 'role']"
-                 :size="'small'"
-      >
-        <template #header>
-          <div class="custom-input">
-            <span>Pesquisar: </span>
-            <InputText v-model="filters['global']" placeholder="Digite para pesquisar" class="custom-input small-input-group" />
-          </div>
-        </template>
-        <Column field="id" header="ID"></Column>
-        <Column field="nome" header="Nome"></Column>
-        <Column field="descricao" header="Descrição"></Column>
-        <Column field="faculdade.nome" header="Faculdade"></Column>
-        <Column header="Acções">
-          <template #body="slotProps" >
-            <span v-if="1===2">{{slotProps.data.name}}</span>
-            <div class="d-flex flex-wrap justify-center gap-1">
-              <Button icon="pi pi-pen-to-square" severity="success" text rounded aria-label="Search"
-                  @click="confirm1()"
-              />
-              <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Cancelar"
-                  @click="confirm2()"
-              />
-            </div>
-          </template>
-        </Column>
+<!--  <div class="card mt-5 border-0 shadow-sm">-->
+<!--    <div class="card-header barra-vertical">-->
+<!--      <small class="d-flex justify-content-between">-->
+<!--        <div class="d-flex gap-2 align-items-center">-->
+<!--          <i class="fa-solid fa-user-shield"></i>-->
+<!--          <span class="ml-2">Lista de Inscrição</span>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <a @click="refresh" class="btn-p">-->
+<!--            <i class="fa-solid fa-rotate-right"></i>-->
+<!--          </a>-->
+<!--        </div>-->
+<!--      </small>-->
+<!--    </div>-->
+<!--    <div class="card-body">-->
+<!--      <ConfirmDialog></ConfirmDialog>-->
+<!--      <DataTable :value="students" responsiveLayout="scroll" table-style="font-size: 0.8rem"-->
+<!--                 :paginator="true"-->
+<!--                 :loading="loading"-->
+<!--                 :rows="10"-->
+<!--                 paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"-->
+<!--                 :rowsPerPageOptions="[5, 10, 25]"-->
+<!--                 :filters="filters"-->
+<!--                 :globalFilterFields="['name', 'role']"-->
+<!--                 :size="'small'"-->
+<!--      >-->
+<!--        <template #header>-->
+<!--          <div class="custom-input">-->
+<!--            <span>Pesquisar: </span>-->
+<!--            <InputText v-model="filters['global']" placeholder="Digite para pesquisar" class="custom-input small-input-group" />-->
+<!--          </div>-->
+<!--        </template>-->
+<!--        <Column field="id" header="ID"></Column>-->
+<!--        <Column field="nome" header="Nome"></Column>-->
+<!--        <Column field="descricao" header="Descrição"></Column>-->
+<!--        <Column field="faculdade.nome" header="Faculdade"></Column>-->
+<!--        <Column header="Acções">-->
+<!--          <template #body="slotProps" >-->
+<!--            <span v-if="1===2">{{slotProps.data.name}}</span>-->
+<!--            <div class="d-flex flex-wrap justify-center gap-1">-->
+<!--              <Button icon="pi pi-pen-to-square" severity="success" text rounded aria-label="Search"-->
+<!--                  @click="confirm1()"-->
+<!--              />-->
+<!--              <Button icon="pi pi-trash" severity="danger" text rounded aria-label="Cancelar"-->
+<!--                  @click="confirm2()"-->
+<!--              />-->
+<!--            </div>-->
+<!--          </template>-->
+<!--        </Column>-->
 
-<!--        <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :body="getColumnBody(col.field, roles)" />-->
-      </DataTable>
-    </div>
-  </div>
+<!--&lt;!&ndash;        <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :body="getColumnBody(col.field, roles)" />&ndash;&gt;-->
+<!--      </DataTable>-->
+<!--    </div>-->
+<!--  </div>-->
 </template>
 
 <script>
 import Button from "primevue/button";
-import ConfirmDialog from "primevue/confirmdialog";
 import Toast from "primevue/toast";
 import Dialog from 'primevue/dialog';
-import InputText from "primevue/inputtext";
 import InputGroup from "primevue/inputgroup";
 import InputGroupAddon from "primevue/inputgroupaddon";
 import Select from 'primevue/select';
@@ -163,10 +163,8 @@ export default {
   components: {
     HeaderContent,
     Button,
-    ConfirmDialog,
     Toast,
     Dialog,
-    InputText,
     InputGroup,
     InputGroupAddon,
     Select,
@@ -183,9 +181,11 @@ export default {
       quantity: 0,
       selectedClasses: [],
       errorsValidation: {},
+      estudanteId: '',
+      dataClasses: [],
       formData: {
-        estudanteId: '',
-        cadeiraId: '',
+        estudanteId: null,
+        cadeiraId: null,
       },
     };
   },
@@ -196,6 +196,30 @@ export default {
       },
       deep: true,
     },
+    estudanteId: {
+      handler: function (val) {
+        this.formData.estudanteId = val;
+        this.getClassByStudentId(val);
+      },
+      deep: true,
+    },
+    'formData.cadeiraId': {
+      handler: function (val) {
+        if (val.length > 8) {
+          this.formData.cadeiraId = val.slice(0, 8);
+          this.toastError('Você só pode selecionar no máximo 8 cadeiras');
+        }
+      },
+      deep: true
+    }
+  },
+  computed: {
+    filteredStudents() {
+      return this.students.map(student => ({
+        ...student,
+        displayName: `${student.dadosMatricula.numeroEstudante}: ${student.dadosPessoais.nome}`
+      }));
+    }
   },
   mounted() {
     this.loading = false;
@@ -208,9 +232,22 @@ export default {
     });
   },
   methods: {
+    getClassByStudentId(id) {
+      EnrollmentService.listClassByStudentId(JSON.stringify({estudanteId: id})).then((data) => {
+        this.dataClasses = data;
+        this.toastSuccess('Cadeiras carregadas com sucesso');
+      }).catch(() => {
+        this.toastError('Erro ao carregar cadeiras');
+      });
+    },
+    getStudentDisplayName(numeroEstudante) {
+      this.refresh();
+      const student = this.students.find(c => c.dadosMatricula.numeroEstudante === numeroEstudante);
+      return student ? `${student.dadosPessoais.nome} - ${student.dadosMatricula.numeroEstudante}` : '';
+    },
     limitSelection() {
-      if (this.selectedClasses.length > 8) {
-        this.selectedClasses = this.selectedClasses.slice(0, 8);
+      if (this.formData.cadeiraId.length > 8) {
+        this.formData.cadeiraId = this.formData.cadeiraId.slice(0, 8);
         this.toastError('Você só pode selecionar no máximo 8 cadeiras');
       }
     },
@@ -248,14 +285,28 @@ export default {
     },
 
     saveEnrollment() {
+      if (this.formData.estudanteId === null || !this.formData.cadeiraId === null) {
+        this.toastError('Verifique os campos obrigatorios');
+        if (this.formData.estudanteId === null) {
+          this.errorsValidation.estudanteId = 'Estudante é obrigatório';
+        }
+        if (this.formData.cadeiraId === null) {
+          this.errorsValidation.cadeiraId = 'Cadeira é obrigatório';
+        }
+        return;
+      }
       EnrollmentService.create(this.formData).then(() => {
         this.toastSuccess('Inscricao criado com sucesso');
         this.formData = {
-          estudanteId: '',
           cadeiraId: '',
         };
         this.refresh();
       }).catch((error) => {
+
+        if (error.response.data.errors === undefined) {
+          this.toastError('Erro interno');
+          return
+        }
         this.validateForm(error.response.data.errors);
 
         if (error.response.status === 422){

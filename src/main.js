@@ -47,6 +47,7 @@ import userModule from "@/modules/user";
 import registrationModule from "@/modules/registration";
 import enrollmentModule from "@/modules/enrollment";
 import collegeModule from "@/modules/college";
+import catalogModule from "@/modules/catalog";
 
 import { registerModules } from "./register-modules";
 
@@ -64,7 +65,8 @@ registerModules({
     user: userModule,
     registration: registrationModule,
     enrollment: enrollmentModule,
-    college: collegeModule
+    college: collegeModule,
+    catalog: catalogModule,
 })
 
 

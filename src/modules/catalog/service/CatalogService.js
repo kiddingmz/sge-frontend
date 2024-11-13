@@ -9,58 +9,87 @@ function getHeaders() {
         'Authorization': `Bearer ${store.state.token}`
     };
 }
-export const ClassService = {
-    async list() {
+
+export const CatalogService = {
+    async list(id) {
         try {
-            const response = await axios.get(`${baseApiUrl}/curso/cadeiras`, { headers: getHeaders() });
-            return response.data.data;
+            console.log(id);
+            const response = await axios.get(`${baseApiUrl}/curso/cursos/${id}`,{ headers: getHeaders() });
+            return response.data;
         } catch (error) {
-            console.error("Error fetching curso/cadeiras:", error);
+            console.error("Error finding evaluation by ID:", error);
             throw error;
         }
     },
-    async create(myclass) {
+    async listByClass(data) {
         try {
-            const response = await axios.post(`${baseApiUrl}/curso/cadeiras`, myclass, { headers: getHeaders() });
+            const response = await axios.post(`${baseApiUrl}/avaliacao/veravaliacoesturma`, data,{ headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error creating myclass:", error);
+            console.error("Error finding evaluation by ID:", error);
             throw error;
         }
     },
-    async createClasseIntoCourse(myclass) {
+    async create(evaluation) {
         try {
-            const response = await axios.post(`${baseApiUrl}/curso/catalogo`, myclass, { headers: getHeaders() });
+            const response = await axios.post(`${baseApiUrl}/avaliacao/adicionaravaliacao`, evaluation, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error creating myclass:", error);
+            console.error("Error creating evaluation:", error);
             throw error;
         }
     },
-    async update(myclass) {
+    async update(evaluation) {
         try {
-            const response = await axios.put(`${baseApiUrl}/curso/cadeiras/${myclass.id}`, myclass, { headers: getHeaders() });
+            const response = await axios.put(`${baseApiUrl}/docente/notasTurma/${evaluation.id}`, evaluation, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error updating myclass:", error);
+            console.error("Error updating evaluation:", error);
             throw error;
         }
     },
     async delete(id) {
         try {
-            const response = await axios.delete(`${baseApiUrl}/curso/cadeiras/${id}`, { headers: getHeaders() });
+            const response = await axios.delete(`${baseApiUrl}/docente/notasTurma/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error deleting myclass:", error);
+            console.error("Error deleting evaluation:", error);
             throw error;
         }
     },
     async findById(id) {
         try {
-            const response = await axios.get(`${baseApiUrl}/curso/cadeiras/${id}`, { headers: getHeaders() });
+            const response = await axios.get(`${baseApiUrl}/docente/notasTurma/${id}`, { headers: getHeaders() });
             return response.data;
         } catch (error) {
-            console.error("Error finding myclass by ID:", error);
+            console.error("Error finding evaluation by ID:", error);
+            throw error;
+        }
+    },
+    async findYearByCourse(id) {
+        try {
+            const response = await axios.post(`${baseApiUrl}/avaliacao/veranos`, id,{ headers: getHeaders() });
+            return response.data;
+        } catch (error) {
+            console.error("Error finding evaluation by ID:", error);
+            throw error;
+        }
+    },
+    async findClassByCourseAndYear(data) {
+        try {
+            const response = await axios.post(`${baseApiUrl}/avaliacao/verturmas`, data,{ headers: getHeaders() });
+            return response.data;
+        } catch (error) {
+            console.error("Error finding evaluation by ID:", error);
+            throw error;
+        }
+    },
+    async findAvaliacaoByCurso(id) {
+        try {
+            const response = await axios.post(`${baseApiUrl}/avaliacao/veravaliacao`, id,{ headers: getHeaders() });
+            return response.data;
+        } catch (error) {
+            console.error("Error finding evaluation by ID:", error);
             throw error;
         }
     },
