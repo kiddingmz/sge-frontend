@@ -106,29 +106,29 @@ registerModules({
 //     }
 // })
 
-// router.beforeEach((to, from, next) => {
-//     const isLoggedIn = AuthStore.getters.loggedIn;
-//
-//     if (to.matched.some(record => record.meta.requiresAuth)) {
-//         if (!isLoggedIn) {
-//             console.log('Usuário não autenticado, redirecionando para Login');
-//             return next({ name: 'notAuth' });
-//         }
-//         const requiredAuthority = to.meta.authority;
-//         if (requiredAuthority && !AuthStore.getters.getAuthorities.includes(requiredAuthority)) {
-//             console.log(`Acesso negado - Autoridade "${requiredAuthority}" necessária para acessar esta rota:`, to.name);
-//             return next({ name: 'NotAuthorized' });
-//         }
-//     }
-//
-//     // if (to.matched.some(record => record.meta.requiresVisitor) && isLoggedIn && from.name) {
-//     //     console.log('Usuário autenticado tentando acessar rota de visitante, redirecionando para Home');
-//     //     return next({ name: 'Home' });
-//     // }
-//
-//     console.log('Acesso permitido à rota:', to.name);
-//     next();
-// });
+router.beforeEach((to, from, next) => {
+    const isLoggedIn = AuthStore.getters.loggedIn;
+
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (!isLoggedIn) {
+            console.log('Usuário não autenticado, redirecionando para Login');
+            return next({ name: 'notAuth' });
+        }
+        const requiredAuthority = to.meta.authority;
+        if (requiredAuthority && !AuthStore.getters.getAuthorities.includes(requiredAuthority)) {
+            console.log(`Acesso negado - Autoridade "${requiredAuthority}" necessária para acessar esta rota:`, to.name);
+            return next({ name: 'NotAuthorized' });
+        }
+    }
+
+    if (to.matched.some(record => record.meta.requiresVisitor) && isLoggedIn && from.name) {
+        console.log('Usuário autenticado tentando acessar rota de visitante, redirecionando para Home');
+        return next({ name: 'Home' });
+    }
+
+    console.log('Acesso permitido à rota:', to.name);
+    next();
+});
 
 
 const app  = createApp(App);

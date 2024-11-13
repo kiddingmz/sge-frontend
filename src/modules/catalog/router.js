@@ -13,9 +13,9 @@ export default router => {
       requiresAuth: true,
     },
     children: [
-      { path: '', component: List },
-      { name: 'createCatalog', path: 'create', component: Create},
-      { name: 'editCatalog', path: 'edit/:id', component: Edit },
+      { path: '', component: List ,meta: {requiresAuth: true}},
+      { name: 'createCatalog', path: 'create', component: Create, meta: {requiresAuth: true}},
+      { name: 'editCatalog', path: 'edit/:id', component: Edit , meta: {requiresAuth: true}},
     ],
   })
 };
