@@ -1,12 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import {authorities} from "@/global";
-
+import {authorities} from "@/global";
+import PermissionDenied from '../components/404/404.vue'
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    meta: { requiresAuth: true },
+    name: 'home',
+    meta: { requiresAuth: true, authority:  authorities.USER_VIEW },
     component: () => import('@/components/layout/Layout.vue'),
+  },
+  {
+    path: "/notAuth",
+    name: "403",
+    props: true,
+    component: PermissionDenied,
+
   },
 ]
 

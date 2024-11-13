@@ -4,7 +4,6 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
-
 import AuthStore from '@/modules/auth/store';
 
 import VueSweetalert2 from 'vue-sweetalert2';
@@ -48,7 +47,6 @@ import registrationModule from "@/modules/registration";
 import enrollmentModule from "@/modules/enrollment";
 import collegeModule from "@/modules/college";
 import catalogModule from "@/modules/catalog";
-
 import { registerModules } from "./register-modules";
 
 
@@ -106,30 +104,55 @@ registerModules({
 //     }
 // })
 
+// router.beforeEach((to, from, next) => {
+//     const isLoggedIn = AuthStore.getters.loggedIn;
+//
+//     if (to.matched.some(record => record.meta.requiresAuth)) {
+//         if (!isLoggedIn) {
+//             console.log('Usuário não autenticado, redirecionando para Login');
+//             return next({ name: 'notAuth' });
+//         }
+//         const requiredAuthority = to.meta.authority;
+//         if (requiredAuthority && !AuthStore.getters.getAuthorities.includes(requiredAuthority)) {
+//             console.log(`Acesso negado - Autoridade "${requiredAuthority}" necessária para acessar esta rota:`, to.name);
+//             return next({ name: 'NotAuthorized' });
+//         }
+//     }
+//
+//     if (to.matched.some(record => record.meta.requiresVisitor) && isLoggedIn && from.name) {
+//         console.log('Usuário autenticado tentando acessar rota de visitante, redirecionando para Home');
+//         return next({ name: 'Home' });
+//     }
+//
+//     console.log('Acesso permitido à rota:', to.name);
+//     next();
+// });
+
 router.beforeEach((to, from, next) => {
-    const isLoggedIn = AuthStore.getters.loggedIn;
-
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (!isLoggedIn) {
-            console.log('Usuário não autenticado, redirecionando para Login');
-            return next({ name: 'notAuth' });
+        if (!store.getters.loggedIn) {
+            next({
+                name: 'notAuth',
+            })
+        } else {
+            if (!AuthStore.state.authorities.includes(to.meta.authority)) {
+                next({ name: '403' })
+            } else {
+                next()
+            }
         }
-        const requiredAuthority = to.meta.authority;
-        if (requiredAuthority && !AuthStore.getters.getAuthorities.includes(requiredAuthority)) {
-            console.log(`Acesso negado - Autoridade "${requiredAuthority}" necessária para acessar esta rota:`, to.name);
-            return next({ name: 'NotAuthorized' });
+    } else if (to.matched.some(record => record.meta.requiresVisitor)) {
+        if (store.getters.loggedIn) {
+            next({
+                name: 'home',
+            })
+        } else {
+            next()
         }
+    } else {
+        next()
     }
-
-    if (to.matched.some(record => record.meta.requiresVisitor) && isLoggedIn && from.name) {
-        console.log('Usuário autenticado tentando acessar rota de visitante, redirecionando para Home');
-        return next({ name: 'Home' });
-    }
-
-    console.log('Acesso permitido à rota:', to.name);
-    next();
-});
-
+})
 
 const app  = createApp(App);
 app.use(store);

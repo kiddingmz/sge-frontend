@@ -1,5 +1,6 @@
 // import {authorities} from "@/global";
 import Module from "./Module.vue";
+import {authorities} from "@/global";
 const List = () => import("./views/ListEnrollmentsView.vue");
 const Create = () => import("./views/CreateEnrollmentView.vue");
 const Edit = () => import("./views/EditEnrollmentView.vue");
@@ -10,12 +11,12 @@ export default router => {
     path: '/enrollment',
     component: Module,
     meta: {
-      requiresAuth: true,
+      requiresAuth: true, authority:  authorities.USER_VIEW
     },
     children: [
-      { path: '', component: List , meta: {requiresAuth: true}},
-      { name: 'createEnrollment', path: 'create', component: Create, meta: {requiresAuth: true}},
-      { name: 'editEnrollment', path: 'edit/:id', component: Edit , meta: {requiresAuth: true}},
+      { path: '', component: List , meta: {requiresAuth: true, authority:  authorities.USER_VIEW}},
+      { name: 'createEnrollment', path: 'create', component: Create, meta: {requiresAuth: true, authority:  authorities.USER_VIEW}},
+      { name: 'editEnrollment', path: 'edit/:id', component: Edit , meta: {requiresAuth: true, authority:  authorities.USER_VIEW}},
     ],
   })
 };

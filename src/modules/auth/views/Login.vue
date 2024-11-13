@@ -74,10 +74,14 @@ export default {
             // } else {
             //   this.$router.push({ name: 'Home' });
             // }
-            this.$router.push({ name: 'Home'});
+            this.$router.push({ name: 'home'});
           })
           .catch((error) => {
             this.loading = false;
+            if (error.response === undefined) {
+              this.showErrorAlert('Erro interno');
+              return;
+            }
             if (error.response.status === 404) {
               this.showErrorAlert(error.response.data.error);
             } else {
