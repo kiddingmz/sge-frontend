@@ -16,6 +16,9 @@
         <span> Adicionar</span>
       </button>
     </div>
+    <slot>
+
+    </slot>
   </div>
 </template>
 

@@ -1,26 +1,326 @@
 <template>
+  <Toast />
   <div class="card border-0">
     <header-content title="Notas"
       @toggle-visibility="toggleVisibility" show-link="off" show-btn="off"
-    ></header-content>
+    >
+      <template v-slot>
+        <div class="d-flex gap-4">
+          <Button
+              label="Ver Pauta"
+              class="small-input-group size-n"
+              severity="success" size="small"
+              icon="pi pi-eye"  iconPos="left"
+              @click="visibleTranscript = true"
+          />
+          <Button
+              label="Ver Media"
+              class="small-input-group size-n"
+              severity="success" size="small"
+              icon="pi pi-eye"  iconPos="left"
+              @click="visibleMedia = true"
+          />
+        </div>
+      </template>
+    </header-content>
   </div>
-  <Toast />
+  <Dialog v-model:visible="visibleTranscript" modal header="Pauta"
+          :style="{ width: '95vw', height: '100vh', background: '#eaeaea' }"
+  >
+    <Divider :style="{
+      borderColor: '#ffff',
+      borderWidth: '1.5px',
+      color: '#ffff',
+      padding: '0',
+      margin: '0',
+      marginBottom: '10px' }"
+    />
+    <div class="card border-0 shadow-sm">
+      <form @submit.stop.prevent="searchTranscript">
+        <div class="d-flex justify-content-between p-2 flex-wrap">
+          <div class="d-flex items-center col-3 gap-1 mb-2 flex-column size-n">
+            <label for="name" class="font-semibold w-24">Curso
+              <small class="text-danger">*
+                <label
+                    class="font-weight-normal text-danger"
+                    v-if="errorsValidation.cursoId_error">
+                  {{ errorsValidation.cursoId_error }}
+                </label>
+              </small></label>
 
-  <Dialog v-model:visible="visible" modal header="Adicionar Notas" :style="{ width: '25rem' }">
-<!--    <span class e="text-surface-500 dark:text-surface-400 block mb-8">Adicionar Departamento</span>-->
-    <div class="d-flex items-center gap-1 mb-3 flex-column size-n">
-      <label for="name" class="font-semibold w-24">Nome <small class="text-danger">*</small></label>
-      <InputText id="name" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="nome" />
+            <Select
+                v-model="cursoId"
+                :options="curses"
+                filter optionLabel="nome"
+                placeholder="Selecione curso"
+                class="w-full md:w-56 small-input-group"
+                optionValue="id"
+                :invalid="errorsValidation.cursoId_error"
+            >
+              <template #value="slotProps">
+                <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
+                  <div class="small-input-group">{{ curses.find(c => c.id === slotProps.value)?.nome }}</div>
+                </div>
+                <span v-else>{{ slotProps.placeholder }}</span>
+              </template>
+
+              <template #option="slotProps">
+                <div class="flex items-center small-input-group size-n">
+                  <div class="small-input-group">{{ slotProps.option.nome }}</div>
+                </div>
+              </template>
+            </Select>
+          </div>
+          <div class="d-flex items-center col-2 gap-1 mb-2 flex-column size-n">
+            <label for="name" class="font-semibold w-24">Ano
+              <small class="text-danger">*
+                <label
+                    class="font-weight-normal text-danger"
+                    v-if="errorsValidation.yearCourse_error">
+                  {{ errorsValidation.yearCourse_error }}
+                </label>
+              </small></label>
+
+            <Select
+                v-model="yearCourse"
+                :options="yearsCourse"
+                filter optionLabel="ano"
+                placeholder="Selecione ano"
+                class="w-full md:w-56 small-input-group"
+                optionValue="ano"
+                :invalid="errorsValidation.yearCourse_error"
+            >
+              <template #value="slotProps">
+                <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
+                  <div class="small-input-group">{{ slotProps.value }}</div>
+                </div>
+                <span v-else>{{ slotProps.placeholder }}</span>
+              </template>
+
+              <template #option="slotProps">
+                <div class="flex items-center small-input-group size-n">
+                  <div class="small-input-group">{{ slotProps.option.ano }}</div>
+                </div>
+              </template>
+            </Select>
+          </div>
+          <div class="d-flex items-center col-3 gap-1 mb-2 flex-column size-n">
+            <label for="name" class="font-semibold w-24">Cadeira
+              <small class="text-danger">*
+                <label
+                    class="font-weight-normal text-danger"
+                    v-if="errorsValidation.classByCourse_error">
+                  {{ errorsValidation.classByCourse_error }}
+                </label>
+              </small></label>
+
+            <Select
+                v-model="classByCourse"
+                :options="classesByCourse"
+                filter optionLabel="cadeiraNome"
+                placeholder="Selecione cadeira"
+                class="w-full md:w-56 small-input-group"
+                optionValue="cadeiraId"
+                :disabled="allEvaluationChecked"
+                :invalid="errorsValidation.classByCourse_error"
+            >
+              <template #value="slotProps">
+                <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
+                  <div class="small-input-group">{{ classesByCourse.find(c => c.cadeiraId === slotProps.value)?.cadeiraNome }}</div>
+                </div>
+                <span v-else>{{ slotProps.placeholder }}</span>
+              </template>
+
+              <template #option="slotProps">
+                <div class="flex items-center small-input-group size-n">
+                  <div class="small-input-group">{{ slotProps.option.cadeiraNome }}</div>
+                </div>
+              </template>
+            </Select>
+          </div>
+          <div class="d-flex  justify-content-end items-center col-3">
+            <div class="d-flex justify-content-end align-items-center">
+              <Button label="Pesquisar" class="small-input-group size-n" severity="success" size="small" icon="pi pi-search"  iconPos="left" type="submit"/>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
-    <div class="d-flex items-center gap-1 mb-3 flex-column size-n">
-      <label for="description" class="font-semibold w-24 ">Descrição</label>
-      <InputText id="description" class="flex-auto size-n custom-input small-input-group" autocomplete="off" placeholder="descrição"/>
+    <div class="card mt-5 size-nn border-0 shadow">
+      <div class="card-header barra-vertical">
+        <small class="d-flex justify-content-between">
+          <div class="d-flex gap-2 align-items-center">
+            <i class="fa-solid fa-user-shield"></i>
+            <span class="ml-2">Lista de Estudantes : {{ quantity }}</span>
+          </div>
+          <div>
+            <a @click="refresh" class="btn-p">
+              <i class="fa-solid fa-rotate-right"></i>
+            </a>
+          </div>
+        </small>
+      </div>
+
+      <div class="card-body">
+        <Toast />
+        <ConfirmDialog></ConfirmDialog>
+        <DataTable
+            :value="dataTranscript"
+            responsiveLayout="scroll"
+            :paginator="true"
+            :rows="10"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            :rowsPerPageOptions="[5, 10, 25]"
+            :size="'small'"
+            :loading="loading"
+            table-style="font-size: 0.8rem"
+        >
+          <template #header>
+            <div class="custom-input">
+              <span>Pesquisar: </span>
+              <InputText v-model="filters['global']" placeholder="Digite para pesquisar" />
+            </div>
+          </template>
+
+          <Column field="numeroEstudante" header="Número do Estudante" />
+
+          <Column field="nome" header="Nome" />
+
+          <template v-for="(avaliacao, index) in transcripts" :key="index">
+            <Column
+                :field="`avaliacoes.${index}.nota`"
+                :header="`${avaliacao.nomeAvaliacao}`"
+            />
+          </template>
+
+          <Column field="media" header="Média" />
+        </DataTable>
+        
+      </div>
     </div>
-    <div class="d-flex justify-content-end gap-2">
-      <Button label="Cancelar" icon="pi pi-times" class="small-input-group size-n" severity="secondary" outlined @click="visible = false"
-      />
-      <Button label="Guardar" icon="pi pi-check" class="small-input-group size-n p-button-success" @click="visible = false"
-      />
+  </Dialog>
+
+  <Dialog v-model:visible="visibleMedia" modal header="Medias" :style="{ width: '95vw', height: '100vh', background: '#eaeaea' }"
+  >
+    <Divider :style="{
+      borderColor: '#ffff',
+      borderWidth: '1.5px',
+      color: '#ffff',
+      padding: '0',
+      margin: '0',
+      marginBottom: '10px' }"
+    />
+    <div class="card border-0 shadow-sm d-flex justify-content-center">
+      <div class="row d-flex justify-content-center">
+        <div class="d-flex gap-1 m-3 flex-column size-n col-5">
+          <label for="name" class="font-semibold w-24">Estudante
+            <small class="text-danger">*
+              <label
+                  class="font-weight-normal text-danger"
+                  v-if="errorsValidation.estudanteId">
+                {{ errorsValidation.estudanteId }}
+              </label>
+            </small>
+          </label>
+
+          <Select
+              v-model="estudanteId"
+              :options="filteredStudents"
+              filter
+              optionLabel="displayName"
+              placeholder="Selecione estudante"
+              class="w-full md:w-56 small-input-group"
+              optionValue="dadosMatricula.numeroEstudante"
+              :invalid="errorsValidation.estudanteId"
+          >
+            <template #value="slotProps">
+              <div v-if="slotProps.value" class="flex items-center small-input-group size-n">
+                <div class="small-input-group">
+                  {{ getStudentDisplayName(slotProps.value) }}
+                </div>
+              </div>
+              <span v-else>{{ slotProps.placeholder }}</span>
+            </template>
+
+            <template #option="slotProps">
+              <div class="flex items-center small-input-group size-n">
+                <div class="small-input-group">{{ slotProps.option.displayName }}</div>
+              </div>
+            </template>
+          </Select>
+        </div>
+      </div>
+    </div>
+    <div class="card mt-5 size-nn border-0 shadow">
+      <div class="card-header barra-vertical">
+        <small class="d-flex justify-content-between">
+          <div class="d-flex gap-2 align-items-center">
+            <i class="fa-solid fa-user-shield"></i>
+            <span class="ml-2">Lista de cadeiras : {{ quantity }}</span>
+          </div>
+          <div>
+            <a @click="refresh" class="btn-p">
+              <i class="fa-solid fa-rotate-right"></i>
+            </a>
+          </div>
+        </small>
+      </div>
+
+      <div class="card-body">
+        <Toast />
+        <ConfirmDialog></ConfirmDialog>
+
+        <DataTable
+            responsiveLayout="scroll"
+            :value="dataMedias[0]?.mediasCadeiras || []"
+          :paginator="true"
+          :rows="10"
+          :loading="loading"
+          paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+          :rowsPerPageOptions="[5, 10, 25]"
+          :filters="filters"
+          :globalFilterFields="['nome', 'ano', 'semestre']"
+          class="p-datatable-gridlines p-datatable-sm shadow-md rounded-lg"
+          table-style="font-size: 0.8rem"
+          >
+          <template #header>
+            <div class="mb-4">
+              <p class="size-n"><strong>Faculdade:</strong> {{ dataMedias[0]?.faculdade || '' }}</p>
+              <p class="size-n"><strong>Curso:</strong> {{ dataMedias[0]?.curso || '' }}</p>
+              <p class="size-n"><strong>Nome:</strong> {{ dataMedias[0]?.nome || '' }}</p>
+              <p class="size-n"><strong>Número de Estudante:</strong> {{ dataMedias[0]?.numerEstudante || '' }}</p>
+              <p class="size-n"><strong>Média Global:</strong> {{ dataMedias[0]?.mediaGlobal || '' }}</p>
+            </div>
+            <Divider />
+            <div class="flex justify-between items-center size-n">
+              <div class="flex items-center">
+                <span class="mr-2 mt-2">Pesquisar:</span>
+                <InputText
+                    v-model="filters['global']"
+                    placeholder="Digite para pesquisar"
+                    class="p-inputtext-sm p-rounded custom-search"
+                />
+              </div>
+            </div>
+          </template>
+            <Column
+                field="cadeira"
+                header="Cadeira"
+                :body="(rowData) => rowData.cadeira"
+                class="text-left"
+                sortable
+            ></Column>
+            <Column
+                field="media"
+                header="Média"
+                :body="(rowData) => rowData.media"
+                class="text-center"
+                sortable
+            ></Column>
+        </DataTable>
+
+
+      </div>
     </div>
   </Dialog>
 
@@ -166,7 +466,6 @@
     </form>
   </div>
   <div class="card size-n shadow border-0 mt-4 border-radius">
-
     <Tabs value="0">
       <TabList>
         <Tab value="0" class="d-flex gap-2 align-items-center justify-content-center">
@@ -293,6 +592,7 @@ import Dialog from 'primevue/dialog';
 import InputNumber from "primevue/inputnumber";
 import InputText from "primevue/inputtext";
 import Column from "primevue/column";
+import Divider from "primevue/divider";
 
 // import FileUpload from "primevue/fileupload";
 // import IconField from "primevue/iconfield";
@@ -312,6 +612,7 @@ import Select from "primevue/select";
 import {CourseService} from "@/modules/course/service/CourseService";
 import {ClassService} from "@/modules/class/service/ClassService";
 import {EvaluationService} from "@/modules/evaluation/service/EvaluationService";
+import {RegistrationService} from "@/modules/registration/service/RegistrationService";
 
 export default {
   name: 'ListRoles',
@@ -329,7 +630,8 @@ export default {
     TabPanel,
     Column,
     InputText,
-    InputNumber
+    InputNumber,
+    Divider
   },
   data() {
     return {
@@ -349,9 +651,15 @@ export default {
       errorsValidation: {},
       grades: [],
       filters: {},
-      visible: false,
+      visibleTranscript: false,
+      visibleMedia: false,
       dataEvaluation: [],
       dataGrades: [],
+      dataTranscript: [],
+      transcripts: [],
+      pesosTranscript: [],
+      estudanteId: '',
+      dataMedias: [],
       formData: {
         "cursoId":"3",
         "cadeiraId":"21",
@@ -381,6 +689,19 @@ export default {
       },
       deep: true,
     },
+    dataMedias: {
+      handler: function (val) {
+        this.dataMedias = val;
+      },
+      deep: true,
+    },
+    estudanteId: {
+      handler: function (val) {
+        this.formData.estudanteId = val;
+        this.getMediabyId(val);
+      },
+      deep: true,
+    },
     classByCourse: {
       handler: function () {
         this.getEvaluation();
@@ -397,8 +718,50 @@ export default {
       this.classes = data;
     });
 
+    RegistrationService.list().then((data) => {
+      this.students = data;
+      console.log(data);
+    });
+
+  },
+  computed: {
+    filteredStudents() {
+      return this.students
+          .filter(
+              (student) =>
+                  student.dadosMatricula &&
+                  student.dadosPessoais &&
+                  student.dadosMatricula.numeroEstudante
+          )
+          .map((student) => ({
+            ...student,
+            displayName: `${student.dadosPessoais.nome} - ${student.dadosMatricula.numeroEstudante}`,
+          }));
+    },
   },
   methods: {
+    getMediabyId(id) {
+      GradeService.listMediaById(JSON.stringify({numeroEstudante: id})).then((data) => {
+        this.dataMedias = [data.data];
+        console.log(this.dataMedias);
+        this.toastSuccess('Medias carregadas com sucesso');
+      }).catch(() => {
+        this.toastError('Erro ao carregar medias');
+      });
+    },
+    getStudentDisplayName(numeroEstudante) {
+      const student = this.students.find(
+          (c) =>
+              c.dadosMatricula &&
+              c.dadosMatricula.numeroEstudante === numeroEstudante
+      );
+
+      if (student && student.dadosPessoais && student.dadosMatricula) {
+        return `${student.dadosPessoais.nome} - ${student.dadosMatricula.numeroEstudante}`;
+      }
+
+      return '';
+    },
     searchGrade() {
       let error = {};
 
@@ -417,6 +780,70 @@ export default {
           return;
         }
         this.getAllGrades();
+    },
+    searchTranscript() {
+      // let error = {};
+      //
+      // if (this.classByCourse === '' || this.cursoId === '' || this.yearCourse === '') {
+      //   this.toastError('Verifique os campos obrigatórios');
+      //   if (this.classByCourse === '') {
+      //     error.classByCourse_error = ['Campo obrigatório'];
+      //   }
+      //   if (this.cursoId === '') {
+      //     error.cursoId_error = ['Campo obrigatório'];
+      //   }
+      //   if (this.yearCourse === '') {
+      //     error.yearCourse_error = ['Campo obrigatório'];
+      //   }
+      //   this.validateForm(error);
+      //   return;
+      // }
+      this.getTranscript();
+    },
+    getTranscript() {
+      GradeService.listTranscript(JSON.stringify({
+        'cursoId': this.cursoId,
+        'cadeiraId': this.classByCourse,
+        'ano': this.yearCourse,
+      }))
+          .then((data) => {
+            this.toastSuccess(`Pauta obtidas com sucesso`);
+            this.transcripts = this.getAvaliacoes(data.data.pauta);
+            this.dataTranscript = this.processTableData(data.data.pauta);
+            this.pesosTranscript = this.getPesos(data.data.pauta);
+            this.quantity = this.dataTranscript.length;
+            this.loading = false;
+          })
+          .catch(() => {
+            this.toastError(`Erro ao obter Pauta`);
+            this.loading = false;
+          });
+    },
+    getAvaliacoes(pauta) {
+      const allAvaliacoes = pauta.flatMap((entry) => entry.avaliacoes);
+      return Array.from(new Set(allAvaliacoes.map((a) => a.nomeAvaliacao))).map(
+          (nome) => ({
+            nomeAvaliacao: nome,
+          })
+      );
+    },
+    getPesos(pauta) {
+      const allAvaliacoes = pauta.flatMap((entry) => entry.avaliacoes);
+      return Array.from(new Set(allAvaliacoes.map((a) => a.peso))).map(
+          (nome) => ({
+            peso: nome,
+          })
+      );
+    },
+    processTableData(pauta) {
+      return pauta.map((estudante) => ({
+        numeroEstudante: estudante.numeroEstudante,
+        nome: estudante.nome,
+        media: estudante.media,
+        avaliacoes: estudante.avaliacoes.map((a) => ({
+          nota: a.nota,
+        })),
+      }));
     },
     getAllGrades() {
       GradeService.list(JSON.stringify({
@@ -658,4 +1085,5 @@ export default {
 .p-paginator .p-link.p-highlight {
   color: green  !important;
 }
+
 </style>

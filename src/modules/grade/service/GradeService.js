@@ -29,6 +29,24 @@ export const GradeService = {
             throw error;
         }
     },
+    async listTranscript(data) {
+        try {
+            const response = await axios.post(`${baseApiUrl}/turma/pauta`, data,{ headers: getHeaders() });
+            return response.data;
+        } catch (error) {
+            console.error("Error finding evaluation by ID:", error);
+            throw error;
+        }
+    },
+    async listMediaById(data) {
+        try {
+            const response = await axios.post(`${baseApiUrl}/certificado`, data,{ headers: getHeaders() });
+            return response.data;
+        } catch (error) {
+            console.error("Error finding evaluation by ID:", error);
+            throw error;
+        }
+    },
     async listTurma() {
         try {
             const response = await axios.get(`${baseApiUrl}/docente/notasTurma`, { headers: getHeaders() });
